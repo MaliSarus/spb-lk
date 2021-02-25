@@ -1,17 +1,61 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
+    <link rel="stylesheet" href="./assets/css/bootstrap/bootstrap-grid.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+<noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+</noscript>
+<header class="header">
+    <div class="header__wrapper">
+        <div class="header__logo">
+            <img src="./assets/img/ui/logo.svg" alt="">
+        </div>
+        <div class="header__menu">
+            <nav>
+                <ul>
+                    <li><a href="#">О КОНГРЕССЕ</a></li>
+                    <li><a href="#">ПРОГРАММА</a></li>
+                    <li><a href="#">ВЫСТАВКА</a></li>
+                    <li><a href="#">СТОИМОСТЬ</a></li>
+                    <li><a href="#">КОНТАКТЫ</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="header__controls">
+            <div class="header__account">
+                <button class="header__account-button account-button_login">Иванов иван иванович</button>
+                <div class="header__account-menu">
+                    <ul>
+                        <li><a href="#">Учетные данные</a></li>
+                        <li><a href="#">Оформить участие</a></li>
+                        <li><a href="#">Мои заказы</a></li>
+                        <li><a href="#">Выход</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="header__lang">
+                <a href="#">
+                    <img src="./assets/img/ui/rus-lang.svg" width="35" height="35" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div id="app-one"></div>
     <!-- built files will be auto injected -->
-  </body>
+</main>
+
+<footer class="footer"></footer>
+</body>
 </html>

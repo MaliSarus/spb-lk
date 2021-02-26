@@ -1,14 +1,31 @@
 <template>
   <div class="form__input">
-    <input :type="inputType" :id="inputId">
-    <label :for="inputId">{{   label }}</label>
+    <input :type="inputType" :id="inputId" @input="inputChange">
+    <label :for="inputId" :class="{active: labelActive}">{{   label }}</label>
   </div>
 </template>
 
 <script>
 export default {
   name: "Input",
-  props: ['inputId', 'inputType','label']
+  props: ['inputId', 'inputType','label'],
+  data(){
+    return{
+      labelActive: false
+    }
+  },
+  methods:{
+    inputChange($event){
+      this.$emit('update:inputText', $event.target.value);
+      if ($event.target.value !== ''){
+        this.labelActive = true
+      }
+      else {
+        this.labelActive = false
+      }
+    }
+  }
+
 }
 </script>
 
@@ -24,6 +41,11 @@ export default {
         top: 15px;
         left: 13px;
         transition: left .25s, top .25s, font-size .25s;
+        &.active{
+          font-size: 10px;
+          left: 13px;
+          top: 5px;
+        }
       }
       input{
         padding: 15px 13px;

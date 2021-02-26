@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import SignUp from './SignUp.vue'
+import App from './App.vue'
+import router from './router'
 
 Vue.config.productionTip = false
 
@@ -16,6 +17,7 @@ if (document.querySelector('.header__account-button')){
 
 if (document.querySelector('#app-one')) {
   new Vue({
-    render: h => h(SignUp),
+    router,
+    render: h => h(App)
   }).$mount('#app-one')
 }

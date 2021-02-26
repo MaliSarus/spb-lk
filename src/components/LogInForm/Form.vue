@@ -23,8 +23,8 @@
 </template>
 
 <script>
-  import Button from "@/components/LogInForm/UI/Button";
-  import Input from "@/components/LogInForm/UI/Input";
+  import Button from "@/components/UI/Button";
+  import Input from "@/components/UI/Input";
 
   export default {
     name: "Form",

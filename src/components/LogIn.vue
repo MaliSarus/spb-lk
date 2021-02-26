@@ -1,22 +1,20 @@
 <template>
-  <div id="app-one">
-    <div class="form">
-      <div class="form__title">Личный кабинет</div>
-      <LogInForm/>
-      <Button class="form__button" text="Зарегистрироваться"/>
-    </div>
+  <div class="form form__login">
+    <div class="form__title">Личный кабинет</div>
+    <LogInForm/>
+    <router-link tag="button" :to="{name: 'SignUp'}" class="form__button">Зарегистрироваться</router-link>
   </div>
 </template>
 
 <script>
   import LogInForm from "@/components/LogInForm/Form";
-  import Button from "@/components/LogInForm/UI/Button";
+
 
   export default {
     name: 'App',
     components: {
       LogInForm,
-      Button
+
     },
   }
 </script>
@@ -38,14 +36,7 @@
   $z-high: 500;
   $z-highest: 1000;
 
-  #app-one {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-  }
+
   .form {
     padding: 38px 50px 50px;
     border: 1px solid #A8BBD3;
@@ -61,11 +52,24 @@
       margin-bottom: 28px;
       text-align: center;
     }
+
     &__button {
       margin-top: 40px;
+
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 21px;
+      text-align: center;
+      color: white;
+      background: #013066;
+      border: 1px solid #F3F3F3;
+      box-sizing: border-box;
+      border-radius: 5px;
+      padding: 15px 15px;
+      width: 100%;
+
     }
   }
-
 
 
 </style>

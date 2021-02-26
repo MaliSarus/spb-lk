@@ -71,8 +71,15 @@ main {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  background: url("../img/ui/bg.jpg") center no-repeat;
+  background-image: url("../img/ui/bg.svg");
+  background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
+  background-color: #FDFFFE;
+}
+
+button {
+  cursor: pointer;
 }
 
 .visually-hidden {

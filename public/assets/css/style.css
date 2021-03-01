@@ -257,9 +257,18 @@ button {
 }
 
 .mx-datepicker {
-  position: relative;
-  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  display: none;
   width: 210px;
+  -webkit-transform: translateY(calc(100% + 4px));
+  -ms-transform: translateY(calc(100% + 4px));
+  transform: translateY(calc(100% + 4px));
+  z-index: 10;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .mx-datepicker svg {
@@ -268,6 +277,10 @@ button {
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+
+.mx-datepicker.open {
+  display: block;
 }
 
 .mx-datepicker-range {
@@ -355,7 +368,6 @@ button {
   font: 14px/1.5 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', sans-serif;
   color: #73879c;
   background-color: #fff;
-  border: 1px solid #e8e8e8;
 }
 
 .mx-datepicker-popup {
@@ -415,7 +427,7 @@ button {
 .mx-calendar {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  width: 248px;
+  width: 100%;
   padding: 6px 12px;
 }
 

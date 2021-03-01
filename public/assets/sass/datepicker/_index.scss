@@ -5,15 +5,24 @@
 @import 'animation';
 
 .#{$namespace}-datepicker {
-  position: relative;
-  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  display: none;
   width: 210px;
+  transform: translateY(calc(100% + 4px) );
+  z-index: 10;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   svg {
     width: 1em;
     height: 1em;
     vertical-align: -0.15em;
     fill: currentColor;
     overflow: hidden;
+  }
+  &.open{
+    display: block;
   }
 }
 
@@ -94,7 +103,6 @@
   font: 14px/1.5 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', sans-serif;
   color: $default-color;
   background-color: #fff;
-  border: 1px solid $border-color;
 }
 
 .#{$namespace}-datepicker-popup {
@@ -149,7 +157,7 @@
 
 .#{$namespace}-calendar {
   box-sizing: border-box;
-  width: 248px;
+  width: 100%;
   padding: 6px 12px;
   & + & {
     border-left: 1px solid $border-color;

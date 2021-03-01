@@ -48,6 +48,8 @@ export default {
         }
       }
       input{
+        display: block;
+        width: 100%;
         padding: 15px 13px;
         border: none;
         background: transparent;

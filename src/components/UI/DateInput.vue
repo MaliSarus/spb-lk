@@ -1,5 +1,12 @@
 <template>
-  <div class="form__input">
+  <div class="form__input form__input-datepicker">
+    <input
+        type="text"
+        :id="inputId"
+        v-model="date"
+        @focus="datepickerOpen"
+        @input="inputChange"
+    />
     <label :for="inputId" :class="{active: labelActive}">{{ label }}</label>
     <date-picker
         format="DD.MM.YYYY"
@@ -7,14 +14,18 @@
         :input-attr="{id:inputId}"
         v-model="date"
         value-type="format"
-        :width="datepickerWidth"
         inline
+        :class="{
+          open: isDatepickerOpen
+        }"
+        @pick="pickDate"
     />
   </div>
 </template>
 
 <script>
   import DatePicker from 'vue2-datepicker';
+  import 'vue2-datepicker/locale/ru'
 
   export default {
     name: "DateInput",
@@ -22,7 +33,7 @@
       return{
         date:'',
         labelActive: false,
-        datepickerWidth: 0,
+        isDatepickerOpen: false
       }
     },
     props: ['inputId', 'inputType', 'label', 'inputDate'],
@@ -44,8 +55,33 @@
         }
       }
     },
+    methods:{
+      datepickerOpen(){
+        this.isDatepickerOpen = true;
+      },
+      inputChange($event){
+        this.$emit('update:inputText', $event.target.value);
+        if ($event.target.value !== ''){
+          this.labelActive = true
+        }
+        else {
+          this.labelActive = false
+        }
+      },
+      pickDate(){
+        this.isDatepickerOpen = false
+      }
+    },
     mounted() {
-      this.datepickerWidth = document.querySelector('.form__datepicker').offsetWidth
+
+      const that = this;
+      document.addEventListener('click', function(event) {
+        const datePicker = document.getElementsByClassName('form__input-datepicker')[0];
+        const isClickInside = datePicker.contains(event.target)
+        if (isClickInside === false) {
+          that.isDatepickerOpen = false;
+        }
+      })
     }
   }
 </script>
@@ -70,18 +106,23 @@
           top: 5px;
         }
       }
-
-    }
-    &__datepicker {
-      width: 100%;
-      .mx-input{
-
+      input{
+        display: block;
+        padding: 15px 13px;
+        border: none;
+        background: transparent;
+        outline: none;
+        width: 100%;
         &:focus + label {
           font-size: 10px;
           left: 13px;
           top: 5px;
         }
       }
+
+    }
+    &__datepicker {
+      width: 100%;
     }
 
   }

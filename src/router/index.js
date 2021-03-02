@@ -2,10 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LogIn from "@/components/LogIn";
 import SignUp from "@/components/SignUp";
+import PersonalCab from "../components/PersonalCab";
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/lk/:id',
+    name: 'PersonalCabinet',
+    component: PersonalCab
+  },
   {
     path: '/sign-up',
     name: 'SignUp',

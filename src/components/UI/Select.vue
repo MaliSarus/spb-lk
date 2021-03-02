@@ -1,11 +1,11 @@
 <template>
-  <div class="form__input">
-    <input type="text" :id="inputId" >
-    <label :for="inputId" >{{ label }}</label>
-    <div class="select-options">
+  <div class="form__input form__input-select" ref="select">
+    <input type="text" :id="inputId" v-model="selectedOption"  @focus="isOpen = true" @input="search" autocomplete="nope">
+    <label :for="inputId" :class="{active: labelActive}">{{ label }}</label>
+    <div class="select-options" v-show="isOpen">
       <vuescroll :ops="ops">
         <ul>
-          <li v-for="(option, index) in options" :key="`option_${option}_${index}`">{{ option }}</li>
+          <li v-for="(option, index) in searchingOptions" :key="`option_${option}_${index}`" @click="selectOption(option)">{{ option }}</li>
         </ul>
       </vuescroll>
     </div>
@@ -17,7 +17,11 @@ import vuescroll from 'vuescroll'
 
 export default {
   name: "Select",
-  props: ['options', 'inputId', 'inputType', 'label'],
+  props: ['options', 'inputId', 'inputType', 'label', 'inputOption'],
+  model:{
+    prop: 'inputOption',
+    event: 'selectOption'
+  },
   components: {
     vuescroll
   },
@@ -33,10 +37,63 @@ export default {
         },
         bar: {
           background: '#C0CDDE',
-          onlyShowBarOnScroll: false
+          onlyShowBarOnScroll: false,
+          opacity: 1,
+          keepShow: true
         }
+      },
+      selectedOption:'',
+      isOpen: false,
+      searchString:''
+    }
+  },
+  methods:{
+    selectOption(option){
+      this.selectedOption = option;
+      this.isOpen = false;
+    },
+    search($event){
+      this.searchString = $event.target.value
+    }
+  },
+  computed:{
+    labelActive() {
+      return this.selectedOption !== ''
+    },
+    searchingOptions (){
+      if(this.searchString !== ''){
+        return this.options.filter(option => {
+          if(option.toLowerCase().includes(this.searchString.toLowerCase())){
+            return option
+          }
+        })
+      }
+      else {
+        return this.options
       }
     }
+  },
+  watch:{
+    selectedOption(val){
+      this.$emit('selectOption', val);
+      if (val) {
+        this.labelActive = true
+      } else {
+        this.labelActive = false
+      }
+    }
+
+  },
+
+  mounted() {
+    const that = this
+    document.addEventListener('click', function(event) {
+      const elementToDetect = that.$refs.select;
+      if (elementToDetect) {
+        const isClickInside = elementToDetect.contains(event.target);
+        that.isOpen = isClickInside;
+      }
+    })
   }
 }
 </script>
@@ -92,6 +149,7 @@ export default {
   background: white;
   height: 300px;
   overflow: hidden;
+  z-index: 10;
 
   ul {
     margin: 0;
@@ -100,8 +158,12 @@ export default {
   }
 
   li {
+    cursor: pointer;
     &:not(:last-child){
       margin-bottom: 30px;
+    }
+    &:hover{
+      color: #3b7dee;
     }
   }
 }

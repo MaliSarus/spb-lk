@@ -1079,6 +1079,7 @@ button {
 
 .header {
   background: #013066;
+  height: 80px;
 }
 
 .header__wrapper {
@@ -1086,22 +1087,21 @@ button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 0 35px;
 }
 
 .header__logo {
-  position: absolute;
-  left: 35px;
-  top: 0;
   width: 149px;
   padding: 11px 7px 9px;
   border-radius: 5px;
   background: #013066;
-  -webkit-transition: left .5s;
-  -o-transition: left .5s;
-  transition: left .5s;
+}
+
+.header__menu {
+  display: none;
 }
 
 .header__menu ul {
@@ -1133,15 +1133,13 @@ button {
   position: absolute;
   top: 50%;
   right: 52px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+  display: none;
 }
 
 .header__account {
@@ -1229,6 +1227,35 @@ button {
 @media screen and (min-width: 768px) {
   .text p {
     font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .header {
+    height: auto;
+  }
+
+  .header__wrapper {
+    padding: 0;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+
+  .header__logo {
+    position: absolute;
+    left: 35px;
+    top: 0;
+  }
+
+  .header__menu {
+    display: block;
+  }
+
+  .header__controls {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 

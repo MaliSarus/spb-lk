@@ -27,6 +27,7 @@
   import DatePicker from 'vue2-datepicker';
   import 'vue2-datepicker/locale/ru'
 
+
   export default {
     name: "DateInput",
     data(){
@@ -73,13 +74,12 @@
       }
     },
     mounted() {
-
-      const that = this;
+      const that = this
       document.addEventListener('click', function(event) {
-        const datePicker = document.getElementsByClassName('form__input-datepicker')[0];
-        const isClickInside = datePicker.contains(event.target)
-        if (isClickInside === false) {
-          that.isDatepickerOpen = false;
+        const elementToDetect = document.querySelectorAll('.form__input-datepicker')[0];
+        if (elementToDetect) {
+          const isClickInside = elementToDetect.contains(event.target);
+          that.isDatepickerOpen = isClickInside;
         }
       })
     }

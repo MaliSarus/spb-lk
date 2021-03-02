@@ -1,31 +1,52 @@
 .header {
   background: $accent-color;
-  &__wrapper{
+  height: 80px;
+  @media screen and (min-width: $lg-width) {
+    height: auto;
+  }
+
+  &__wrapper {
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 0 35px;
+    @media screen and (min-width: $lg-width) {
+      padding: 0;
+      justify-content: center;
+
+    }
   }
+
   &__logo {
-    position: absolute;
-    left: 35px;
-    top: 0;
     width: 149px;
     padding: 11px 7px 9px;
     border-radius: 5px;
     background: $accent-color;
-    transition: left .5s;
+    @media screen and (min-width: $lg-width) {
+      position: absolute;
+      left: 35px;
+      top: 0;
+    }
   }
-  &__menu{
+
+  &__menu {
     //padding-left: 200px;
     //padding-right: 330px;
-    ul{
+    display: none;
+    @media screen and (min-width: $lg-width) {
+      display: block;
+    }
+
+    ul {
       display: flex;
       align-items: center;
       margin: 0;
       padding: 0;
-      li{
+
+      li {
         list-style: none;
-        a{
+
+        a {
           display: block;
           padding: 30px 20px;
           font-weight: 700;
@@ -37,21 +58,27 @@
       }
     }
   }
-  &__controls{
+
+  &__controls {
     position: absolute;
     top: 50%;
     right: 52px;
-    display: flex;
     align-items: center;
     transform: translateY(-50%);
+    display: none;
+    @media screen and (min-width: $lg-width) {
+      display: flex;
+    }
   }
-  &__account{
+
+  &__account {
     position: relative;
-    &-button{
+
+    &-button {
       cursor: pointer;
       margin-right: 20px;
       padding: 8px 45px 8px 15px;
-      border:none;
+      border: none;
       outline: none !important;
       font-weight: 400;
       font-size: 16px;
@@ -59,14 +86,16 @@
       background: #FFCC40;
       border-radius: 2px;
       border: 1px solid #034795;
-      &.account-button_login{
+
+      &.account-button_login {
         background-image: url('../img/ui/account-button_login.svg');
         background-repeat: no-repeat;
         background-size: 20px 20px;
         background-position: calc(100% - 15px) center;
       }
     }
-    &-menu{
+
+    &-menu {
       display: none;
       position: absolute;
       bottom: 0;
@@ -76,12 +105,15 @@
       background: white;
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
       border-radius: 0px 0px 5px 5px;
-      ul{
+
+      ul {
         margin: 0;
         padding: 0;
-        li{
+
+        li {
           list-style: none;
-          a{
+
+          a {
             display: block;
             padding: 8.5px 35px 8.5px 15px;
             color: #282828;
@@ -93,19 +125,22 @@
             background-size: 5px 10px;
             background-position: calc(100% - 10px) center;
             background-repeat: no-repeat;
-            &:hover{
+
+            &:hover {
               background-color: #F4F9FF;
             }
           }
         }
       }
-      &.open{
+
+      &.open {
         display: block;
       }
     }
   }
-  &__lang{
-    a{
+
+  &__lang {
+    a {
       display: flex;
     }
   }

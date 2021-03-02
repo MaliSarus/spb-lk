@@ -1,13 +1,15 @@
 <template>
-  <form action="#" @submit.prevent="">
+  <form action="#" @submit.prevent="submitLogin">
     <div class="row">
       <div class="col-12">
         <Input
+            :inputText.sync="email"
             label="Email"
             input-id="login-email"
             input-type="email"
         />
         <Input
+            :inputText.sync="password"
             label="Пароль"
             input-id="login-password"
             input-type="password"
@@ -25,12 +27,37 @@
 <script>
   import Button from "@/components/UI/Button";
   import Input from "@/components/UI/Input";
+  import axios from 'axios'
 
+  const baseURL = 'http://congress.sotbisite.beget.tech'
   export default {
     name: "Form",
     components: {
       Button,
       Input
+    },
+    data(){
+      return{
+        email:'',
+        password:''
+      }
+    },
+    methods:{
+      submitLogin(){
+        axios
+            .post(baseURL+'/api/auth/',{
+                  email: this.email,
+                  password: this.password,
+                }
+            )
+            .then(res=>{
+              const data = res.data;
+              if(data.status === 'ok'){
+                console.log(data)
+                this.$router.push('/lk')
+              }
+            })
+      }
     }
   }
 </script>

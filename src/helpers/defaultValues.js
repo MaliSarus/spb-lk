@@ -1,0 +1,1 @@
+export const baseURL = 'http://congress.sotbisite.beget.tech'

@@ -47,7 +47,7 @@
                             <span class="date__price-price price">
                               <span class="price_prev"></span>
                               <span class="price_current"
-                                >{{ date.onlinePrice }} &#8381;</span
+                                >{{ date.onlinePrice }}&nbsp;&#8381;</span
                               >
                             </span>
                           </label>
@@ -71,7 +71,7 @@
                                 date.offlinePrice
                               }}</span>
                               <span class="price_current"
-                                >{{ date.offlinePrice }} &#8381;</span
+                                >{{ date.offlinePrice }}&nbsp;&#8381;</span
                               >
                             </span>
                           </label>
@@ -104,7 +104,7 @@
                             <span class="date__price-price price">
                               <span class="price_prev"></span>
                               <span class="price_current"
-                                >{{ allDates.onlinePrice }} &#8381;</span
+                                >{{ allDates.onlinePrice }}&nbsp;&#8381;</span
                               >
                             </span>
                           </label>
@@ -127,7 +127,7 @@
                                 allDates.offlinePrice
                               }}</span>
                               <span class="price_current"
-                                >{{ allDates.offlinePrice }} &#8381;</span
+                                >{{ allDates.offlinePrice }}&nbsp;&#8381;</span
                               >
                             </span>
                           </label>
@@ -146,6 +146,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import {baseURL} from "@/helpers/defaultValues";
+
 export default {
   name: "PersonalCab",
   data() {
@@ -165,6 +168,12 @@ export default {
         },
         {
           date: "19 июня",
+          style: "",
+          onlinePrice: 3000,
+          offlinePrice: 10000,
+        },
+        {
+          date: "20 июня",
           style: "",
           onlinePrice: 3000,
           offlinePrice: 10000,
@@ -194,6 +203,13 @@ export default {
       }
     },
   },
+  mounted() {
+    axios
+    .get(baseURL + '/api/catalog/items/')
+    .then(res=>{
+      console.log(res);
+    })
+  }
 };
 </script>
 
@@ -238,6 +254,7 @@ export default {
         padding: 0;
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         li {
           flex-basis: calc(100% / 5);
           padding: 15px;
@@ -249,7 +266,7 @@ export default {
         border-radius: 10px;
         overflow: hidden;
         transition: opacity 0.2s;
-        min-width: 315px;
+        //min-width: 315px;
         box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
         .date {
           &__head {

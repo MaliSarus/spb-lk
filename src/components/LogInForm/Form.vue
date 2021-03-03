@@ -28,8 +28,8 @@
   import Button from "@/components/UI/Button";
   import Input from "@/components/UI/Input";
   import axios from 'axios'
+  import {baseURL} from "@/helpers/defaultValues";
 
-  const baseURL = 'http://congress.sotbisite.beget.tech'
   export default {
     name: "Form",
     components: {
@@ -53,8 +53,9 @@
             .then(res=>{
               const data = res.data;
               if(data.status === 'ok'){
-                console.log(data)
-                this.$router.push('/lk')
+                console.log(data);
+                const userId = data.user.id
+                this.$router.push(`/lk/${userId}`)
               }
             })
       }

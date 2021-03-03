@@ -1,6 +1,6 @@
 <template>
   <div class="form__input">
-    <input :type="inputType" :id="inputId" @input="inputChange">
+    <input :type="inputType" :id="inputId" v-model="inputValue">
     <label :for="inputId" :class="{active: labelActive}">{{   label }}</label>
   </div>
 </template>
@@ -8,20 +8,28 @@
 <script>
 export default {
   name: "Input",
-  props: ['inputId', 'inputType','label'],
+  model:{
+    prop: 'inputText',
+    event: 'change'
+  },
+  props: ['inputId', 'inputType','label', 'inputText'],
   data(){
     return{
-      labelActive: false
+      inputValue: this.inputText,
     }
   },
-  methods:{
-    inputChange($event){
-      this.$emit('update:inputText', $event.target.value);
-      if ($event.target.value !== ''){
-        this.labelActive = true
+  watch:{
+    inputValue(val){
+      this.$emit('change', val);
+    }
+  },
+  computed:{
+    labelActive(){
+      if (this.inputValue !== ''){
+        return true
       }
       else {
-        this.labelActive = false
+        return  false
       }
     }
   }

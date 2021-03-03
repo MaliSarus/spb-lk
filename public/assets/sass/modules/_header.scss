@@ -11,9 +11,12 @@
     justify-content: space-between;
     padding: 0 35px;
     @media screen and (min-width: $lg-width) {
-      padding: 0;
-      justify-content: center;
+      justify-content: flex-start;
+      padding: 0 350px 0 200px;
 
+    }
+    @media screen and (min-width: 1400px) {
+      justify-content: center;
     }
   }
 
@@ -30,8 +33,6 @@
   }
 
   &__menu {
-    //padding-left: 200px;
-    //padding-right: 330px;
     display: none;
     @media screen and (min-width: $lg-width) {
       display: block;
@@ -43,17 +44,22 @@
       margin: 0;
       padding: 0;
 
+
       li {
         list-style: none;
 
         a {
           display: block;
-          padding: 30px 20px;
+          padding: 30px 15px;
           font-weight: 700;
-          font-size: 18px;
+          font-size: 14px;
           line-height: 21px;
           color: white;
           text-decoration: none;
+          @media screen and (min-width: 1400px) {
+            font-size: 18px;
+            padding: 30px 20px;
+          }
         }
       }
     }

@@ -32,8 +32,7 @@
     name: "DateInput",
     data(){
       return{
-        date:'',
-        labelActive: false,
+        date:this.inputDate,
         isDatepickerOpen: false
       }
     },
@@ -48,12 +47,11 @@
     watch:{
       date(val){
         this.$emit('inputDateChange', val);
-        console.log(val)
-        if (val) {
-          this.labelActive = true
-        } else {
-          this.labelActive = false
-        }
+      }
+    },
+    computed:{
+      labelActive(){
+        return this.date !== '';
       }
     },
     methods:{

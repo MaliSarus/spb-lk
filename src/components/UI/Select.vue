@@ -42,15 +42,17 @@ export default {
           keepShow: true
         }
       },
-      selectedOption:'',
+      selectedOption:this.inputOption,
       isOpen: false,
       searchString:''
     }
   },
   methods:{
     selectOption(option){
+
       this.selectedOption = option;
       this.isOpen = false;
+      this.$emit('pick',option)
     },
     search($event){
       this.searchString = $event.target.value
@@ -58,7 +60,8 @@ export default {
   },
   computed:{
     labelActive() {
-      return this.selectedOption !== ''
+        return !!this.selectedOption;
+
     },
     searchingOptions (){
       if(this.searchString !== ''){
@@ -76,11 +79,6 @@ export default {
   watch:{
     selectedOption(val){
       this.$emit('selectOption', val);
-      if (val) {
-        this.labelActive = true
-      } else {
-        this.labelActive = false
-      }
     }
 
   },

@@ -1121,9 +1121,9 @@ button {
 
 .header__menu ul li a {
   display: block;
-  padding: 30px 20px;
+  padding: 30px 15px;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 21px;
   color: white;
   text-decoration: none;
@@ -1236,10 +1236,10 @@ button {
   }
 
   .header__wrapper {
-    padding: 0;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    padding: 0 350px 0 200px;
   }
 
   .header__logo {
@@ -1256,6 +1256,19 @@ button {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .header__wrapper {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+
+  .header__menu ul li a {
+    font-size: 18px;
+    padding: 30px 20px;
   }
 }
 

@@ -155,7 +155,7 @@ import Select from "./UI/Select";
 import Checkbox from "./UI/Checkbox";
 import {required, sameAs} from 'vuelidate/lib/validators'
 import axios from "axios";
-import {baseURL} from "@/helpers/defaultValues";
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: "SignUp",
@@ -183,7 +183,7 @@ export default {
         policy: false,
       },
       country:'',
-      countries: [],
+      // countries: [],
       cities: null,
       departments:[
           'Дерматолог',
@@ -248,6 +248,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['countries']),
     progressWidth() {
       return Math.trunc(100 / 4 * this.formPage) + '%'
     },
@@ -256,27 +257,28 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['fetchCountries']),
     nextPage() {
       this.formPage += 1;
     },
     prevPage() {
       this.formPage -= 1;
     },
-    fetchCountries() {
-      axios
-          .get(baseURL + '/api/location/country/')
-          .then(res => {
-            const countries = res.data.country;
-            this.countries = countries
-          })
-    },
+    // fetchCountries() {
+    //   axios
+    //       .get('/api/location/country/')
+    //       .then(res => {
+    //         const countries = res.data.country;
+    //         this.countries = countries
+    //       })
+    // },
     fetchCities($event) {
       const countryName = $event
       const countryId = this.countries.find(country => country.name === countryName).id;
       this.form.country = countryId;
 
       axios
-          .get(baseURL + `/api/location/city/${countryId}/`)
+          .get(`/api/location/city/${countryId}/`)
           .then(res => {
             const cities = res.data.city;
             this.cities = cities;
@@ -306,7 +308,7 @@ export default {
 
       if (!this.$v.$invalid){
         axios
-        .put(baseURL+'/api/signup/',formData)
+        .put('/api/signup/',formData)
         .then(res=>{
           this.formPage = 4;
           console.log(res)

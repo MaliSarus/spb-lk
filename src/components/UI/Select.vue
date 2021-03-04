@@ -1,8 +1,8 @@
 <template>
-  <div class="form__input form__input-select" ref="select">
-    <input type="text" :id="inputId" v-model="selectedOption"  @focus="isOpen = true" @input="search" autocomplete="nope">
+  <div class="form__input form__input-select" ref="select" :class="{open:isOpen}">
+    <input type="text" :id="inputId" v-model="selectedOption"  @focus="inputFocus" @input="search" autocomplete="nope">
     <label :for="inputId" :class="{active: labelActive}">{{ label }}</label>
-    <div class="select-options" v-show="isOpen">
+    <div class="select-options" v-show="isOpen" :class="selectMenuPos">
       <vuescroll :ops="ops">
         <ul>
           <li v-for="(option, index) in searchingOptions" :key="`option_${option}_${index}`" @click="selectOption(option)">{{ option }}</li>
@@ -44,18 +44,26 @@ export default {
       },
       selectedOption:this.inputOption,
       isOpen: false,
-      searchString:''
+      searchString:'',
+      selectMenuPos:'bottom',
+      selectMenuOverflow: false,
     }
   },
   methods:{
     selectOption(option){
-
       this.selectedOption = option;
       this.isOpen = false;
       this.$emit('pick',option)
     },
     search($event){
       this.searchString = $event.target.value
+    },
+    inputFocus(){
+      this.isOpen = true;
+      const inputEl = this.$refs.select;
+      const inputElBottom = inputEl.getBoundingClientRect().top + inputEl.offsetHeight;
+      const windowHeight = window.innerHeight
+      this.selectMenuPos = inputElBottom + 300 < windowHeight ? 'bottom' : 'top'
     }
   },
   computed:{
@@ -98,56 +106,52 @@ export default {
 
 <style lang="scss" scoped>
 .form {
-  &__input {
-    position: relative;
-    border: 1px solid #F3F3F3;
-    border-radius: 2px;
-    background: #F4F9FF;
-
-    label {
+  &__input-select {
+    &::before {
       position: absolute;
-      top: 15px;
-      left: 13px;
-      transition: left .25s, top .25s, font-size .25s;
-
-      &.active {
-        font-size: 10px;
-        left: 13px;
-        top: 5px;
+      right: 15px;
+      top: 50%;
+      display: block;
+      content: '';
+      width: 18px;
+      height: 6px;
+      transform: translateY(-50%);
+      background: url("/assets/img/ui/select-icon.svg") center no-repeat;
+      transition: transform .25s;
+      background-size: contain;
+    }
+    &.open{
+      &::before{
+        transform: translateY(-50%) rotate(180deg);
       }
     }
 
     input {
-      display: block;
-      width: 100%;
-      padding: 15px 13px;
-      border: none;
-      background: transparent;
-      outline: none;
-
-      &:focus + label {
-        font-size: 10px;
-        left: 13px;
-        top: 5px;
-      }
+      padding-right: 35px;
     }
   }
 }
-
 .select-options {
   margin: 0;
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
   padding: 18px 15px 18px 18px;
-  transform: translateY(calc(100% + 4px));
   border-radius: 5px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   background: white;
-  height: 300px;
   overflow: hidden;
   z-index: 10;
+  height: 300px;
+  &.bottom{
+    bottom: 0;
+    transform: translateY(calc(100% + 4px));
+  }
+  &.top{
+    top: 0;
+    transform: translateY( calc(-100% - 4px));
+  }
+
 
   ul {
     margin: 0;

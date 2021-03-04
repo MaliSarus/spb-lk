@@ -1,0 +1,40 @@
+.form {
+  &__input {
+    position: relative;
+    border: 1px solid #F3F3F3;
+    border-radius: 2px;
+    background: #F4F9FF;
+    font-size: 14px;
+
+    label {
+      position: absolute;
+      top: 50%;
+      left: 13px;
+      transition: left .25s, top .25s, font-size .25s, transform .25s;
+      transform: translateY(-50%);
+      color: #686868;
+      &.active {
+        font-size: 10px;
+        left: 13px;
+        top: 3px;
+        transform: translateY(0);
+      }
+    }
+
+    input {
+      display: block;
+      padding: 15px 13px;
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+
+      &:focus + label {
+        font-size: 10px;
+        left: 13px;
+        top: 3px;
+        transform: translateY(0);
+      }
+    }
+  }
+}

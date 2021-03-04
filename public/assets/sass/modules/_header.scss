@@ -1,16 +1,38 @@
 .header {
   background: $accent-color;
   height: 80px;
-  @media screen and (min-width: $lg-width) {
+  @media screen and (min-width: $xl-width) {
     height: auto;
+  }
+  &__mobile-control{
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    overflow: hidden;
+    background: $accent-color;
+    transition: background-color .25s;
+    &:hover{
+      background-color: lighten($accent-color,5);
+    }
+    button{
+      outline: none!important;
+    }
   }
 
   &__wrapper {
-    position: relative;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
     padding: 0 35px;
-    @media screen and (min-width: $lg-width) {
+    align-items: center;
+    @media screen and (min-width: $xl-width) {
+      position: relative;
       justify-content: flex-start;
       padding: 0 350px 0 200px;
 
@@ -25,7 +47,7 @@
     padding: 11px 7px 9px;
     border-radius: 5px;
     background: $accent-color;
-    @media screen and (min-width: $lg-width) {
+    @media screen and (min-width: $xl-width) {
       position: absolute;
       left: 35px;
       top: 0;
@@ -34,7 +56,7 @@
 
   &__menu {
     display: none;
-    @media screen and (min-width: $lg-width) {
+    @media screen and (min-width: $xl-width) {
       display: block;
     }
 
@@ -72,7 +94,7 @@
     align-items: center;
     transform: translateY(-50%);
     display: none;
-    @media screen and (min-width: $lg-width) {
+    @media screen and (min-width: $xl-width) {
       display: flex;
     }
   }
@@ -87,11 +109,15 @@
       border: none;
       outline: none !important;
       font-weight: 400;
-      font-size: 16px;
+      font-size: 14px;
       color: #282828;
       background: #FFCC40;
       border-radius: 2px;
       border: 1px solid #034795;
+      @media screen and (min-width: 1400px) {
+        font-size: 16px;
+
+      }
 
       &.account-button_login {
         background-image: url('../img/ui/account-button_login.svg');

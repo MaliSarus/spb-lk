@@ -16,6 +16,7 @@
                 input-id="signup-lastname"
                 input-type="text"
                 v-model="$v.form.lastName.$model"
+                valid-pattern="^[A-Za-z\s\-]+$|^[А-ЯЁа-яё\s\-]+$"
             />
             <Input
                 label="Имя *"
@@ -40,14 +41,14 @@
                 label="Страна *"
                 input-id="signup-country"
                 :options="countriesWithoutId"
-                @pick="fetchCities"
+                @pick="countryToId"
             />
             <Select
-                v-if="cities"
+                v-if="form.country === 109"
                 v-model="$v.form.city.$model"
                 label="Город *"
                 input-id="signup-city"
-                :options="cities"
+                :options="russiaCities"
             />
             <Button class="form__button" text="Далее" @buttonClick="nextPage" type="button"/>
           </div>
@@ -96,6 +97,7 @@
                 input-id="signup-phone"
                 input-type="tel"
                 v-model="$v.form.phone.$model"
+                valid-pattern="^[+]?[\d\-\(\)\s]+$"
             />
             <Input
                 label="Email *"
@@ -183,25 +185,6 @@ export default {
         policy: false,
       },
       country:'',
-      // countries: [],
-      cities: null,
-      departments:[
-          'Дерматолог',
-          'Косметолог',
-          'Хирург',
-          'др.'
-      ],
-      ranks:[
-        'Доцент',
-        'Профессор',
-        'др.'
-      ],
-      degrees:[
-        'Кандидат наук',
-        'Доктор наук',
-        'др.'
-      ],
-
     }
   },
   validations: {
@@ -248,7 +231,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['countries']),
+    ...mapGetters(['countries', 'departments','degrees','ranks', 'russiaCities']),
     progressWidth() {
       return Math.trunc(100 / 4 * this.formPage) + '%'
     },
@@ -257,33 +240,15 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['fetchCountries']),
+    ...mapActions(['fetchCountries', 'fetchDepartments','fetchRanks', 'fetchDegrees', 'fetchCities']),
     nextPage() {
       this.formPage += 1;
     },
     prevPage() {
       this.formPage -= 1;
     },
-    // fetchCountries() {
-    //   axios
-    //       .get('/api/location/country/')
-    //       .then(res => {
-    //         const countries = res.data.country;
-    //         this.countries = countries
-    //       })
-    // },
-    fetchCities($event) {
-      const countryName = $event
-      const countryId = this.countries.find(country => country.name === countryName).id;
-      this.form.country = countryId;
-
-      axios
-          .get(`/api/location/city/${countryId}/`)
-          .then(res => {
-            const cities = res.data.city;
-            this.cities = cities;
-          })
-
+    countryToId(countryName){
+      this.form.country = +this.countries.find(country=> country.name === countryName).id
     },
     signUp(){
       const vueForm = this.form;
@@ -318,6 +283,10 @@ export default {
   },
   mounted() {
     this.fetchCountries();
+    this.fetchDepartments();
+    this.fetchRanks();
+    this.fetchDegrees();
+    this.fetchCities();
   }
 }
 </script>

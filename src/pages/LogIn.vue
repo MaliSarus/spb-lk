@@ -19,24 +19,6 @@
   }
 </script>
 <style lang="scss" scoped>
-  $accent-color: #013066;
-  $main-text-color: black;
-
-
-  $xs-width: 0;
-  $sm-width: 576px;
-  $md-width: 768px;
-  $lg-width: 992px;
-  $xl-width: 1200px;
-
-
-  $z-lowest: -1;
-  $z-low: 0;
-  $z-medium: 100;
-  $z-high: 500;
-  $z-highest: 1000;
-
-
   .form {
     padding: 38px 50px 50px;
     border: 1px solid #A8BBD3;
@@ -46,9 +28,7 @@
     min-width: 400px;
 
     &__title {
-      font-weight: bold;
-      font-size: 36px;
-      line-height: 42px;
+  
       margin-bottom: 28px;
       text-align: center;
     }
@@ -61,7 +41,7 @@
       line-height: 21px;
       text-align: center;
       color: white;
-      background: #013066;
+      background: $accent-color;
       border: 1px solid #F3F3F3;
       box-sizing: border-box;
       border-radius: 5px;

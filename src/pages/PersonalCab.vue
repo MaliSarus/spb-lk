@@ -227,7 +227,7 @@ export default {
       font-size: 48px;
       line-height: 56px;
       text-align: center;
-      color: #013066;
+      color: $accent-color;
     }
   }
   &__subtitle {
@@ -270,7 +270,7 @@ export default {
         box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
         .date {
           &__head {
-            background: #013066;
+            background: $accent-color;
             font-size: 24px;
             line-height: 28px;
             text-align: center;

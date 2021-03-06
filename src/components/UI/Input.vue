@@ -20,15 +20,9 @@ export default {
   },
   watch: {
     inputValue(val) {
-      if (this.validPattern) {
-        const pattern = new RegExp(this.validPattern);
-        val = val.replace(pattern, '')
-        this.$emit('change', val.replace(pattern, ''));
-
-      }
-      else {
+     
         this.$emit('change', val);
-      }
+      
     }
   },
   computed: {
@@ -41,16 +35,15 @@ export default {
     }
   },
   methods: {
-    checkPattern() {
-      // if (this.validPattern) {
-      //   const pattern = new RegExp(this.validPattern);
-      //   console.log(!pattern.test($event.key))
-      //   if (!pattern.test($event.key)){
-      //     $event.preventDefault();
-      //     return false;
-      //
-      //   }
-      // }
+    checkPattern($event) {
+      if (this.validPattern) {
+        const pattern = new RegExp(this.validPattern);
+        console.log(pattern)
+        console.log($event.key)
+        if (!pattern.test($event.key)){
+          $event.preventDefault();      
+        }
+      }
     }
   }
 }

@@ -65,7 +65,7 @@ export default new Vuex.Store({
         },
         fetchCities({commit}){
             axios
-                .get('/api/location/city/109/')
+                .get('/api/location/city/1/')
                 .then(res => {
                     commit('setRussiaCities',res.data.city)
                 })

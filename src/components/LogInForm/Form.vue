@@ -18,7 +18,7 @@
     </div>
     <div class="form__group">
       <Button class="form__submit" type="submit" text="Войти"/>
-      <a href="#" class="form__remember">Забыли пароль ?</a>
+      <router-link :to="{name:'ForgetPass'}" class="form__remember">Забыли пароль ?</router-link>
     </div>
   </form>
 

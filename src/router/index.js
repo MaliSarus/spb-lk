@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import LogIn from "@/components/LogIn";
-import SignUp from "@/components/SignUp";
-import PersonalCab from "../components/PersonalCab";
+import LogIn from "@/pages/LogIn";
+import SignUp from "@/pages/SignUp";
+import PersonalCab from "@/pages/PersonalCab";
+import ForgetPath from "@/pages/ForgetPass";
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/',
     name: 'LogIn',
     component: LogIn
+  },
+  {
+    path: '/forget-pass',
+    name: 'ForgetPass',
+    component: ForgetPath
   }
 ]
 

@@ -24,9 +24,23 @@
                 </div>
                 <div class="user-data__form-grid">
                   <label for="user-birth">Дата рождения</label>
-                  <DateInput input-id="user-birth"/>
-                  <label for="user-birth">Дата рождения</label>
-                  <DateInput input-id="user-birth"/>
+                  <DateInput v-model="userData.birthday" input-id="user-birth"/>
+                  <label for="user-country">Страна</label>
+                  <Select v-model="userData.country" input-id="user-country"/>
+                  <label for="user-city">Город</label>
+                  <Select v-model="userData.city" input-id="user-city"/>
+                  <label for="user-phone">Телефон</label>
+                  <Input v-model="userData.phone" input-id="user-phone"/>
+                  <label for="user-company">Учреждение</label>
+                  <Input v-model="userData.company" input-id="user-company"/>
+                  <label for="user-position">Должность</label>
+                  <Input v-model="userData.position" input-id="user-position"/>
+                  <label for="user-department">Специализация</label>
+                  <Select v-model="userData.department" input-id="user-department"/>
+                  <label for="user-rank">Ученое звание</label>
+                  <Select v-model="userData.rank" input-id="user-rank"/>
+                  <label for="user-degree">Ученая степень</label>
+                  <Select v-model="userData.degree" input-id="user-degree"/>
                 </div>
               </form>
             </div>
@@ -40,15 +54,31 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
   // import Input from "../components/UI/Input";
   import DateInput from "../components/UI/DateInput";
+  import Select from "../components/UI/Select";
+  import Input from "../components/UI/Input";
 
   export default {
     name: "UserData",
-    components: {DateInput},
+    components: {Input, Select, DateInput},
     computed: {
-      ...mapGetters(['user'])
+      ...mapGetters(['user']),
+      userData:{
+        get(){
+          return this.user
+        },
+        set(val){
+          this.userData = val;
+        }
+      }
+    },
+    methods:{
+      ...mapActions(['fetchUser'])
+    },
+    created() {
+      this.fetchUser()
     }
   }
 </script>

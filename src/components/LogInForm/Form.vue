@@ -57,6 +57,12 @@
     },
     computed:{
       ...mapGetters(['user']),
+    },
+    mounted() {
+      this.authUser()
+        .then(()=>{
+          this.$router.push(`/lk/${this.user.id}`)
+        })
     }
   }
 </script>

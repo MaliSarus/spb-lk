@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
+import {getWithExpiry, setWithExpiry} from "../helpers/localStorage";
 
 Vue.use(Vuex)
 
@@ -35,23 +36,37 @@ export default new Vuex.Store({
 
   },
   actions: {
+    // eslint-disable-next-line no-unused-vars
     authUser({commit}, payload) {
+      const test = {
+        email: 'ts@ts.ts',
+        password: '123456'
+      }
       return axios
-        .post('/api/auth/', payload)
+        .post('/api/auth/', test)
         .then(res => {
-              const data = res.data;
-              const user = {
-                ordinator: data.ordinator,
-                verify: data.verify,
-                ...data.user
-              }
-              if (data.status === 'ok') {
-                  commit('setUser', user)
-              }
+            const data = res.data;
+            const user = {
+              ordinator: data.ordinator,
+              verify: data.verify,
+              ...data.user
+            }
+            if (data.status === 'ok') {
+              commit('setUser', user);
+              setWithExpiry('user', user, 3600 * 1000)
+            }
           }
         )
     },
-
+    fetchUser({commit}){
+      const user = getWithExpiry('user');
+      if (user){
+        commit('setUser', user);
+      }
+      else{
+        commit('setUser', []);
+      }
+    },
     fetchCountries({commit}) {
       axios
         .get('/api/location/country/')

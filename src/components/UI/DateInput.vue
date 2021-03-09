@@ -60,11 +60,6 @@ export default {
     },
     inputChange($event) {
       this.$emit('update:inputText', $event.target.value);
-      if ($event.target.value !== '') {
-        this.labelActive = true
-      } else {
-        this.labelActive = false
-      }
     },
     pickDate() {
       this.isDatepickerOpen = false

@@ -20,6 +20,7 @@
 
     export default {
         name: "PersonalCab",
+
     };
 </script>
 

@@ -4,6 +4,8 @@ import LogIn from "@/pages/LogIn";
 import SignUp from "@/pages/SignUp";
 import PersonalCab from "@/pages/PersonalCab";
 import ForgetPath from "@/pages/ForgetPass";
+import UserData from "@/pages/UserData";
+import MainPage from "@/components/PersonalCab/MainPage/MainPage";
 
 Vue.use(VueRouter)
 
@@ -11,7 +13,11 @@ const routes = [
   {
     path: '/lk/:id',
     name: 'PersonalCabinet',
-    component: PersonalCab
+    component: PersonalCab,
+    children: [
+      { path: 'user-data', component: UserData, name:'UserData' },
+      { path: '', component: MainPage, name:'MainPage' },
+    ]
   },
   {
     path: '/sign-up',
@@ -19,15 +25,21 @@ const routes = [
     component:  SignUp
   },
   {
+    path: '/forget-pass',
+    name: 'ForgetPass',
+    component: ForgetPath
+  },
+  {
+    path: '/user-data',
+    name: 'ForgetPass',
+    component: ForgetPath
+  },
+  {
     path: '/',
     name: 'LogIn',
     component: LogIn
   },
-  {
-    path: '/forget-pass',
-    name: 'ForgetPass',
-    component: ForgetPath
-  }
+
 ]
 
 const router = new VueRouter({

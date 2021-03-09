@@ -1103,6 +1103,200 @@ button {
   background-position: center;
 }
 
+.personal-cab {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.personal-cab__title {
+  padding-top: 20px;
+  padding-bottom: 25px;
+  text-align: center;
+}
+
+.personal-cab__title h1 {
+  margin: 0;
+  font-weight: bold;
+  font-size: 48px;
+  line-height: 56px;
+  text-align: center;
+  color: #013066;
+}
+
+.personal-cab__subtitle {
+  font-size: 32px;
+  line-height: 37px;
+  text-align: center;
+  color: black;
+  margin-bottom: 40px;
+}
+
+.personal-cab__content-block {
+  width: calc(100% - 20px);
+  background: white;
+  padding-top: 45px;
+  padding-bottom: 110px;
+  margin: 0 auto 35px;
+  border: 1px solid #EDEDED;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+.personal-cab__controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 -15px;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.personal-cab__control {
+  margin-top: 40px;
+  -ms-flex-preferred-size: 100%;
+  flex-basis: 100%;
+}
+
+.personal-cab__control .control__block {
+  display: block;
+  padding: 15px 40px;
+  text-decoration: none;
+  background: #FFFFFF;
+  border: 1px solid #EDEDED;
+  border-radius: 10px;
+  height: 100%;
+  -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+.personal-cab__control .control__block:hover {
+  background: #F4F9FF;
+}
+
+.personal-cab__control .control__title {
+  color: #013066;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.personal-cab__control .control__subtitle {
+  font-size: 24px;
+  line-height: 28px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.personal-cab__control .control__desc {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.personal-cab__control .control__image {
+  margin-right: 20px;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.personal-cab__control .control__image img {
+  width: 100%;
+  -o-object-position: center;
+  object-position: center;
+}
+
+.personal-cab__control .control__text {
+  font-size: 14px;
+  line-height: 16px;
+  color: #686868;
+}
+
+.payed-order__list ul {
+  margin: 0;
+  padding: 0;
+  border: 1px solid #F4F9FF;
+}
+
+.payed-order__list ul li {
+  padding: 5px 30px 5px 15px;
+}
+
+.payed-order__list ul li:nth-child(odd) {
+  background: #F4F9FF;
+}
+
+.payed-order__list ul li:nth-child(even) {
+  background: white;
+}
+
+.payed-order__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.order__text {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+.order__text p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.order__button {
+  min-width: 230px;
+  max-width: 250px;
+}
+
+.order__btn {
+  width: 100%;
+  padding: 5px 35px 5px 10px;
+  border: 1px solid;
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: left;
+  background: white;
+}
+
+.order__btn.prev {
+  color: #013066;
+}
+
+.order__btn.today {
+  color: #282828;
+  background: #FFCC40;
+  border-color: #FFCC40;
+}
+
+.order__btn.next {
+  background: #EDEDED;
+  border-color: #EDEDED;
+  color: #686868;
+}
+
 .footer {
   background: #013066;
   height: 80px;
@@ -1118,6 +1312,49 @@ button {
 @media screen and (min-width: 768px) {
   .text p {
     font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .personal-cab__control {
+    -ms-flex-preferred-size: 50%;
+    flex-basis: 50%;
+    padding: 0 15px;
+  }
+
+  .personal-cab__control .control__block {
+    padding: 18px 90px 50px;
+  }
+
+  .personal-cab__control .control__title {
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: 25px;
+  }
+
+  .personal-cab__control .control__subtitle {
+    margin-bottom: 20px;
+    font-size: 32px;
+    line-height: 37px;
+  }
+
+  .personal-cab__control .control__image {
+    width: 75px;
+  }
+
+  .personal-cab__control .control__text {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .order__text p {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .order__btn {
+    font-size: 16px;
+    line-height: 19px;
   }
 }
 

@@ -7,7 +7,7 @@
         @focus="datepickerOpen"
         @input="inputChange"
     />
-    <label :for="inputId" :class="{active: labelActive}">{{ label }}</label>
+    <label v-if="label" :for="inputId" :class="{active: labelActive}">{{ label }}</label>
     <date-picker
         format="DD.MM.YYYY"
         class="form__datepicker"

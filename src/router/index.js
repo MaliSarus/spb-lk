@@ -30,11 +30,6 @@ const routes = [
     component: ForgetPath
   },
   {
-    path: '/user-data',
-    name: 'ForgetPass',
-    component: ForgetPath
-  },
-  {
     path: '/',
     name: 'LogIn',
     component: LogIn

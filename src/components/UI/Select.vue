@@ -1,7 +1,7 @@
 <template>
   <div class="form__input form__input-select" ref="select" :class="{open:isOpen}">
     <input type="text" :id="inputId" v-model="selectedOption"  @focus="inputFocus" @input="search" autocomplete="nope">
-    <label :for="inputId" :class="{active: labelActive}">{{ label }}</label>
+    <label v-if="label" :for="inputId" :class="{active: labelActive}">{{ label }}</label>
     <div class="select-options" v-show="isOpen" :class="selectMenuPos">
       <vuescroll :ops="ops">
         <ul>

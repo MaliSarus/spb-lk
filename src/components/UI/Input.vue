@@ -1,7 +1,7 @@
 <template>
   <div class="form__input">
     <input :type="inputType" :id="inputId" v-model="inputValue" @keydown="checkPattern">
-    <label :for="inputId" :class="{active: labelActive}">{{ label }}</label>
+    <label v-if="label" :for="inputId" :class="{active: labelActive}">{{ label }}</label>
   </div>
 </template>
 

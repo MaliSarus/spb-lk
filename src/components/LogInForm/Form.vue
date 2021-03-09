@@ -3,16 +3,16 @@
     <div class="row">
       <div class="col-12">
         <Input
-            :inputText.sync="email"
-            label="Email"
-            input-id="login-email"
-            input-type="email"
+                v-model="email"
+                label="Email"
+                input-id="login-email"
+                input-type="email"
         />
         <Input
-            :inputText.sync="password"
-            label="Пароль"
-            input-id="login-password"
-            input-type="password"
+                v-model="password"
+                label="Пароль"
+                input-id="login-password"
+                input-type="password"
         />
       </div>
     </div>
@@ -27,8 +27,7 @@
 <script>
   import Button from "@/components/UI/Button";
   import Input from "@/components/UI/Input";
-  import axios from 'axios'
-  import {baseURL} from "@/helpers/defaultValues";
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
     name: "Form",
@@ -36,29 +35,28 @@
       Button,
       Input
     },
-    data(){
-      return{
-        email:'',
-        password:''
+    data() {
+      return {
+        email: '',
+        password: ''
       }
     },
-    methods:{
-      submitLogin(){
-        axios
-            .post(baseURL+'/api/auth/',{
-                  email: this.email,
-                  password: this.password,
-                }
-            )
-            .then(res=>{
-              const data = res.data;
-              if(data.status === 'ok'){
-                console.log(data);
-                const userId = data.user.id
-                this.$router.push(`/lk/${userId}`)
-              }
-            })
+    methods: {
+      ...mapActions(['authUser']),
+      submitLogin() {
+        this.authUser(
+          {
+            email: this.email,
+            password: this.password,
+          }
+        )
+        .then(()=>{
+          this.$router.push(`/lk/${this.user.id}`)
+        })
       }
+    },
+    computed:{
+      ...mapGetters(['user']),
     }
   }
 </script>
@@ -90,7 +88,6 @@
       max-width: 150px;
       margin-right: 30px;
     }
-
 
 
     &__remember {

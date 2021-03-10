@@ -116,7 +116,6 @@ export default {
       width: 18px;
       height: 6px;
       transform: translateY(-50%);
-      background: url("/assets/img/ui/select-icon.svg") center no-repeat;
       transition: transform .25s;
       background-size: contain;
     }

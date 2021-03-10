@@ -1,6 +1,6 @@
 <template>
   <div class="personal-cab__controls">
-    <ControlItem icon-src="/assets/img/ui/user-icon.svg" :to="{name: 'UserData'}">
+    <ControlItem :icon-src="images.userIcon"  :to="{name: 'UserData'}">
       <template v-slot:control-title>
         Личные данные
       </template>
@@ -9,7 +9,7 @@
       </template>
     </ControlItem>
 
-    <ControlItem icon-src="/assets/img/ui/order-icon.svg" :to="{name: 'Order'}">
+    <ControlItem :icon-src="images.orderIcon" :to="{name: 'Order'}">
       <template v-slot:control-title>
         Оформление, заказ услуг
       </template>
@@ -22,11 +22,22 @@
 </template>
 
 <script>
-  import ControlItem from "./ControlItem";
-  export default {
-    name: "Controls",
-    components: {ControlItem}
-  }
+    import ControlItem from "./ControlItem";
+    import userIcon from "@/assets/img/ui/user-icon.svg"
+    import orderIcon from "@/assets/img/ui/order-icon.svg"
+
+    export default {
+        name: "Controls",
+        components: {ControlItem},
+        data() {
+            return{
+                images:{
+                    userIcon,
+                    orderIcon,
+                }
+            }
+        }
+    }
 </script>
 
 <style scoped>

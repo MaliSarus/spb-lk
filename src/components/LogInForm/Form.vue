@@ -57,12 +57,6 @@
     },
     computed:{
       ...mapGetters(['user']),
-    },
-    mounted() {
-      this.authUser()
-        .then(()=>{
-          this.$router.push(`/lk/${this.user.id}`)
-        })
     }
   }
 </script>
@@ -109,6 +103,7 @@
     &__group {
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
   }
 

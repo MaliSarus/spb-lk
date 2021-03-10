@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap-grid.css">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>/assets/css/bootstrap/bootstrap-grid.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>/assets/css/style.css">
 </head>
 <body>
 <noscript>
@@ -17,7 +17,7 @@
 <header class="header">
     <div class="header__wrapper">
         <div class="header__logo">
-            <img src="/assets/img/ui/logo.svg" alt="">
+            <img src="<%= BASE_URL %>/assets/img/ui/logo.svg" alt="">
         </div>
         <div class="header__menu">
             <nav>
@@ -45,7 +45,7 @@
             </div>
             <div class="header__lang">
                 <a href="#">
-                    <img src="/assets/img/ui/rus-lang.svg" width="35" height="35" alt="">
+                    <img src="<%= BASE_URL %>/assets/img/ui/rus-lang.svg" width="35" height="35" alt="">
                 </a>
             </div>
         </div>

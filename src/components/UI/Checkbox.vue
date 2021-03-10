@@ -8,7 +8,7 @@
 <script>
 export default {
   name: "Checkbox",
-  props: ['inputId', 'label', 'isChecked'],
+  props: ['inputId', 'isChecked'],
   model:{
     prop: 'isChecked',
     event: 'check'
@@ -34,14 +34,6 @@ export default {
     line-height: 14px;
     color: #5E5E5E;
     position: relative;
-
-    &.checked{
-      label {
-        &::before {
-          background-image: url("/assets/img/ui/checkbox_checked.svg");
-        }
-      }
-    }
     label{
       padding-left: 25px;
       cursor: pointer;
@@ -54,7 +46,6 @@ export default {
         height: 15px;
         content: '';
         display: block;
-        background-image: url("/assets/img/ui/checkbox_unchecked.svg");
         background-position: center;
         background-repeat: no-repeat;
         //background-size: contain;

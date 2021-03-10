@@ -90,7 +90,6 @@ export default {
       width: 18px;
       height: 18px;
       transform: translateY(-50%);
-      background: url("/assets/img/ui/datepicker-icon.svg") center no-repeat;
       background-size: contain;
     }
     input{

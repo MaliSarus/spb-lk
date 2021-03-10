@@ -38,12 +38,13 @@ export default new Vuex.Store({
   actions: {
     // eslint-disable-next-line no-unused-vars
     authUser({commit}, payload) {
+      // eslint-disable-next-line no-unused-vars
       const test = {
         email: 'ts@ts.ts',
         password: '123456'
       }
       return axios
-        .post('/api/auth/', test)
+        .post('/api/auth/', payload)
         .then(res => {
             const data = res.data;
             const user = {

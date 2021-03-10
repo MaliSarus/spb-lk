@@ -1,0 +1,10 @@
+.user-data{
+  &__verify{
+    &::before {
+      background-image: url('../img/ui/verify-success-icon.svg');
+    }
+  }
+  &__rename{
+    background: url('../img/ui/rename-icon.svg') center no-repeat;
+  }
+}

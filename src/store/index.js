@@ -13,6 +13,7 @@ export default new Vuex.Store({
     ranks: [],
     degrees: [],
     russiaCities: [],
+    payedOrder:[]
   },
   mutations: {
     setCountries(state, payload) {
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     },
     setUser(state, payload) {
       state.user = payload;
+    },
+    setPayedOrders(state, payload){
+      state.payedOrder = payload
     }
 
   },
@@ -46,6 +50,7 @@ export default new Vuex.Store({
       return axios
         .post('/api/auth/', payload)
         .then(res => {
+
             const data = res.data;
             const user = {
               ordinator: data.ordinator,
@@ -56,15 +61,16 @@ export default new Vuex.Store({
               commit('setUser', user);
               setWithExpiry('user', user, 3600 * 1000)
             }
+            this._vm.$toast.info(JSON.stringify(res.data));
+            return res;
           }
         )
     },
-    fetchUser({commit}){
+    fetchUser({commit}) {
       const user = getWithExpiry('user');
-      if (user){
+      if (user) {
         commit('setUser', user);
-      }
-      else{
+      } else {
         commit('setUser', []);
       }
     },
@@ -72,38 +78,59 @@ export default new Vuex.Store({
       axios
         .get('/api/location/country/')
         .then(res => {
-          commit('setCountries', res.data.country)
+          if (res.data.status === 'ok') {
+            commit('setCountries', res.data.country);
+          }
+          this._vm.$toast.info('fetch Departments: ' + res.data.status);
+
         })
     },
     fetchDepartments({commit}) {
       axios
-        .get('/api/user/specializations/')
+        .get('/api/specializations/')
         .then(res => {
-          console.log(res)
-          commit('setDepartments', res.data.items)
+          if (res.data.status === 'ok') {
+            commit('setDepartments', res.data.items)
+          }
+          this._vm.$toast.info('fetch Departments: ' + res.data.status);
         })
     },
     fetchRanks({commit}) {
       axios
-        .get('/api/user/ranks/')
+        .get('/api/ranks/')
         .then(res => {
-          console.log(res)
-          commit('setRanks', res.data.items)
+          if (res.data.status === 'ok') {
+            commit('setRanks', res.data.items);
+          }
+          this._vm.$toast.info('fetch Ranks: ' + res.data.status);
         })
     },
     fetchDegrees({commit}) {
       axios
-        .get('/api/user/degrees/')
+        .get('/api/degrees/')
         .then(res => {
-          console.log(res)
-          commit('setDegrees', res.data.items)
+          if (res.data.status === 'ok') {
+            commit('setDegrees', res.data.items);
+          }
+          this._vm.$toast.info('fetch Degrees: ' + res.data.status);
+
         })
     },
     fetchCities({commit}) {
       axios
         .get('/api/location/city/1/')
         .then(res => {
-          commit('setRussiaCities', res.data.city)
+          if (res.data.status === 'ok') {
+            commit('setRussiaCities', res.data.city);
+          }
+          this._vm.$toast.info('fetch City: ' + res.data.status);
+        })
+    },
+    fetchPayedOrders({commit}){
+      axios
+        .get('/api/user/orders/')
+        .then(res=>{
+          commit('setPayedOrders', res.data.orders);
         })
     }
 
@@ -127,5 +154,8 @@ export default new Vuex.Store({
     russiaCities(state) {
       return state.russiaCities
     },
+    payedOrders(state){
+      return state.payedOrder
+    }
   }
 })

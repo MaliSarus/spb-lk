@@ -50,7 +50,8 @@
             password: this.password,
           }
         )
-        .then(()=>{
+        .then((res)=>{
+          console.log(res);
           this.$router.push(`/lk/${this.user.id}`)
         })
       }

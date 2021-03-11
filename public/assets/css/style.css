@@ -265,6 +265,37 @@ button {
   transition: bottom 0.075s ease, transform 0.075s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1), -webkit-transform 0.075s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
+.button {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  padding: 15px;
+  background-color: transparent;
+  -webkit-transition: background-color .25s;
+  -o-transition: background-color .25s;
+  transition: background-color .25s;
+}
+
+.button_yellow {
+  background-color: #FFCC40;
+  border-color: #FFCC40;
+}
+
+.button_yellow:hover {
+  background-color: #ffbe0d;
+}
+
+.button_transparent {
+  background-color: transparent;
+}
+
+.button_transparent:hover {
+  background-color: #FFCC40;
+}
+
 .mx-icon-left:before,
 .mx-icon-right:before,
 .mx-icon-double-left:before,
@@ -1098,6 +1129,7 @@ button {
 }
 
 .form__button_prev {
+  border: 1px solid #013066;
   background-image: url("../img/ui/white-back-arrow.svg");
   background-repeat: no-repeat;
   background-position: center;
@@ -1321,6 +1353,10 @@ button {
   background: url("../img/ui/rename-icon.svg") center no-repeat;
 }
 
+.user-data__submit {
+  background-image: url("../img/user-data/submit-icon.svg");
+}
+
 .footer {
   background: #013066;
   height: 80px;
@@ -1340,6 +1376,11 @@ button {
 }
 
 @media screen and (min-width: 992px) {
+  .button {
+    font-size: 18px;
+    line-height: 21px;
+  }
+
   .personal-cab__control {
     -ms-flex-preferred-size: 50%;
     flex-basis: 50%;

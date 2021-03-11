@@ -1,6 +1,6 @@
 <template>
   <div class="form__input">
-    <input :type="inputType" :id="inputId" v-model="inputValue" @keydown="checkPattern">
+    <input :type="inputType" :id="inputId" v-model="inputValue" >
     <label v-if="label" :for="inputId" :class="{active: labelActive}">{{ label }}</label>
   </div>
 </template>
@@ -12,7 +12,7 @@ export default {
     prop: 'inputText',
     event: 'change'
   },
-  props: ['inputId', 'inputType', 'label', 'inputText', 'validPattern'],
+  props: ['inputId', 'inputType', 'label', 'inputText'],
   data() {
     return {
       inputValue: this.inputText,
@@ -34,18 +34,7 @@ export default {
       }
     }
   },
-  methods: {
-    checkPattern($event) {
-      if (this.validPattern) {
-        const pattern = new RegExp(this.validPattern);
-        console.log(pattern)
-        console.log($event.key)
-        if (!pattern.test($event.key)){
-          $event.preventDefault();      
-        }
-      }
-    }
-  }
+
 }
 </script>
 

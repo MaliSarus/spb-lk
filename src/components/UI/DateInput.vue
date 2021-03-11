@@ -1,5 +1,5 @@
 <template>
-  <div class="form__input form__input-datepicker">
+  <div class="form__input form__input-datepicker" v-on-clickaway="closeDatepicker">
     <input
         type="text"
         :id="inputId"
@@ -63,18 +63,11 @@ export default {
     },
     pickDate() {
       this.isDatepickerOpen = false
+    },
+    closeDatepicker(){
+      this.isDatepickerOpen = false
     }
   },
-  mounted() {
-    const that = this
-    document.addEventListener('click', function (event) {
-      const elementToDetect = document.querySelectorAll('.form__input-datepicker')[0];
-      if (elementToDetect) {
-        const isClickInside = elementToDetect.contains(event.target);
-        that.isDatepickerOpen = isClickInside;
-      }
-    })
-  }
 }
 </script>
 

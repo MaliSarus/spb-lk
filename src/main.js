@@ -5,13 +5,35 @@ import router from './router'
 import store from './store'
 import axios from "axios";
 import {baseURL} from "./helpers/defaultValues";
+import { directive as onClickaway } from 'vue-clickaway';
+import Toast from 'vue-toastification';
+import "vue-toastification/dist/index.css"
+import VTooltip from 'v-tooltip'
 
+// Plugins
 Vue.use(Vuelidate);
-axios.defaults.baseURL = baseURL
+Vue.use(Toast,{
+    transition: "Vue-Toastification__bounce",
+    maxToasts: 3,
+    newestOnTop: true,
+    position:"bottom-right",
+    timeout: 5000,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    showCloseButtonOnHover: true
+});
+Vue.use(VTooltip)
 
+// Directives
+Vue.directive('on-clickaway', onClickaway);
 
-Vue.config.productionTip = false
+// Configs
+axios.defaults.baseURL = baseURL;
+axios.defaults.withCredentials = true;
+Vue.config.productionTip = false;
 
+//Native JS
 if (document.querySelector('.header__account-button')) {
     const accountButton = document.querySelector('.header__account-button')
     // if (accountButton.classList.contains('account-button_login'))
@@ -29,6 +51,8 @@ if (document.querySelector('.header__mobile-control')) {
     })
 }
 
+
+//Vue JS
 if (document.querySelector('#app-one')) {
     new Vue({
         router,

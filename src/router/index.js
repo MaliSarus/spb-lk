@@ -6,6 +6,7 @@ import PersonalCab from "@/pages/PersonalCab";
 import ForgetPath from "@/pages/ForgetPass";
 import UserData from "@/pages/UserData";
 import MainPage from "@/components/PersonalCab/MainPage/MainPage";
+import ChangePass from "@/pages/ChangePass";
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,7 @@ const routes = [
     component: PersonalCab,
     children: [
       { path: 'user-data', component: UserData, name:'UserData' },
+      { path: 'change-pass', component: ChangePass, name:'ChangePass' },
       { path: '', component: MainPage, name:'MainPage' },
     ]
   },

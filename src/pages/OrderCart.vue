@@ -150,7 +150,7 @@
   import {baseURL} from "@/helpers/defaultValues";
 
   export default {
-    name: "Order",
+    name: "OrderCart",
     data() {
       return {
         dates: [

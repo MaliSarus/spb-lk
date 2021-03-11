@@ -1,0 +1,28 @@
+.button{
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  padding: 15px;
+  background-color: transparent;
+  transition: background-color .25s;
+  @media screen and (min-width: $lg-width){
+    font-size: 18px;
+    line-height: 21px;
+  }
+  &_yellow{
+    background-color: $yellow-color;
+    border-color: $yellow-color;
+    &:hover{
+      background-color: darken($yellow-color, 10);
+    }
+  }
+  &_transparent{
+    background-color: transparent;
+    &:hover{
+      background-color: $yellow-color;
+    }
+  }
+}

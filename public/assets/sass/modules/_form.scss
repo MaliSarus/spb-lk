@@ -85,6 +85,7 @@
     padding: 13px 15px;
     width: 100%;
     &_prev{
+      border: 1px solid $accent-color;
       background-image: url("../img/ui/white-back-arrow.svg");
       background-repeat: no-repeat;
       background-position: center;

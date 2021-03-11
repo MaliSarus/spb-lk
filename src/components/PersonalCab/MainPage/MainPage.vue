@@ -7,7 +7,7 @@
             <div class="personal-cab__subtitle">
               Оплаченные заказы
             </div>
-            <PayedOrder/>
+            <PayedOrder :payed-orders="payedOrders"/>
           </div>
         </div>
       </div>
@@ -22,12 +22,27 @@
 </template>
 
 <script>
-    import PayedOrder from "./PayedOrder/PayedOrder";
-    import Controls from "./Controls/Controls";
-    export default {
-        name: "MainPage",
-        components: {Controls, PayedOrder}
+  import PayedOrder from "./PayedOrder/PayedOrder";
+  import Controls from "./Controls/Controls";
+  import {mapActions, mapGetters} from 'vuex'
+  import dateToDate from "@/helpers/filters";
+
+  export default {
+    name: "MainPage",
+    components: {Controls, PayedOrder},
+    filters:{
+      dateToDate
+    },
+    methods: {
+      ...mapActions(['fetchPayedOrders']),
+    },
+    computed:{
+      ...mapGetters(['payedOrders'])
+    },
+    created() {
+      this.fetchPayedOrders();
     }
+  }
 </script>
 
 <style scoped>

@@ -4,6 +4,25 @@
   </div>
 </template>
 
+<script>
+  import {mapActions} from "vuex";
+  export default {
+    methods:{
+      ...mapActions(['fetchCountries','fetchDepartments','fetchRanks', 'fetchDegrees', 'fetchCities']),
+      initFetch() {
+        this.fetchCountries();
+        this.fetchDepartments();
+        this.fetchRanks();
+        this.fetchDegrees();
+        this.fetchCities();
+      },
+    },
+    created() {
+      this.initFetch();
+    }
+  }
+</script>
+
 <style lang="scss" scoped>
   #app-one {
     width: 100%;

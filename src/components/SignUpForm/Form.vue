@@ -8,7 +8,6 @@
               input-id="signup-lastname"
               input-type="text"
               v-model="$v.form.lastName.$model"
-              valid-pattern="^[A-Za-z\s\-]+$|^[А-ЯЁа-яё\s\-]+$"
           />
           <Input
               label="Имя *"
@@ -103,7 +102,6 @@
               input-id="signup-phone"
               input-type="tel"
               v-model="$v.form.phone.$model"
-              valid-pattern="[+\d\-\(\)\s]"
           />
           <Input
               label="Email *"
@@ -161,167 +159,161 @@
 </template>
 
 <script>
-    import Input from "@/components/UI/Input";
-    import Button from "@/components/UI/Button";
-    import DateInput from "@/components/UI/DateInput";
-    import Select from "@/components/UI/Select";
-    import Checkbox from "@/components/UI/Checkbox";
-    import {required, sameAs} from "vuelidate/lib/validators";
-    import axios from "axios";
-    import {mapActions, mapGetters} from "vuex";
-    import successImage from "@/assets/img/ui/success-signup.svg"
+  import Input from "@/components/UI/Input";
+  import Button from "@/components/UI/Button";
+  import DateInput from "@/components/UI/DateInput";
+  import Select from "@/components/UI/Select";
+  import Checkbox from "@/components/UI/Checkbox";
+  import {required, sameAs} from "vuelidate/lib/validators";
+  import axios from "axios";
+  import {mapGetters} from "vuex";
+  import successImage from "@/assets/img/ui/success-signup.svg"
+  import {mailPattern, namePattern, phonePattern} from "../../helpers/defaultValues";
 
-    export default {
-        name: "SignUpForm",
-        components: {Checkbox, DateInput, Button, Input, Select},
-        props: ["page"],
-        watch: {
-            formPage(val) {
-                this.$emit("update:page", val);
-            },
-        },
-        data() {
-            return {
-                images: {
-                    successImage
-                },
-                formPage: this.page,
-                form: {
-                    name: "",
-                    lastName: "",
-                    secondName: "",
-                    birthday: "",
-                    country: "",
-                    city: "",
-                    company: "",
-                    department: "",
-                    position: "",
-                    rank: "",
-                    degree: "",
-                    phone: "",
-                    email: "",
-                    password: "",
-                    confirmPassword: "",
-                    ordinator: false,
-                    policy: false,
-                },
-                country: "",
-            };
-        },
-        validations: {
-            country: {
-                required,
-            },
-            form: {
-                name: {
-                    required,
-                },
-                lastName: {
-                    required,
-                },
-                birthday: {
-                    required,
-                },
-                city: {
-                    required,
-                },
-                company: {
-                    required,
-                },
-                department: {
-                    required,
-                },
-                position: {
-                    required,
-                },
-                phone: {
-                    required,
-                },
-                email: {
-                    required,
-                },
-                password: {
-                    required,
-                },
-                confirmPassword: {
-                    sameAsPassword: sameAs("password"),
-                },
-                policy: {
-                    required,
-                },
-            },
-        },
-        computed: {
-            ...mapGetters([
-                "countries",
-                "departments",
-                "degrees",
-                "ranks",
-                "russiaCities",
-            ]),
-            countriesWithoutId() {
-                return this.countries.map((country) => country.name);
-            },
-        },
-        methods: {
-            ...mapActions([
-                "fetchCountries",
-                "fetchDepartments",
-                "fetchRanks",
-                "fetchDegrees",
-                "fetchCities",
-            ]),
-            nextPage() {
-                this.formPage += 1;
-            },
-            prevPage() {
-                this.formPage -= 1;
-            },
-            countryToId(countryName) {
-                this.form.country = +this.countries.find(
-                    (country) => country.name === countryName
-                ).id;
-            },
-            signUp() {
-                const vueForm = this.form;
-                const formData = {
-                    name: vueForm.name,
-                    lastName: vueForm.lastName,
-                    secondName: vueForm.secondName,
-                    birthday: vueForm.birthday,
-                    country: vueForm.country,
-                    city: vueForm.city,
-                    phone: vueForm.phone,
-                    email: vueForm.email,
-                    company: vueForm.company,
-                    position: vueForm.position,
-                    department: vueForm.department,
-                    rank: vueForm.rank,
-                    degree: vueForm.degree,
-                    ordinator: vueForm.ordinator,
-                    password: vueForm.password,
-                    confirmPassword: vueForm.confirmPassword,
-                };
 
-                if (!this.$v.$invalid) {
-                    axios.put("/api/signup/", formData).then((res) => {
-                        this.formPage = 4;
-                        console.log(res);
-                    });
-                }
-            },
-            initFetch() {
-                this.fetchCountries();
-                this.fetchDepartments();
-                this.fetchRanks();
-                this.fetchDegrees();
-                this.fetchCities();
-            },
+
+  export default {
+    name: "SignUpForm",
+    components: {Checkbox, DateInput, Button, Input, Select},
+    props: ["page"],
+    watch: {
+      formPage(val) {
+        this.$emit("update:page", val);
+      },
+    },
+    data() {
+      return {
+        images: {
+          successImage
         },
-        created() {
-            this.initFetch();
+        formPage: this.page,
+        form: {
+          name: "",
+          lastName: "",
+          secondName: "",
+          birthday: "",
+          country: "",
+          city: "",
+          company: "",
+          department: "",
+          position: "",
+          rank: "",
+          degree: "",
+          phone: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          ordinator: false,
+          policy: false,
         },
-    };
+        country: "",
+      };
+    },
+    validations: {
+      country: {
+        required,
+      },
+      form: {
+        name: {
+          required,
+          alpha: (val) => namePattern.test(val)
+
+        },
+        lastName: {
+          required,
+          alpha: (val) => namePattern.test(val)
+
+        },
+        birthday: {
+          required,
+        },
+        city: {
+          required,
+        },
+        company: {
+          required,
+        },
+        department: {
+          required,
+        },
+        position: {
+          required,
+        },
+        phone: {
+          required,
+          alpha: (val) => phonePattern.test(val)
+
+        },
+        email: {
+          required,
+          alpha: (val) => mailPattern.test(val)
+        },
+        password: {
+          required,
+        },
+        confirmPassword: {
+          sameAsPassword: sameAs("password"),
+        },
+        policy: {
+          required,
+        },
+      },
+    },
+    computed: {
+      ...mapGetters([
+        "countries",
+        "departments",
+        "degrees",
+        "ranks",
+        "russiaCities",
+      ]),
+      countriesWithoutId() {
+        return this.countries.map((country) => country.name);
+      },
+    },
+    methods: {
+      nextPage() {
+        this.formPage += 1;
+      },
+      prevPage() {
+        this.formPage -= 1;
+      },
+      countryToId(countryName) {
+        this.form.country = +this.countries.find(
+          (country) => country.name === countryName
+        ).id;
+      },
+      signUp() {
+        const vueForm = this.form;
+        const formData = {
+          name: vueForm.name,
+          lastName: vueForm.lastName,
+          secondName: vueForm.secondName,
+          birthday: vueForm.birthday,
+          country: vueForm.country,
+          city: vueForm.city,
+          phone: vueForm.phone,
+          email: vueForm.email,
+          company: vueForm.company,
+          position: vueForm.position,
+          department: vueForm.department,
+          rank: vueForm.rank,
+          degree: vueForm.degree,
+          ordinator: vueForm.ordinator,
+          password: vueForm.password,
+          confirmPassword: vueForm.confirmPassword,
+        };
+
+        if (!this.$v.$invalid) {
+          axios.put("/api/signup/", formData).then((res) => {
+            this.formPage = 4;
+            console.log(res);
+          });
+        }
+      },
+
+    },
+  };
 </script>
 
 

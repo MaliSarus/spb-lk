@@ -7,6 +7,7 @@ import ForgetPath from "@/pages/ForgetPass";
 import UserData from "@/pages/UserData";
 import MainPage from "@/components/PersonalCab/MainPage/MainPage";
 import ChangePass from "@/pages/ChangePass";
+import ChangeFIO from "@/pages/ChangeFIO";
 
 Vue.use(VueRouter)
 
@@ -18,6 +19,7 @@ const routes = [
     children: [
       { path: 'user-data', component: UserData, name:'UserData' },
       { path: 'change-pass', component: ChangePass, name:'ChangePass' },
+      { path: 'change-fio', component: ChangeFIO, name:'ChangeFIO' },
       { path: '', component: MainPage, name:'MainPage' },
     ]
   },

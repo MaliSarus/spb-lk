@@ -1,5 +1,4 @@
 <template>
-
     <div class="personal-cab__user-page">
         <div class="container">
             <div class="row">
@@ -104,7 +103,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapGetters} from 'vuex'
     // import axios from 'axios'
     // import Input from "../components/UI/Input";
     import DateInput from "../components/UI/DateInput";
@@ -137,7 +136,6 @@
             },
         },
         methods: {
-            ...mapActions(['fetchUser']),
             countryToId(countryName) {
                 this.countryId = +this.countries.find(
                     (country) => country.name === countryName
@@ -162,10 +160,6 @@
             }
         },
         mounted() {
-            this.fetchUser()
-                .then(() => {
-                    this.countryToId(this.userData.country)
-                })
         }
     }
 </script>

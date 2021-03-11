@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
-import {getWithExpiry, setWithExpiry} from "../helpers/localStorage";
+import { setWithExpiry} from "../helpers/localStorage";
 
 Vue.use(Vuex)
 
@@ -67,12 +67,23 @@ export default new Vuex.Store({
         )
     },
     fetchUser({commit}) {
-      const user = getWithExpiry('user');
-      if (user) {
-        commit('setUser', user);
-      } else {
-        commit('setUser', []);
-      }
+      return axios
+          .get('/api/user/')
+          .then(res=> {
+            if (res.data.auth) {
+              const data = res.data;
+              const user = {
+                ...data.user,
+                ordinator: data.ordinator,
+                verify: data.verify,
+              }
+              commit('setUser', user)
+              return user
+            }
+            else {
+                return false
+            }
+          })
     },
     fetchCountries({commit}) {
       axios
@@ -80,9 +91,11 @@ export default new Vuex.Store({
         .then(res => {
           if (res.data.status === 'ok') {
             commit('setCountries', res.data.country);
+            this._vm.$toast.info('fetch Departments: ' + res.data.status);
           }
-          this._vm.$toast.info('fetch Departments: ' + res.data.status);
-
+          else{
+            this._vm.$toast.error('fetch Departments error', res.data.message);
+          }
         })
     },
     fetchDepartments({commit}) {

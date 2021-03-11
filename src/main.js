@@ -9,6 +9,7 @@ import { directive as onClickaway } from 'vue-clickaway';
 import Toast from 'vue-toastification';
 import "vue-toastification/dist/index.css"
 import VTooltip from 'v-tooltip'
+import FileSelector from 'vue-file-selector';
 
 // Plugins
 Vue.use(Vuelidate);
@@ -24,6 +25,7 @@ Vue.use(Toast,{
     showCloseButtonOnHover: true
 });
 Vue.use(VTooltip)
+Vue.use(FileSelector)
 
 // Directives
 Vue.directive('on-clickaway', onClickaway);

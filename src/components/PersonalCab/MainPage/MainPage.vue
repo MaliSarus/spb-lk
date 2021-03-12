@@ -7,7 +7,8 @@
             <div class="personal-cab__subtitle">
               Оплаченные заказы
             </div>
-            <PayedOrder :payed-orders="payedOrders"/>
+            <Loader v-if="isLoading"/>
+            <PayedOrder v-else :payed-orders="payedOrders"/>
           </div>
         </div>
       </div>
@@ -26,10 +27,16 @@
   import Controls from "./Controls/Controls";
   import {mapActions, mapGetters} from 'vuex'
   import dateToDate from "@/helpers/filters";
+  import Loader from "../../UI/Loader";
 
   export default {
     name: "MainPage",
-    components: {Controls, PayedOrder},
+    components: {Loader, Controls, PayedOrder},
+    data(){
+      return {
+        isLoading: true,
+      }
+    },
     filters:{
       dateToDate
     },
@@ -40,7 +47,12 @@
       ...mapGetters(['payedOrders'])
     },
     created() {
-      this.fetchPayedOrders();
+      this.fetchPayedOrders()
+      .then(res=>{
+        if (res){
+          this.isLoading = false
+        }
+      })
     }
   }
 </script>

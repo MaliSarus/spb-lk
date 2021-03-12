@@ -8,7 +8,7 @@
 
 <script>
   import LogInForm from "@/components/LogInForm/Form";
-
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'LogIn',
@@ -16,6 +16,21 @@
       LogInForm,
 
     },
+    methods: {
+      ...mapActions(['fetchCountries', 'fetchDepartments', 'fetchRanks', 'fetchDegrees', 'fetchCities', "fetchUser"]),
+      initFetch() {
+        this.fetchUser()
+          .then((res) => {
+            console.log(res)
+            if (res) {
+              this.$router.push(`/lk/${res.id}`)
+            }
+          })
+      },
+    },
+    created() {
+      this.initFetch();
+    }
   }
 </script>
 <style lang="scss" scoped>
@@ -28,7 +43,7 @@
     min-width: 400px;
 
     &__title {
-  
+
       margin-bottom: 28px;
       text-align: center;
     }

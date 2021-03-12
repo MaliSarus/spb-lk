@@ -16,11 +16,16 @@
 </template>
 
 <script>
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
     name: "PersonalCab",
-
-
+    methods: {
+      ...mapActions(['fetchUser'])
+    },
+    computed: {
+      ...mapGetters(['user'])
+    },
   };
 </script>
 

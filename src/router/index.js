@@ -8,25 +8,35 @@ import UserData from "@/pages/UserData";
 import MainPage from "@/components/PersonalCab/MainPage/MainPage";
 import ChangePass from "@/pages/ChangePass";
 import ChangeFIO from "@/pages/ChangeFIO";
+import OrderCart from "@/pages/OrderCart";
+import Verify from "@/pages/Verify";
+
+import store from '@/store'
+
+
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/lk/:id',
-    name: 'PersonalCabinet',
     component: PersonalCab,
     children: [
-      { path: 'user-data', component: UserData, name:'UserData' },
-      { path: 'change-pass', component: ChangePass, name:'ChangePass' },
-      { path: 'change-fio', component: ChangeFIO, name:'ChangeFIO' },
-      { path: '', component: MainPage, name:'MainPage' },
-    ]
+      {path: 'user-data', component: UserData, name: 'UserData'},
+      {path: 'change-pass', component: ChangePass, name: 'ChangePass'},
+      {path: 'change-fio', component: ChangeFIO, name: 'ChangeFIO'},
+      {path: 'order-cart', component: OrderCart, name: 'OrderCart'},
+      {path: 'verify', component: Verify, name: 'Verify'},
+      {path: '', component: MainPage, name: 'MainPage'},
+    ],
+    meta: {
+      auth: true,
+    }
   },
   {
     path: '/sign-up',
     name: 'SignUp',
-    component:  SignUp
+    component: SignUp
   },
   {
     path: '/forget-pass',
@@ -45,6 +55,26 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+// eslint-disable-next-line no-unused-vars
+router.beforeEach((to, from, next) => {
+  const requiredAuth = to.matched.some(route => route.meta.auth);
+  if (requiredAuth) {
+    store.dispatch('fetchUser')
+      .then((res) => {
+        console.log(res)
+        if (res){
+          next()
+        }
+        else{
+          next('/')
+        }
+      })
+  }
+  else{
+    next()
+  }
 })
 
 export default router

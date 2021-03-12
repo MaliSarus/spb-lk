@@ -1357,6 +1357,17 @@ button {
   background-image: url("../img/user-data/submit-icon.svg");
 }
 
+.fs-btn-select {
+  font-size: 20px;
+  line-height: 23px;
+  color: #013066;
+  padding: 10px 20px 10px 50px;
+  background-color: transparent;
+  background-image: url("../img/file-upload/upload-icon.svg");
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
 .footer {
   background: #013066;
   height: 80px;

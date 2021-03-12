@@ -52,7 +52,9 @@
         )
         .then((res)=>{
           console.log(res);
-          this.$router.push(`/lk/${this.user.id}`)
+          if (res.data.status !== "error"){
+            this.$router.push(`/lk/${this.user.id}`)
+          }
         })
       }
     },

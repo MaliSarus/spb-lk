@@ -5,7 +5,7 @@
         <div class="col-12">
           <div class="personal-cab__user-data">
             <div class="personal-cab__subtitle">
-              Заявка на корректировку ФИО:
+              Прохождение верификации
             </div>
           </div>
         </div>
@@ -16,8 +16,9 @@
             <form action="#" @submit.prevent="uploadFile">
               <div class="user-data__text text">
                 <p>
-                  Для изменения ФИО отправьте, пожалуйста, скан документа, удостоверяющего личность. Если вы хотите
-                  сообщить нам дополнительные сведения, напишите их в комментарии ниже.
+                  Для прохождения верификации как клинический ординатор или очный аспирант кафедры: пластическая
+                  хирургия / челюстно-лицевая хирургия / косметология / дерматология Вам необходимо загрузить скан
+                  справки из учебного заведения.
                   <br><br>
                   <b>Принимаемые форматы: JPG, PNG, PDF, DOCX, DOC.</b>
                 </p>
@@ -41,10 +42,6 @@
                 <button class="change-file" @click="changeFile">Изменить файл</button>
               </div>
               <p v-if="error">{{error}}</p>
-
-              <div class="form__textarea">
-                <textarea placeholder="Комментарий" v-model="message"></textarea>
-              </div>
               <div class="verify__controls">
                 <Button
                     class="form__button form__button_prev"
@@ -69,7 +66,8 @@
                 <div class="verify-success__text text">
                   Проверка занимает до двух рабочих дней.
                   <br><br>
-                  После проходжения проверки данные в личном кабинете автомотически обновятся.
+                  После проходжения верификации Вы получите письмо на электронную почту, указанную в вашем профиле.
+                  Также информация про статус верификации появится в личном кабинете.
                 </div>
                 <div class="verify-success__button">
                   <router-link tag="button" class="button button_yellow" :to="'/lk/'+userId">Вернуться в личный
@@ -83,17 +81,15 @@
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script>
-  import axios from "axios";
+  import axios from 'axios'
   import docIcon from '@/assets/img/ui/doc.svg'
   import successIcon from '@/assets/img/ui/success-signup.svg'
 
   export default {
-    name: "ChangeFIO",
+    name: "Verify",
     data() {
       return {
         files: '',
@@ -104,8 +100,7 @@
         page: 1,
         successIcon,
         userId: this.$route.params.id,
-        message: ''
-      }
+    }
     },
     computed: {
       isImage() {
@@ -118,6 +113,7 @@
         this.files = files[0];
         this.ext = files[0].name.split('.').pop();
         this.url = URL.createObjectURL(this.files);
+        console.log(files[0])
       },
       validation(result) {
         const resultStr = '' + result
@@ -131,16 +127,16 @@
         if (this.files) {
           const formData = new FormData();
           formData.append('file', this.files)
-          formData.append('text', this.message)
+          // this.page += 1;
           axios
-            .post('/api/user/change/', formData, {
+            .post('/api/user/verify/', formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
               }
             )
-            .then(res => {
-              if (res.data.status === 'ok') {
+            .then(res=>{
+              if (res.data.status === 'ok'){
                 this.page += 1;
               }
             })
@@ -155,24 +151,174 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  .form__textarea {
-    width: 100%;
-    height: 100px;
-    background: #F4F9FF;
-    border: 1px solid #F3F3F3;
-    border-radius: 2px;
-    margin-top: 15px;
+<style lang="scss">
 
-    textarea {
-      display: block;
+  .fs-file-selector {
+    user-select: none;
+    text-align: center;
+    background-color: #F4F9FF;
+    border: 1px solid #F3F3F3;
+    border-radius: 10px;
+    transition: all .25s;
+
+
+    .fs-droppable {
+      padding: 25px 0;
+      height: 80px;
+    }
+
+    .fs-btn-select {
+      border-radius: 1px;
+      transition: all ease 200ms;
+      cursor: pointer;
+
+    }
+
+    .fs-loader {
+      background-color: transparent !important;
+    }
+
+    &.fs-drag-enter {
+      background-color: transparent;
+      border-style: dashed;
+      border-width: 3px;
+    }
+  }
+
+  .preview {
+    width: 100%;
+    position: relative;
+    max-width: 240px;
+    margin: 0 auto;
+
+    &:hover {
+      .change-file {
+        opacity: 1;
+      }
+    }
+
+    &.doc {
+      height: 50px;
+
+      img {
+        height: 100%;
+        object-fit: scale-down;
+      }
+    }
+
+    img {
       width: 100%;
-      height: 100%;
-      padding: 15px;
-      background: transparent;
-      resize: none;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .change-file {
+      opacity: 0;
+      position: absolute;
+      left: 50%;
+      top: 50%;
       border: none;
+      padding: 10px;
+      background: $accent-color;
+      color: white;
+      font-size: 14px;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      transition: opacity .25s;
       outline: none;
+      border-radius: 2px;
+    }
+  }
+
+  .user-data {
+    &__text {
+      margin-bottom: 15px;
+      @media screen and (min-width: $lg-width) {
+        margin-bottom: 20px;
+      }
+
+      p {
+        font-size: 14px;
+        line-height: 16px;
+        color: $main-text-color;
+        font-weight: normal;
+      }
+
+    }
+
+    &__form {
+      padding: 0;
+    }
+  }
+
+
+  .form__button_prev {
+    max-width: 40px;
+    height: auto;
+    margin-right: 10px;
+  }
+
+  .verify {
+    &__controls {
+      display: flex;
+      margin-top: 40px;
+    }
+  }
+
+  .verify-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    &__image {
+      width: 140px;
+      height: 140px;
+      margin-bottom: 20px;
+      @media screen and (min-width: $lg-width) {
+        margin-bottom: 30px;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+      }
+    }
+
+    &__title {
+      font-size: 16px;
+      line-height: 18px;
+      color: #5E5E5E;
+      margin-bottom: 20px;
+      @media screen and (min-width: $lg-width) {
+        font-size: 18px;
+        line-height: 21px;
+        margin-bottom: 30px;
+
+      }
+    }
+
+    &__text {
+      font-size: 14px !important;
+      line-height: 16px !important;
+      color: $main-text-color !important;
+    }
+
+    &__button {
+      width: 100%;
+      max-width: 300px;
+      margin-top: 20px;
+      @media screen and (min-width: $lg-width) {
+        margin-top: 30px;
+      }
+
+      button {
+        padding: 8px;
+        width: 100%;
+        max-width: 300px;
+      }
     }
   }
 </style>

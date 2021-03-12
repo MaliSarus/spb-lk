@@ -70,6 +70,7 @@ export default new Vuex.Store({
       return axios
           .get('/api/user/')
           .then(res=> {
+            console.log(res)
             if (res.data.auth) {
               const data = res.data;
               const user = {
@@ -140,10 +141,16 @@ export default new Vuex.Store({
         })
     },
     fetchPayedOrders({commit}){
-      axios
+      return axios
         .get('/api/user/orders/')
         .then(res=>{
-          commit('setPayedOrders', res.data.orders);
+          if (res.data.status === 'ok') {
+            commit('setPayedOrders', res.data.orders);
+            return true
+          }
+          else {
+            return false
+          }
         })
     }
 

@@ -9,7 +9,7 @@
       </template>
     </ControlItem>
 
-    <ControlItem :icon-src="images.orderIcon" :to="{name: 'Order'}">
+    <ControlItem :icon-src="images.orderIcon" :to="{name: 'OrderCart'}">
       <template v-slot:control-title>
         Оформление, заказ услуг
       </template>

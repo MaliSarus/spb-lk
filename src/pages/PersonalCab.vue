@@ -29,5 +29,8 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+  .personal-cab__content-block{
+    position: relative;
+  }
 </style>

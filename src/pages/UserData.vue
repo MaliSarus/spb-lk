@@ -13,84 +13,7 @@
       <div class="row">
         <div class="col-12">
           <div class="user-data__form form">
-            <form action="#" @submit.prevent="changeData">
-              <div class="user-data__name">
-                {{userData.name}}
-                <div class="user-data__rename" @click="()=>{this.isTooltipOpen = !this.isTooltipOpen}">
-                  <div class="user-data__rename-tooltip" v-if="this.isTooltipOpen">
-                    <div class="tooltip-header">Эти данные меняются только по официальному запросу.</div>
-                    <div class="tooltip-body">Заполните форму отправив запрос с просьбой изменить контактую информацию,
-                      а также скан документа подтверждающего личность.
-                    </div>
-                    <button class="button button_yellow tooltip-button">Заполнить заявку</button>
-                  </div>
-                </div>
-              </div>
-              <hr>
-              <div v-if="user.verify" class="user-data__verify">
-                Вы успешно подтвердили Ваш статус! <b>Ваш аккаунт верифицирован.</b>
-                В разделе “Оформление участия” для Вас специальные цены.
-              </div>
-              <Checkbox v-if="!user.verify" v-model="verifyCheck" input-id="user-verify"
-                        class="user-data__verify-check">Являюсь клиническим ординатором или
-                очным аспирантом кафедры
-              </Checkbox>
-              <div class="user-data__verify-no" v-if="verifyCheck">
-                <p>
-                  Обращаем внимание, что Вам необходимо подтвердить, что Вы являетесь клиническим
-                  ординатором или
-                  очным аспирантом кафедры: пластическая хирургия / челюстно-лицевая хирургия /
-                  косметология /
-                  дерматология.
-                </p>
-                <router-link :to="{name:'Verify'}" class="form__submit">Перейти к верификации</router-link>
-              </div>
-              <div class="user-data__form-grid">
-                <label for="user-birth">Дата рождения</label>
-                <DateInput v-model="userData.birthday" input-id="user-birth"/>
-
-                <label for="user-country">Страна</label>
-                <Select v-model="userData.country" input-id="user-country" :options="countriesWithoutId"
-                        @pick="countryToId"/>
-
-                <label for="user-city">Город</label>
-                <Select v-model="userData.city" input-id="user-city" :options="russiaCities"/>
-
-                <label for="user-phone">Телефон</label>
-                <Input v-model="userData.phone" input-id="user-phone"/>
-
-                <label for="user-company">Учреждение</label>
-                <Input v-model="userData.company" input-id="user-company"/>
-
-                <label for="user-position">Должность</label>
-                <Input v-model="userData.position" input-id="user-position"/>
-
-                <label for="user-department">Специализация</label>
-                <Select v-model="userData.department" input-id="user-department"
-                        :options="departments"/>
-
-                <label for="user-rank">Ученое звание</label>
-                <Select v-model="userData.rank" input-id="user-rank" :options="ranks"/>
-
-                <label for="user-degree">Ученая степень</label>
-                <Select v-model="userData.degree" input-id="user-degree" :options="degrees"/>
-
-              </div>
-              <div class="user-data__controls">
-                <div class="row">
-                  <div class="col-12 col-lg-6">
-                    <router-link tag="button" :to="{name: 'ChangePass'}"
-                                 class="button button_yellow button_transparent user-data__pass">
-                      Изменить пароль
-                    </router-link>
-                  </div>
-                  <div class="col-12 col-lg-6">
-                    <button type="submit" class="button button_yellow user-data__submit">Сохранить
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
+            <UserDataForm/>
           </div>
         </div>
       </div>
@@ -101,63 +24,12 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
-  import axios from 'axios'
-  // import Input from "../components/UI/Input";
-  import DateInput from "../components/UI/DateInput";
-  import Select from "../components/UI/Select";
-  import Input from "../components/UI/Input";
-  import Checkbox from "../components/UI/Checkbox";
-
+  import UserDataForm from "../components/PersonalCab/UserData/UserDataForm/UserDataForm";
   export default {
     name: "UserData",
-    components: {Checkbox, Input, Select, DateInput},
-    data() {
-      return {
-        loaded: false,
-        verifyCheck: false,
-        isTooltipOpen: false,
-      }
-    },
-    computed: {
-      ...mapGetters(['user', "russiaCities", "countries", "departments", "ranks", "degrees"]),
-      userData: {
-        get() {
-          return this.user
-        },
-        set(val) {
-          this.userData = val;
-        }
-      },
-      countriesWithoutId() {
-        return this.countries.map((country) => country.name);
-      },
-    },
-    methods: {
-      countryToId(countryName) {
-        return +this.countries.find(
-          (country) => country.name === countryName
-        ).id;
-      },
-      changeData() {
-        const data = {
-          birthday: this.userData.birthday,
-          country: this.countryToId(this.userData.country),
-          city: this.userData.city,
-          company: this.userData.company,
-          position: this.userData.position,
-          department: this.userData.department,
-          rank: this.userData.rank,
-          degree: this.userData.degree,
-          ordinator: this.userData.ordinator === 'y',
-        }
-        console.log(data);
-        axios
-          .put('/api/user/', data)
-          .then(console.log)
-      }
-    },
-
+    components:{
+      UserDataForm
+    }
   }
 </script>
 

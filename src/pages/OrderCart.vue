@@ -19,7 +19,7 @@
                   <div class="col-12">
                     <Loader v-if="isLoading"/>
                     <div v-else class="personal-cab__dates">
-                      <orders-list :dates="dates"/>
+                      <orders-list :dates="dates" v-model="selectedDates"/>
                     </div>
                   </div>
                 </div>
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="order__price">LOL</div>
+    <div class="order__price">ИТОГО: {{totalPrice}}</div>
   </div>
 </template>
 
@@ -45,8 +45,19 @@
     data() {
       return {
         isLoading: true,
-        dates: []
+        dates: [],
+        selectedDates:[],
       };
+    },
+    computed:{
+      totalPrice(){
+        if (this.selectedDates.length){
+          return this.selectedDates.reduce((acc, date)=>acc + date.price,0)
+        }
+        else{
+          return 0
+        }
+      }
     },
     mounted() {
       axios
@@ -117,7 +128,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40px;
-    background-color: $light-text-color;
+    padding: 15px 105px;
+    background-color: #F4F9FF;
   }
 </style>

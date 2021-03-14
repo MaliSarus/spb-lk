@@ -4,58 +4,6 @@
            :key="'single-date_'+index" :disabled="isAllDatesChecked"/>
     <Order v-for="(date, index) in allDates" @select="selectDate" :date="date" :index="index" type="all"
            :key="'all-dates_' + index" :disabled="isSingleDatesChecked"/>
-    <!--    <li v-for="date in allDates" :key="'all-date_'+date.sectionId">-->
-    <!--      <div-->
-    <!--              class="dates__item date"-->
-    <!--              :class="{-->
-    <!--                                    'date-checked': false,-->
-    <!--                                  }"-->
-    <!--      >-->
-    <!--        <div class="date__head">{{ date.sectionName }}</div>-->
-    <!--        <div class="date__content">-->
-    <!--          <div class="date__price">-->
-    <!--            <input-->
-    <!--                    type="radio"-->
-    <!--                    name="radio-all"-->
-    <!--                    v-model="allDates.style"-->
-    <!--                    value="online"-->
-    <!--                    @click="uncheckRadio($event, allDates)"-->
-    <!--                    v-show="false"-->
-    <!--                    id="radio-all-online"-->
-    <!--            />-->
-    <!--            <label for="radio-all-online">-->
-    <!--              <span class="date__price-name">Онлайн</span>-->
-    <!--              <span class="date__price-empty"></span>-->
-    <!--              <span class="date__price-price price">-->
-    <!--                              <span class="price_prev"></span>-->
-    <!--                              <span class="price_current"-->
-    <!--                              >{{ date.items[0].price.basePrice}}&nbsp;&#8381;</span-->
-    <!--                              >-->
-    <!--                            </span>-->
-    <!--            </label>-->
-    <!--          </div>-->
-    <!--          <div class="date__price">-->
-    <!--            <input-->
-    <!--                    type="radio"-->
-    <!--                    name="radio-all"-->
-    <!--                    v-model="allDates.style"-->
-    <!--                    value="offline"-->
-    <!--                    @click="uncheckRadio($event, allDates)"-->
-    <!--                    v-show="false"-->
-    <!--                    id="radio-all-offline"-->
-    <!--            />-->
-    <!--            <label for="radio-all-offline">-->
-    <!--              <span class="date__price-name">Офлайн</span>-->
-    <!--              <span class="date__price-empty"></span>-->
-    <!--              <span class="date__price-price price">-->
-    <!--                                    <span class="price_prev"></span>-->
-    <!--                                    <span class="price_current">{{ date.items[1].price.basePrice }}&nbsp;&#8381;</span>-->
-    <!--                                  </span>-->
-    <!--            </label>-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </li>-->
   </ul>
 </template>
 
@@ -65,6 +13,10 @@
   export default {
     name: "OrdersList",
     components: {Order},
+    model:{
+      props: 'selectDate',
+      event: 'selectDate'
+    },
     props: {
       dates: Array,
     },
@@ -112,6 +64,11 @@
           })
         })
         return result;
+      }
+    },
+    watch:{
+      selectedDates(val){
+        this.$emit('selectDate', val)
       }
     }
   }

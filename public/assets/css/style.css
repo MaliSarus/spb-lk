@@ -1170,65 +1170,6 @@ button {
   margin-bottom: 20px;
 }
 
-.control__block {
-  display: block;
-  padding: 15px 40px;
-  text-decoration: none;
-  background: #FFFFFF;
-  border: 1px solid #EDEDED;
-  border-radius: 10px;
-  height: 100%;
-  -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-}
-
-.control__block:hover {
-  background: #F4F9FF;
-}
-
-.control__title {
-  color: #013066;
-  font-size: 18px;
-  line-height: 22px;
-  text-align: center;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.control__subtitle {
-  font-size: 24px;
-  line-height: 28px;
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.control__desc {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.control__image {
-  margin-right: 20px;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.control__image img {
-  width: 100%;
-  -o-object-position: center;
-  object-position: center;
-}
-
-.control__text {
-  font-size: 14px;
-  line-height: 16px;
-  color: #686868;
-}
-
 .user-data__verify::before {
   background-image: url("../img/ui/verify-success-icon.svg");
 }
@@ -1280,31 +1221,6 @@ button {
   .personal-cab__title {
     padding-top: 20px;
     padding-bottom: 25px;
-  }
-
-  .control__block {
-    padding: 18px 90px 50px;
-  }
-
-  .control__title {
-    font-size: 24px;
-    line-height: 28px;
-    margin-bottom: 25px;
-  }
-
-  .control__subtitle {
-    margin-bottom: 20px;
-    font-size: 32px;
-    line-height: 37px;
-  }
-
-  .control__image {
-    width: 75px;
-  }
-
-  .control__text {
-    font-size: 16px;
-    line-height: 19px;
   }
 }
 

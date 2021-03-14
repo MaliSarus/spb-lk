@@ -1,5 +1,5 @@
 <template>
-  <div class="personal-cab__controls">
+  <div class="control__list d-flex flex-wrap">
     <ControlItem :icon-src="images.userIcon"  :to="{name: 'UserData'}">
       <template v-slot:control-title>
         Личные данные
@@ -40,6 +40,20 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .control {
+    &__list {
+      margin: -10px 0;
+      @media screen and (min-width: $md-width) {
+        margin: 0 -15px;
+      }
+      @media screen and (min-width: $lg-width) {
+        margin: 0 -30px;
+      }
+    }
+
+
+  }
+
 
 </style>

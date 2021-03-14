@@ -24,7 +24,7 @@
 
 <script>
   import PayedOrder from "./PayedOrder/PayedOrdersList";
-  import Controls from "./Controls/Controls";
+  import Controls from "./Controls/ControlsList";
   import {mapActions, mapGetters} from 'vuex'
   import dateToDate from "@/helpers/filters";
   import Loader from "../../UI/Loader";

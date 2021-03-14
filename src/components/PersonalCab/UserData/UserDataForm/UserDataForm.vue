@@ -109,6 +109,10 @@
       margin: 20px 0;
     }
   }
+  form{
+    width: 100%;
+    max-width: 540px;
+  }
 
   .user-data {
     &__verify {
@@ -207,6 +211,13 @@
     &__submit, &__pass {
       padding: 8px;
       width: 100%;
+    }
+    &__pass{
+      margin-bottom: 15px;
+      @media screen and (min-width: $lg-width){
+        margin-bottom: 0;
+
+      }
     }
 
     &__submit {

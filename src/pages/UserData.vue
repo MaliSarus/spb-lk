@@ -33,7 +33,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" >
   hr {
     margin: 15px 0;
     border: none;

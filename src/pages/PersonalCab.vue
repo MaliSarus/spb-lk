@@ -30,7 +30,22 @@
 </script>
 
 <style lang="scss" scoped>
-  .personal-cab__content-block{
+  .personal-cab__content-block {
     position: relative;
+    margin: 0;
+    background: white;
+    padding: 20px 0;
+    flex-grow: 1;
+    width: 100%;
+    border-top: 1px solid #EDEDED;
+    border-bottom: 1px solid #EDEDED;
+
+    @media screen and (min-width: $lg-width){
+      margin: 0 auto 35px;
+      border: 1px solid #EDEDED;
+      width: calc(100% - 20px);
+      padding-top: 45px;
+      padding-bottom: 110px;
+    }
   }
 </style>

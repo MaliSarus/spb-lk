@@ -57,6 +57,53 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .user-data {
+    &__form {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      max-width: none;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+
+      form {
+        width: 100%;
+        max-width: 540px;
+      }
+    }
+
+    &__form-grid {
+      display: grid;
+      grid-template-rows: 1fr;
+      align-items: center;
+      row-gap: 10px;
+      @media screen and (min-width: $lg-width) {
+        grid-template-columns: 120px 1fr;
+        gap: 15px 20px;
+      }
+
+      label {
+
+        font-size: 14px;
+        line-height: 16px;
+        color: #282828;
+        @media screen and (min-width: $lg-width) {
+          grid-column: 1 / 2;
+
+        }
+      }
+
+      .form__input {
+        margin-bottom: 5px;
+        @media screen and (min-width: $lg-width) {
+          grid-column: 2 / 3;
+
+        }
+      }
+
+    }
+  }
 
 </style>

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import PayedOrder from "./PayedOrder/PayedOrder";
+  import PayedOrder from "./PayedOrder/PayedOrdersList";
   import Controls from "./Controls/Controls";
   import {mapActions, mapGetters} from 'vuex'
   import dateToDate from "@/helpers/filters";

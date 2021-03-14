@@ -35,12 +35,26 @@
 </script>
 <style lang="scss" scoped>
   .form {
-    padding: 38px 50px 50px;
-    border: 1px solid #A8BBD3;
-    box-shadow: 0px 0px 30px 30px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
+    padding: 15px 30px;
+
     background: white;
-    min-width: 400px;
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @media screen and (min-width: $sm-width){
+      display: block;
+      border: 1px solid #A8BBD3;
+      box-shadow: 0px 0px 30px 30px rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      flex-grow: unset;
+      max-width: 400px;
+
+    }
+    @media screen and (min-width: $lg-width){
+      padding: 38px 50px 50px;
+    }
 
     &__title {
 

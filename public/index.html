@@ -1,69 +1,124 @@
 <!DOCTYPE html>
 <html lang="">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="stylesheet" href="<%= BASE_URL %>/assets/css/bootstrap/bootstrap-grid.css">
-    <link rel="stylesheet" href="<%= BASE_URL %>/assets/css/style.css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <link rel="stylesheet" href="<%= BASE_URL %>/assets/css/bootstrap/bootstrap-grid.css">
+  <link rel="stylesheet" href="<%= BASE_URL %>/assets/css/style.css">
 </head>
 <body>
 <noscript>
-    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
-        Please enable it to continue.</strong>
+  <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+    Please enable it to continue.</strong>
 </noscript>
 <header class="header">
-    <div class="header__wrapper">
-        <div class="header__logo">
-            <img src="<%= BASE_URL %>/assets/img/ui/logo.svg" alt="">
+  <div class="header__wrapper">
+    <div class="header__logo">
+      <img src="<%= BASE_URL %>assets/img/ui/logo.svg" alt="">
+    </div>
+    <div class="header__menu">
+      <nav>
+        <ul>
+          <li><a href="#">О КОНГРЕССЕ</a></li>
+          <li><a href="#">ПРОГРАММА</a></li>
+          <li><a href="#">ВЫСТАВКА</a></li>
+          <li><a href="#">СТОИМОСТЬ</a></li>
+          <li><a href="#">КОНТАКТЫ</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="header__controls">
+      <div class="header__account">
+        <button class="header__account-button account-button_login">Иванов иван иванович</button>
+        <div class="header__account-menu">
+          <ul>
+            <li><a href="/front/">Учетные данные</a></li>
+            <li><a href="#">Оформить участие</a></li>
+            <li><a href="#">Мои заказы</a></li>
+            <li><a href="#">Выход</a></li>
+          </ul>
         </div>
-        <div class="header__menu">
-            <nav>
-                <ul>
-                    <li><a href="#">О КОНГРЕССЕ</a></li>
-                    <li><a href="#">ПРОГРАММА</a></li>
-                    <li><a href="#">ВЫСТАВКА</a></li>
-                    <li><a href="#">СТОИМОСТЬ</a></li>
-                    <li><a href="#">КОНТАКТЫ</a></li>
-                    <li><a href="#">FAQ</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="header__controls">
-            <div class="header__account">
-                <button class="header__account-button account-button_login">Иванов иван иванович</button>
-                <div class="header__account-menu">
-                    <ul>
-                        <li><a href="#">Учетные данные</a></li>
-                        <li><a href="#">Оформить участие</a></li>
-                        <li><a href="#">Мои заказы</a></li>
-                        <li><a href="#">Выход</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="header__lang">
-                <a href="#">
-                    <img src="<%= BASE_URL %>/assets/img/ui/rus-lang.svg" width="35" height="35" alt="">
-                </a>
-            </div>
-        </div>
-        <div class="header__mobile-control d-xl-none">
-            <button class="hamburger hamburger--squeeze header__hamburger" type="button">
+      </div>
+      <div class="header__lang">
+        <a href="#">
+          <img src="<%= BASE_URL %>assets/img/ui/rus-lang.svg" width="35" height="35" alt="">
+        </a>
+      </div>
+    </div>
+    <div class="header__mobile-control d-xl-none">
+      <button class="hamburger hamburger--squeeze header__hamburger" type="button">
               <span class="hamburger-box">
                 <span class="hamburger-inner"></span>
               </span>
-            </button>
-        </div>
+      </button>
     </div>
+  </div>
 </header>
 <div class="mobile-menu">
+  <div class="mobile-menu__inner">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <ul class="mobile-menu__accordion accordion">
+            <li>
+              <button class="accordion__title button button_yellow">Меню
+              </button>
+              <div class="accordion__content" style="max-height: 69px;">
+                <div class="accordion__inner-content">
+                  <div class="accordion__content-wrapper">
+                    <nav>
+                      <ul>
+                        <li><a href="#">О КОНГРЕССЕ</a></li>
+                        <li><a href="#">ПРОГРАММА</a></li>
+                        <li><a href="#">ВЫСТАВКА</a></li>
+                        <li><a href="#">СТОИМОСТЬ</a></li>
+                        <li><a href="#">КОНТАКТЫ</a></li>
+                        <li><a href="#">FAQ</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+
+            </li>
+            <li>
+              <button class="accordion__title button button_yellow">Иван Иванович
+              </button>
+              <div class="accordion__content" style="max-height: 69px;">
+                <div class="accordion__inner-content">
+                  <div class="accordion__content-wrapper">
+                    <nav>
+                      <ul>
+                        <li><a href="/front/">Учетные данные</a></li>
+                        <li><a href="#">Оформить участие</a></li>
+                        <li><a href="#">Мои заказы</a></li>
+                        <li><a href="#">Выход</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu__lang">
+      <a href="#">
+        <img src="<%= BASE_URL %>assets/img/ui/rus-lang.svg" width="35" height="35" alt="">
+      </a>
+    </div>
+  </div>
+
 
 </div>
 <main>
-    <div id="app-one"></div>
-    <!-- built files will be auto injected -->
+  <div id="app-one"></div>
+  <!-- built files will be auto injected -->
 </main>
 
 <footer class="footer"></footer>

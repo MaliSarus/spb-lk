@@ -85,8 +85,12 @@
       justify-content: center;
 
       li {
-        flex-basis: calc(100% / 5);
+        flex-basis: 100%;
         padding: 15px;
+        @media screen and (min-width: $lg-width){
+          flex-basis: calc(100% / 5);
+          min-width: 200px;
+        }
       }
     }
   }

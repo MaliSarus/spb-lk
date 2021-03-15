@@ -1,11 +1,12 @@
 <template>
-  <div class="form__input form__input-datepicker" v-on-clickaway="closeDatepicker">
+  <div class="form__input form__input-datepicker" v-on-clickaway="closeDatepicker" @click="$refs.dateInput.focus()">
     <input
         type="text"
         :id="inputId"
         v-model="date"
         @focus="datepickerOpen"
         @input="inputChange"
+        ref="dateInput"
     />
     <label v-if="label" :for="inputId" :class="{active: labelActive}">{{ label }}</label>
     <date-picker
@@ -84,6 +85,7 @@ export default {
       height: 18px;
       transform: translateY(-50%);
       background-size: contain;
+      cursor: pointer;
     }
     input{
       padding-right: 35px;

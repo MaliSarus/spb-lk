@@ -156,6 +156,10 @@
 </script>
 
 <style lang="scss" scoped>
+  form{
+    width: 100%;
+    max-width: 540px;
+  }
   .form__textarea {
     width: 100%;
     height: 100px;

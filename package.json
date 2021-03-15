@@ -9,12 +9,14 @@
     "gulp": "npm-run-all --serial gulp serve"
   },
   "dependencies": {
+    "@chenfengyuan/vue-countdown": "^1.1.5",
     "@types/vuelidate": "^0.7.13",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "npm-run-all": "^4.1.5",
     "v-tooltip": "^2.1.2",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
+    "vue-awesome-countdown": "^1.1.4",
     "vue-clickaway": "^2.2.2",
     "vue-file-selector": "^0.6.0",
     "vue-router": "^3.2.0",

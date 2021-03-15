@@ -855,6 +855,8 @@ button {
 .header {
   background: #013066;
   height: 80px;
+  position: relative;
+  z-index: 10001;
 }
 
 .header__mobile-control {
@@ -1028,6 +1030,103 @@ button {
   display: flex;
 }
 
+.mobile-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  background: white;
+}
+
+.mobile-menu.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-menu__inner {
+  position: relative;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  height: 100%;
+}
+
+.mobile-menu__lang {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.mobile-menu__accordion {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mobile-menu__accordion ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-menu__accordion > li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.mobile-menu__accordion .accordion__title {
+  font-size: 18px;
+}
+
+.mobile-menu__accordion .accordion__inner-content {
+  padding: 10px 0 0;
+}
+
+.mobile-menu__accordion .accordion__inner-content a {
+  color: black;
+  text-decoration: none;
+}
+
+.mobile-menu__accordion .accordion__inner-content nav {
+  padding: 10px 0;
+}
+
+.mobile-menu__accordion .accordion__inner-content nav a {
+  display: block;
+  padding: 10px 10px;
+}
+
+.mobile-menu__accordion .accordion__inner-content nav a:hover {
+  background-color: #dbebff;
+}
+
+.mobile-menu__accordion .accordion__content-wrapper {
+  background: #F4F9FF;
+  border-radius: 2px;
+  color: black;
+}
+
+.accordion__title {
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  outline: none;
+}
+
+.accordion__content {
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: max-height 0.4s ease-out;
+  -o-transition: max-height 0.4s ease-out;
+  transition: max-height 0.4s ease-out;
+}
+
 .form__input {
   position: relative;
   border: 1px solid #F3F3F3;
@@ -1186,6 +1285,27 @@ button {
   background-repeat: no-repeat;
 }
 
+.tooltip.popover {
+  border: 1px solid #EDEDED;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background: white;
+  max-width: 355px;
+}
+
+.tooltip.popover .popover-inner {
+  padding: 20px;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.tooltip.popover .popover-inner .button {
+  font-size: 14px;
+}
+
 .fs-btn-select {
   font-size: 20px;
   line-height: 23px;
@@ -1200,6 +1320,8 @@ button {
 .footer {
   background: #013066;
   height: 80px;
+  position: relative;
+  z-index: 10001;
 }
 
 @media screen and (min-width: 576px) {

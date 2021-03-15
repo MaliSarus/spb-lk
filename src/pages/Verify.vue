@@ -152,6 +152,10 @@
 </script>
 
 <style lang="scss">
+  form{
+    width: 100%;
+    max-width: 540px;
+  }
 
   .fs-file-selector {
     user-select: none;

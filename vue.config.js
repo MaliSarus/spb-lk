@@ -1,4 +1,5 @@
 module.exports = {
+    indexPath: 'index.php',
     publicPath: '/front/',
     filenameHashing: false,
     css: {

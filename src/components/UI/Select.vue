@@ -1,6 +1,6 @@
 <template>
-  <div class="form__input form__input-select"  :class="{open:isOpen}" v-on-clickaway="closeSelect">
-    <input type="text" :id="inputId" v-model="selectedOption" @focus="inputFocus" @input="search" autocomplete="nope">
+  <div class="form__input form__input-select"  :class="{open:isOpen}" v-on-clickaway="closeSelect" @click="$refs.selectInput.focus()">
+    <input type="text" :id="inputId" v-model="selectedOption" @focus="inputFocus" @input="search" autocomplete="nope" ref="selectInput">
     <label v-if="label" :for="inputId" :class="{active: labelActive}">{{ label }}</label>
     <div ref="select" class="select-options" v-show="isOpen" :class="selectMenuPos">
       <vuescroll :ops="ops">
@@ -122,6 +122,7 @@
         transform: translateY(-50%);
         transition: transform .25s;
         background-size: contain;
+        cursor: pointer;
       }
 
       &.open {

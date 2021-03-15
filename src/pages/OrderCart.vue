@@ -18,9 +18,16 @@
                 <div class="row">
                   <div class="col-12">
                     <Loader v-if="isLoading"/>
-                    <div v-else class="personal-cab__dates">
+                    <div v-else class="order-cart__dates">
                       <orders-list :dates="dates" v-model="selectedDates"/>
                     </div>
+                    <countdown :end-time="new Date(2021, 2, 31).getTime()" class="order-cart__countdown">
+                      <template
+                          v-slot:process="{ timeObj }">
+
+                        <span>Скидка действует при оплате до 31 марта 2021 г. До повышения стомости осталось <b> {{timeObj.d}} дней {{timeObj.h}} часов {{timeObj.m}} минуты {{timeObj.s}} секунды</b></span>
+                      </template>
+                    </countdown>
                   </div>
                 </div>
               </div>
@@ -29,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="order__price">ИТОГО: {{totalPrice}}</div>
+    <div class="order__price">ИТОГО: <b>{{totalPrice}}</b></div>
   </div>
 </template>
 
@@ -47,6 +54,7 @@
         isLoading: true,
         dates: [],
         selectedDates:[],
+        countDate: new Date(2021, 2, 31).getTime(),
       };
     },
     computed:{
@@ -110,25 +118,52 @@
       }
     }
 
+  }
+
+
+
+  .order-cart {
+    &__form {
+      width: 100%;
+      border: none;
+      box-shadow: none;
+      /*max-width: none;*/
+      form {
+        max-width: none;
+      }
+    }
+    &__countdown{
+      border: 1px solid #CC1E1E;
+      background: transparent;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      display: block;
+      color: #CC1E1E;
+      margin-bottom: 20px;
+      @media screen and (min-width: $lg-width){
+        margin-bottom: 40px;
+      }
+    }
     &__dates {
+      width: 100%;
+      margin-bottom: 30px;
+      @media screen and (min-width: $lg-width){
+        margin-bottom: 50px;
+      }
     }
   }
 
-
-
-  .order-cart__form {
-    width: 100%;
-    border: none;
-    box-shadow: none;
-    max-width: none;
-  }
-
   .order__price{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
     padding: 15px 105px;
     background-color: #F4F9FF;
+    margin-top: 40px;
+    @media screen and (min-width: $lg-width){
+      margin-top: 0;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
 </style>

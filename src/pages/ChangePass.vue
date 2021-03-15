@@ -13,23 +13,20 @@
       <div class="row">
         <div class="col-12">
           <div class="user-data__form form" v-if="page === 1">
-            <form action="#" @submit.prevent="submitForm">
-              <div class="user-data__form-grid">
-                <label for="change-pass-new">Новый пароль</label>
-                <Input v-model="$v.newPass.$model" input-type="password" input-id="change-pass-new"/>
-                <label for="change-pass-repeat">Повторите пароль</label>
-                <Input v-model="$v.confirmPass.$model" input-type="password" input-id="change-pass-repeat"/>
+            <ChangePassForm @submitForm="page += 1"/>
+          </div>
+          <div class="user-data__form form" v-if="page === 2">
+            <div class="change-pass__success success">
+              <div class="success__image">
+                <img :src="successIcon" alt="">
               </div>
-              <div class="user-data__controls">
-                <Button
-                    class="form__button form__button_prev"
-                    text=""
-                    type="button"
-                    @buttonClick="$router.go(-1)"
-                />
-                <button type="submit" class="button button_yellow user-data__submit">Сохранить</button>
+              <div class="success__text text">
+                Данные успешно обновлены!
               </div>
-            </form>
+              <div class="success__button">
+                <router-link tag="button" :to="`/lk/${userId}`" class="button button_yellow">Вернуться в личный кабинет</router-link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -38,54 +35,63 @@
 </template>
 
 <script>
-  import Input from "../components/UI/Input";
-  import Button from "../components/UI/Button";
-  import {required, sameAs} from "vuelidate/lib/validators";
-  import axios from 'axios'
+
+
+  import ChangePassForm from "../components/PersonalCab/ChangePass/ChangePassForm";
+  import successIcon from "@/assets/img/ui/success-signup.svg";
 
   export default {
     name: "ChangePass",
-    components: {Input, Button},
+    components: {ChangePassForm},
     data() {
       return {
-        newPass: '',
-        confirmPass: '',
         page: 1,
+        successIcon,
+        userId: this.$route.params.id
       }
     },
-    validations: {
-      newPass: {
-        required,
-      },
-      confirmPass: {
-        sameAsPassword: sameAs("newPass"),
-      },
-    },
-    methods:{
-      submitForm(){
-        if (!this.$v.$invalid) {
-          axios
-            .put('/api/user/password/', {
-              password: this.newPass,
-              confirmPassword: this.confirmPass,
-            })
-          .then(console.log)
-        }
-      }
-    }
-
   }
 </script>
 
 <style lang="scss" scoped>
-  .user-data__controls {
-    display: flex;
-
+  .change-pass__success{
+    width: 100%;
+    max-width: 300px;
   }
 
-  .form__button_prev {
-    max-width: 40px;
-    height: auto;
-    margin-right: 10px;
+  .success{
+    &__image{
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 15px;
+      @media screen and (min-width: $lg-width){
+        margin-bottom: 30px;
+      }
+      img{
+        width: 100%;
+        height: 100%;
+        object-position: center;
+        object-fit: contain;
+      }
+    }
+    &__text{
+      text-align: center;
+      font-size: 16px;
+      line-height: 18px;
+      margin-bottom: 15px;
+      @media screen and (min-width: $lg-width){
+        font-size: 18px;
+        line-height: 21px;
+        margin-bottom: 30px;
+      }
+    }
+    &__button{
+      button{
+        padding-top: 8px;
+        padding-bottom: 8px;
+        width: 100%;
+      }
+    }
   }
+
 </style>

@@ -1,7 +1,7 @@
 <template>
   <li>
     <div class="dates__item date" :class="{'disabled': disabled}">
-      <div class="date__head">{{ date.sectionName}}</div>
+      <div class="date__head" :class="{yellow: type!=='single'}">{{ date.sectionName}}</div>
       <div class="date__content">
         <div class="date__price">
           <input
@@ -112,6 +112,7 @@
       overflow: hidden;
       transition: opacity 0.2s;
       //min-width: 315px;
+      height: 100%;
       box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
 
       .date {
@@ -122,6 +123,10 @@
           text-align: center;
           color: #ffffff;
           padding: 10px;
+          &.yellow{
+            background: $yellow-color;
+            color: $main-text-color;
+          }
         }
 
         &__content {

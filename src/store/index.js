@@ -13,7 +13,8 @@ export default new Vuex.Store({
     ranks: [],
     degrees: [],
     russiaCities: [],
-    payedOrder:[]
+    payedOrder:[],
+    userCart:[]
   },
   mutations: {
     setCountries(state, payload) {

@@ -15,3 +15,24 @@
     background-repeat: no-repeat;
   }
 }
+
+.tooltip {
+
+  &.popover {
+    border: 1px solid #EDEDED;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    background: white;
+    max-width: 355px;
+
+    .popover-inner {
+      padding: 20px;
+      font-size: 14px;
+      line-height: 16px;
+      .button{
+        font-size: 14px;
+      }
+    }
+  }
+}

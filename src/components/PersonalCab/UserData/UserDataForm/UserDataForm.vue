@@ -2,8 +2,24 @@
   <form action="#" @submit.prevent="changeData">
     <div class="user-data__name">
       {{userForm.name}}
-      <div class="user-data__rename" @click="()=>{this.isTooltipOpen = !this.isTooltipOpen}">
+      <div class="user-data__rename">
+        <v-popover offset="20" placement="right" style="height: 100%">
+          <!-- This will be the popover target (for the events and position) -->
+          <div style="width: 18px;height: 18px;"></div>
+          <!-- This will be the content of the popover -->
+          <template slot="popover">
+            <button class="tooltip__close" v-close-popover :style="{backgroundImage:`url(${tooltipClose})`}"></button>
+            <div class="tooltip__title">
+              Эти данные меняются только по официальному запросу.
+            </div>
+            <div class="tooltip__body text">
+              Заполните форму отправив запрос с просьбой изменить контактую информацию, а также скан документа подтверждающего личность.
+            </div>
+            <router-link :to="{name:'ChangeFIO'}" tag="button" class="tooltip__button button button_yellow">Перейти</router-link>
+          </template>
+        </v-popover>
       </div>
+
     </div>
     <hr>
     <div v-if="userForm.verify" class="user-data__verify">
@@ -49,14 +65,16 @@
   import Checkbox from "../../../UI/Checkbox";
   import {mapGetters, mapMutations} from 'vuex'
   import UserDataFormInputs from "./UserDataFormInputs";
+  import tooltipClose from "@/assets/img/ui/tooltip-close.svg"
 
   export default {
     name: "UserDataForm",
-    components: {UserDataFormInputs, Checkbox},
+    components: { UserDataFormInputs, Checkbox},
     data() {
       return {
         verifyCheck: false,
         isTooltipOpen: false,
+        tooltipClose
       }
     },
     computed: {
@@ -112,6 +130,46 @@
   form{
     width: 100%;
     max-width: 540px;
+  }
+  .v-popover{
+    display: flex;
+    cursor: pointer;
+  }
+  .tooltip{
+    &__close{
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background-repeat: no-repeat;
+      background-color: transparent;
+      background-size: 13px;
+      background-position: center;
+      width: 25px;
+      height: 25px;
+      border: none;
+      outline: none;
+      border-radius: 100%;
+      transition: box-shadow .2s;
+      &:hover{
+        box-shadow: 0 0 10px rgba($accent-color, .1);
+      }
+    }
+    &__title{
+      color: $accent-color;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+    &__body{
+      color: $main-text-color;
+      font-size: 14px;
+      line-height: 16px;
+    }
+    &__button{
+      width: 100%;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin-top: 20px;
+    }
   }
 
   .user-data {

@@ -29,6 +29,10 @@
   .payed-order {
     &__list {
       margin-bottom: 15px;
+      @media screen and (min-width: $lg-width){
+        margin-bottom: 40px;
+
+      }
       ul {
         margin: 0;
         padding: 0;

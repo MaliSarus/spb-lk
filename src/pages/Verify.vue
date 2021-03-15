@@ -54,7 +54,7 @@
               </div>
             </form>
           </div>
-          <div class="user-data__form form" v-if="page === 2">
+          <div class="d-flex justify-content-center" v-if="page === 2">
             <form action="#">
               <div class="verify-success">
                 <div class="verify-success__image">
@@ -262,6 +262,13 @@
     &__controls {
       display: flex;
       margin-top: 40px;
+      .user-data__submit{
+        flex-grow: 1;
+      }
+      .form__button_prev{
+        flex-grow: 1;
+        max-width: 45px;
+      }
     }
   }
 

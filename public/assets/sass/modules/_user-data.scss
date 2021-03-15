@@ -8,7 +8,10 @@
     background: url('../img/ui/rename-icon.svg') center no-repeat;
   }
   &__submit{
+    padding-left: 40px;
+    padding-right: 40px;
     background-image: url("../img/user-data/submit-icon.svg");
-
+    background-position: calc(100% - 12px) center;
+    background-repeat: no-repeat;
   }
 }

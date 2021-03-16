@@ -6,8 +6,8 @@
     <label for="user-country">Страна</label>
     <Select v-model="formInputs.country" input-id="user-country" :options="countriesWithoutId"/>
 
-    <label for="user-city">Город</label>
-    <Select v-model="formInputs.city" input-id="user-city" :options="russiaCities"/>
+    <label for="user-city"  v-if="countryId === 1">Город</label>
+    <Select v-model="formInputs.city" input-id="user-city" :options="russiaCities"  v-if="countryId === 1"/>
 
     <label for="user-phone">Телефон</label>
     <Input v-model="formInputs.phone" input-id="user-phone"/>
@@ -51,6 +51,11 @@
       ...mapGetters([ "russiaCities", "countries", "departments", "ranks", "degrees"]),
       countriesWithoutId() {
         return this.countries.map((country) => country.name);
+      },
+      countryId() {
+        return +this.countries.find(
+          (country) => country.name === this.formInputs.country
+        ).id;
       },
     },
 

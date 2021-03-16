@@ -10,41 +10,40 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <div class="order-cart__form form">
-            <form action="#" @submit.prevent="">
-              <div class="container">
-                <div class="row">
-                  <div class="col-12">
-                    <Loader v-if="isLoading"/>
-                    <div v-else class="order-cart__dates">
-                      <orders-list :dates="dates" v-model="selectedDates"/>
-                    </div>
-                    <countdown :end-time="new Date(2021, 2, 31).getTime()" class="order-cart__countdown">
-                      <template
-                          v-slot:process="{ timeObj }">
+    </div>
 
-                        <span>Скидка действует при оплате до 31 марта 2021 г. До повышения стомости осталось <b> {{timeObj.d}} дней {{timeObj.h}} часов {{timeObj.m}} минуты {{timeObj.s}} секунды</b></span>
-                      </template>
-                    </countdown>
-                  </div>
-                </div>
+    <div class="order-cart__form form">
+      <form action="#" @submit.prevent="">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <Loader v-if="isLoading"/>
+              <div v-else class="order-cart__dates">
+                <orders-list/>
               </div>
-            </form>
+              <countdown :end-time="new Date(2021, 2, 31).getTime()" class="order-cart__countdown">
+                <template
+                    v-slot:process="{ timeObj }">
+
+                  <span>Скидка действует при оплате до 31 марта 2021 г. До повышения стомости осталось <b> {{timeObj.d}} дней {{timeObj.h}} часов {{timeObj.m}} минуты {{timeObj.s}} секунды</b></span>
+                </template>
+              </countdown>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
-    <div class="order__price">ИТОГО: <b>{{totalPrice}}</b></div>
+
+    <div class="order__price">
+      ИТОГО: <b>{{totalPrice}}</b>
+    </div>
   </div>
 </template>
 
 <script>
-  import axios from "axios";
-  import {baseURL} from "@/helpers/defaultValues";
   import Loader from "../components/UI/Loader";
   import OrdersList from "../components/PersonalCab/OrderCart/OrdersList";
+  import {mapActions} from "vuex";
 
   export default {
     name: "OrderCart",
@@ -52,28 +51,27 @@
     data() {
       return {
         isLoading: true,
-        dates: [],
-        selectedDates:[],
         countDate: new Date(2021, 2, 31).getTime(),
       };
     },
-    computed:{
-      totalPrice(){
-        if (this.selectedDates.length){
-          return this.selectedDates.reduce((acc, date)=>acc + date.price,0)
-        }
-        else{
-          return 0
-        }
+    computed: {
+      totalPrice() {
+        // if (this.selectedDates.length) {
+        //   return this.selectedDates.reduce((acc, date) => acc + date.price, 0)
+        // } else {
+        //   return 0
+        // }
+        return 0
       }
     },
-    mounted() {
-      axios
-        .get(baseURL + '/api/catalog/items/')
-        .then(res => {
-          if (res.data.status === 'ok') {
-            this.dates = res.data.sections;
-            this.isLoading = false;
+    methods:{
+      ...mapActions(["fetchProducts"])
+    },
+    created() {
+      this.fetchProducts()
+        .then(res=>{
+          if (res == 'ok'){
+            this.isLoading = false
           }
         })
     }
@@ -121,7 +119,6 @@
   }
 
 
-
   .order-cart {
     &__form {
       width: 100%;
@@ -132,7 +129,8 @@
         max-width: none;
       }
     }
-    &__countdown{
+
+    &__countdown {
       border: 1px solid #CC1E1E;
       background: transparent;
       border-radius: 10px;
@@ -141,24 +139,25 @@
       display: block;
       color: #CC1E1E;
       margin-bottom: 20px;
-      @media screen and (min-width: $lg-width){
+      @media screen and (min-width: $lg-width) {
         margin-bottom: 40px;
       }
     }
+
     &__dates {
       width: 100%;
       margin-bottom: 30px;
-      @media screen and (min-width: $lg-width){
+      @media screen and (min-width: $lg-width) {
         margin-bottom: 50px;
       }
     }
   }
 
-  .order__price{
+  .order__price {
     padding: 15px 105px;
     background-color: #F4F9FF;
     margin-top: 40px;
-    @media screen and (min-width: $lg-width){
+    @media screen and (min-width: $lg-width) {
       margin-top: 0;
       position: absolute;
       bottom: 0;

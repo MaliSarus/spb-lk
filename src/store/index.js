@@ -14,7 +14,8 @@ export default new Vuex.Store({
     degrees: [],
     russiaCities: [],
     payedOrder:[],
-    userCart:[]
+    userCart:[],
+    products: [],
   },
   mutations: {
     setCountries(state, payload) {
@@ -37,8 +38,19 @@ export default new Vuex.Store({
     },
     setPayedOrders(state, payload){
       state.payedOrder = payload
+    },
+    setProducts(state, payload){
+      state.products = payload
+    },
+    addProduct(state, payload){
+      state.userCart.push(payload)
+    },
+    deleteProduct(state, payload){
+      state.userCart = state.userCart.filter(product=> +product.id !== payload)
+    },
+    deleteAllSingleProducts (state){
+      state.userCart = state.userCart.filter(product => product.type !== 'single')
     }
-
   },
   actions: {
     // eslint-disable-next-line no-unused-vars
@@ -153,8 +165,22 @@ export default new Vuex.Store({
             return false
           }
         })
+    },
+    fetchProducts({commit}){
+      return axios
+        .get('/api/catalog/items/')
+        .then(res => {
+          if (res.data.status === 'ok') {
+            commit('setProducts', res.data.sections)
+            this._vm.$toast.info('fetch Products: ' + res.data.status);
+          }
+          else{
+            this._vm.$toast.warning('fetch City: something wrong');
+          }
+          return res.data.status;
+        })
+        .catch(e => this._vm.$toast.warning('fetch Products: ' + e))
     }
-
   },
   getters: {
     user(state) {
@@ -177,6 +203,12 @@ export default new Vuex.Store({
     },
     payedOrders(state){
       return state.payedOrder
+    },
+    userCart(state){
+      return state.userCart
+    },
+    products(state){
+      return state.products
     }
   }
 })

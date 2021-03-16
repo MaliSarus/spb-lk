@@ -1,7 +1,19 @@
 <template>
-  <div class="form__input form__input-select"  :class="{open:isOpen}" v-on-clickaway="closeSelect" @click="$refs.selectInput.focus()">
-    <input type="text" :id="inputId" v-model="selectedOption" @focus="inputFocus" @input="search" autocomplete="nope" ref="selectInput">
+  <div class="form__input form__input-select"  :class="{open:isOpen}" v-on-clickaway="closeSelect" @click="formInputClick($event)">
+    <input type="text" :id="inputId"
+           @focus="inputFocus"
+           @input="$event => searchString = $event.target.value"
+           @keydown.enter="selectOption($event.target.value)"
+           autocomplete="nope"
+           ref="selectInput"
+           :value="searchString"
+           :style="{
+             opacity: isOpen ? 1 : 0,
+             visibility: isOpen ? 'visible' : 'hidden',
+           }"
+    >
     <label v-if="label" :for="inputId" :class="{active: labelActive}">{{ label }}</label>
+    <span v-if="selectedOption" :class="{invisible:isOpen}">{{selectedOption}}</span>
     <div ref="select" class="select-options" v-show="isOpen" :class="selectMenuPos">
       <vuescroll :ops="ops">
         <ul>
@@ -55,15 +67,25 @@
       }
     },
     methods: {
+      formInputClick($event){
+        if(this.$refs.select.contains($event.target)){
+          this.isOpen = false
+        }
+        else {
+          this.isOpen = true
+          this.$nextTick(() => {
+            this.$refs.selectInput.focus();
+          })
+        }
+      },
       selectOption(option) {
         this.selectedOption = option;
         this.isOpen = false;
         this.$emit('pick', option)
-      },
-      search($event) {
-        this.searchString = $event.target.value
+        // this.searchString = ''
       },
       inputFocus() {
+        // this.searchString = ''
         this.isOpen = true;
         if (this.selectMenuHeight === 0) {
           this.$nextTick(() => {
@@ -81,6 +103,7 @@
       },
       closeSelect() {
         this.isOpen = false;
+        this.searchString = ''
       }
     },
     computed: {
@@ -177,6 +200,17 @@
       &:hover {
         color: #3b7dee;
       }
+    }
+  }
+
+  span{
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    &.invisible{
+      opacity: 0;
+      visibility: hidden;
     }
   }
 </style>

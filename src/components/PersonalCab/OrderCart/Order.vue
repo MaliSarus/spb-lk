@@ -3,46 +3,47 @@
     <div class="dates__item date" :class="{'disabled': disabled}">
       <div class="date__head" :class="{yellow: type!=='single'}">{{ date.sectionName}}</div>
       <div class="date__content">
-        <div class="date__price">
-          <input
-                  :disabled="disabled"
-                  type="radio"
-                  :name="dateId  + '-' + index"
-                  v-model="dateType"
-                  :value="date.items[0].id"
-                  @click="uncheckRadio($event, date)"
-                  v-show="false"
-                  :id="dateId  + '-' + index + '-online'"
+        <div class="date__price" v-for="(onlineDate) in dateOnlineItems" :key="onlineDate.type + '_' + onlineDate.id">
+          <input ref="onlineCheck"
+                 :disabled="disabled"
+                 type="radio"
+                 :name="onlineDate.type  + '-' + onlineDate.id"
+                 v-model="checkedDate"
+                 :value="onlineDate.id"
+                 @click="uncheckRadio($event, onlineDate,date.sectionType)"
+                 v-show="false"
+                 :id="onlineDate.type  + '-' + onlineDate.id"
           />
-          <label :for="dateId + '-' + index + '-online'">
+          <label :for="onlineDate.type  + '-' +onlineDate.id">
             <span class="date__price-name">Онлайн</span>
             <span class="date__price-empty"></span>
             <span class="date__price-price price">
               <span class="price_prev"></span>
               <span class="price_current">
-                {{ date.items[0].price.basePrice}}&nbsp;&#8381;
+                {{ onlineDate.price.basePrice}}&nbsp;&#8381;
               </span>
             </span>
           </label>
         </div>
-        <div class="date__price">
-          <input
-                  :disabled="disabled"
-                  type="radio"
-                  :name="dateId + '-' + index"
-                  v-model="dateType"
-                  :value="date.items[1].id"
-                  @click="uncheckRadio($event, date)"
-                  v-show="false"
-                  :id="dateId + '-' + index + '-offline'"
+        <div class="date__price" v-for="(offlineDate) in dateOfflineItems"
+             :key="offlineDate.type + '_' + offlineDate.id">
+          <input ref="offlineCheck"
+                 :disabled="disabled"
+                 type="radio"
+                 :name="offlineDate.type + '-' + offlineDate.id"
+                 v-model="checkedDate"
+                 :value="offlineDate.id"
+                 @click="uncheckRadio($event, offlineDate,date.sectionType)"
+                 v-show="false"
+                 :id="offlineDate.type + '-' + offlineDate.id"
           />
-          <label :for="dateId + '-' + index + '-offline'">
+          <label :for="offlineDate.type + '-' + offlineDate.id">
             <span class="date__price-name">Офлайн</span>
             <span class="date__price-empty"></span>
             <span class="date__price-price price">
               <span class="price_prev"></span>
               <span class="price_current">
-                {{ date.items[1].price.basePrice}}&nbsp;&#8381;
+                {{ offlineDate.price.basePrice}}&nbsp;&#8381;
               </span>
             </span>
           </label>
@@ -53,51 +54,51 @@
 </template>
 
 <script>
+  import {mapMutations} from "vuex";
+
   export default {
     name: "Order",
     props: [
-      'type', 'date', 'index', 'selectDate', 'disabled'
+      'type', 'date', 'index', 'selectDate', 'disabled', 'allCheckId'
     ],
     data() {
       return {
-        dateType: ''
+        checkedDate: ''
       }
     },
     computed: {
-      dateId() {
-        if (this.type === 'single') {
-          return 'single-date'
-        } else {
-          return 'all-dates'
-        }
+      dateOfflineItems() {
+        return this.date.items.filter(item => item.type == 'offline')
       },
-      selectedDatePrice() {
-        const item = this.date.items.filter(item => item.id === this.dateType)[0];
-        if(item) {
-          return item.price.basePrice;
-        }
-        else{
-          return ''
-        }
-      },
+      dateOnlineItems() {
+        return this.date.items.filter(item => item.type == 'online')
+      }
     },
     methods: {
-      uncheckRadio($event) {
-        if (this.dateType === +$event.target.value) {
+      ...mapMutations(["addProduct", "deleteProduct"]),
+      uncheckRadio($event, product, productType) {
+        if (this.checkedDate === +$event.target.value) {
           $event.target.checked = false;
+          this.deleteProduct(this.checkedDate)
           this.dateType = "";
+        } else {
+          if (!this.checkedDate) {
+            this.deleteProduct(this.checkedDate)
+          }
+          const selectDate = {
+            name: this.date.sectionName,
+            id: $event.target.value,
+            price: product.price.basePrice,
+            type: productType,
+            style: product.type,
+          }
+          this.addProduct(selectDate)
         }
       }
     },
-    watch: {
-      dateType(val) {
-        const selectDate = {
-          name: this.date.sectionName,
-          id: val,
-          price: this.selectedDatePrice,
-          index: this.index
-        }
-        this.$emit('select', selectDate)
+    updated() {
+      if (this.allCheckId){
+        this.checkedDate = this.allCheckId
       }
     }
   }
@@ -123,7 +124,8 @@
           text-align: center;
           color: #ffffff;
           padding: 10px;
-          &.yellow{
+
+          &.yellow {
             background: $yellow-color;
             color: $main-text-color;
           }

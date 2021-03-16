@@ -22,15 +22,15 @@
 
     </div>
     <hr>
-    <div v-if="userForm.verify" class="user-data__verify">
+    <div v-if="isVerify" class="user-data__verify">
       Вы успешно подтвердили Ваш статус! <b>Ваш аккаунт верифицирован.</b>
       В разделе “Оформление участия” для Вас специальные цены.
     </div>
-    <Checkbox v-if="!userForm.verify" v-model="verifyCheck" input-id="user-verify"
+    <Checkbox v-if="!userForm.ordinator" v-model="verifyCheck" input-id="user-verify"
               class="user-data__verify-check">Являюсь клиническим ординатором или
       очным аспирантом кафедры
     </Checkbox>
-    <div class="user-data__verify-no" v-if="verifyCheck">
+    <div class="user-data__verify-no" v-if="!isVerify">
       <p>
         Обращаем внимание, что Вам необходимо подтвердить, что Вы являетесь клиническим
         ординатором или
@@ -72,9 +72,9 @@
     components: { UserDataFormInputs, Checkbox},
     data() {
       return {
-        verifyCheck: false,
         isTooltipOpen: false,
-        tooltipClose
+        tooltipClose,
+        verifyCheck: false
       }
     },
     computed: {
@@ -87,6 +87,9 @@
           this.setUser(value)
         }
       },
+      isVerify(){
+        return this.ordinator && this.userForm.verify
+      }
     },
 
     methods: {
@@ -102,7 +105,7 @@
         const data = {
           birthday: this.userForm.birthday,
           country: this.countryToId(this.userForm.country),
-          city: this.userForm.city,
+          city: this.countryToId(this.userForm.country) === 1 ? this.userForm.city : '',
           company: this.userForm.company,
           position: this.userForm.position,
           department: this.userForm.department,

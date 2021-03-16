@@ -2,14 +2,14 @@
   <ul class="dates__list">
     <Order v-for="(date, index) in singleDates" @select="selectDate" :date="date" :index="index" type="single"
            :key="'single-date_'+index" :disabled="isAllDatesChecked"/>
-    <Order v-for="(date, index) in allDates" @select="selectDate" :date="date" :index="index" type="all"
+    <Order v-for="(date, index) in allDates" @select="selectDate" :date="date" :index="index" type="all" :all-check-id="everyDingleDatesCheckedToAllId"
            :key="'all-dates_' + index" :disabled="isSingleDatesChecked"/>
   </ul>
 </template>
 
 <script>
   import Order from "./Order";
-
+  import {mapGetters, mapMutations} from 'vuex'
   export default {
     name: "OrdersList",
     components: {Order},
@@ -17,15 +17,13 @@
       props: 'selectDate',
       event: 'selectDate'
     },
-    props: {
-      dates: Array,
-    },
     data() {
       return {
         selectedDates: []
       }
     },
     methods: {
+      ...mapMutations(["deleteAllSingleProducts"]),
       selectDate(date) {
         if (date.id) {
           const clearedDates = this.selectedDates.filter((selectedDate) => selectedDate.index !== date.index);
@@ -37,40 +35,48 @@
       }
     },
     computed: {
+      ...mapGetters(["products", "userCart"]),
       singleDates() {
-        return this.dates.filter((date) => date.sectionType === "single")
+        return this.products.filter((date) => date.sectionType === "single")
       },
       allDates() {
-        return this.dates.filter((date) => date.sectionType !== "single");
+        return this.products.filter((date) => date.sectionType !== "single");
       },
       isSingleDatesChecked() {
-        let result = false;
-        this.singleDates.forEach(date => {
-          date.items.forEach(item => {
-            if (this.selectedDates.some(sd => +sd.id === +item.id)) {
-              result = true;
-            }
-          })
-        })
-        return result;
+        return this.userCart.some(product => product.type === 'single') && !this.isEverySingleDatesChecked;
       },
       isAllDatesChecked() {
-        let result = false;
-        this.allDates.forEach(date => {
-          date.items.forEach(item => {
-            if (this.selectedDates.some(sd => +sd.id === +item.id)) {
-              result = true;
-            }
-          })
-        })
-        return result;
+        return this.userCart.some(product => product.type === 'all') || this.isEverySingleDatesChecked;
+      },
+      isEverySingleDatesChecked(){
+        const allChecked = this.userCart.filter(product => product.type === 'single').length === this.singleDates.length;
+        // if (allChecked){
+        //   this.deleteAllSingleProducts()
+        // }
+        return allChecked
+      },
+      everyDingleDatesCheckedToAllId(){
+        let checkId = ''
+        if(this.isEverySingleDatesChecked){
+          const offlineChecked = this.userCart.every(product => product.style === 'offline')
+          if (offlineChecked){
+            checkId = this.allDates[0].items.filter(item=> item.type === 'offline')[0].id
+          }
+          else  {
+            checkId = this.allDates[0].items.filter(item=> item.type === 'online')[0].id
+
+          }
+          return checkId
+        }
+        else return checkId
       }
     },
     watch:{
       selectedDates(val){
         this.$emit('selectDate', val)
       }
-    }
+    },
+
   }
 </script>
 

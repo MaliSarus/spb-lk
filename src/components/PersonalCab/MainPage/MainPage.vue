@@ -8,6 +8,7 @@
               Оплаченные заказы
             </div>
             <Loader v-if="isLoading"/>
+            <div v-else-if="payedOrders.length === 0">Купеленных товаров нет</div>
             <PayedOrder v-else :payed-orders="payedOrders"/>
           </div>
         </div>
@@ -32,27 +33,25 @@
   export default {
     name: "MainPage",
     components: {Loader, Controls, PayedOrder},
-    data(){
+    data() {
       return {
         isLoading: true,
       }
     },
-    filters:{
+    filters: {
       dateToDate
     },
     methods: {
       ...mapActions(['fetchPayedOrders']),
     },
-    computed:{
+    computed: {
       ...mapGetters(['payedOrders'])
     },
     created() {
       this.fetchPayedOrders()
-      .then(res=>{
-        if (res){
+        .then(()=> {
           this.isLoading = false
-        }
-      })
+        })
     }
   }
 </script>

@@ -1,19 +1,33 @@
 <template>
   <ul class="dates__list">
-    <Order v-for="(date, index) in singleDates" @select="selectDate" :date="date" :index="index" type="single"
-           :key="'single-date_'+index" :disabled="isAllDatesChecked"/>
-    <Order v-for="(date, index) in allDates" @select="selectDate" :date="date" :index="index" type="all" :all-check-id="everyDingleDatesCheckedToAllId"
-           :key="'all-dates_' + index" :disabled="isSingleDatesChecked"/>
+    <Order
+            v-for="(date, index) in singleDates"
+            :date="date"
+            :index="index"
+            type="single"
+            :is-all-check="everyDingleDatesCheckedToAllId ? true : false"
+            :key="'single-date_'+index"
+            :disabled="isAllDatesChecked"/>
+    <Order
+            v-for="(date, index) in allDates"
+            @select="selectDate"
+            :date="date"
+            :index="index"
+            type="all"
+            :all-check-id="everyDingleDatesCheckedToAllId"
+            :key="'all-dates_' + index"
+            :disabled="isSingleDatesChecked"/>
   </ul>
 </template>
 
 <script>
   import Order from "./Order";
   import {mapGetters, mapMutations} from 'vuex'
+
   export default {
     name: "OrdersList",
     components: {Order},
-    model:{
+    model: {
       props: 'selectDate',
       event: 'selectDate'
     },
@@ -48,35 +62,25 @@
       isAllDatesChecked() {
         return this.userCart.some(product => product.type === 'all') || this.isEverySingleDatesChecked;
       },
-      isEverySingleDatesChecked(){
+      isEverySingleDatesChecked() {
         const allChecked = this.userCart.filter(product => product.type === 'single').length === this.singleDates.length;
-        // if (allChecked){
-        //   this.deleteAllSingleProducts()
-        // }
         return allChecked
       },
-      everyDingleDatesCheckedToAllId(){
+      everyDingleDatesCheckedToAllId() {
         let checkId = ''
-        if(this.isEverySingleDatesChecked){
+        if (this.isEverySingleDatesChecked) {
           const offlineChecked = this.userCart.every(product => product.style === 'offline')
-          if (offlineChecked){
-            checkId = this.allDates[0].items.filter(item=> item.type === 'offline')[0].id
+          const onlineChecked = this.userCart.every(product => product.style === 'online')
+          console.log(offlineChecked)
+          if (offlineChecked) {
+            checkId = this.allDates[0].items.filter(item => item.type === 'offline')[0].id
+          } else if (onlineChecked){
+            checkId = this.allDates[0].items.filter(item => item.type === 'online')[0].id
           }
-          else  {
-            checkId = this.allDates[0].items.filter(item=> item.type === 'online')[0].id
-
-          }
-          return checkId
         }
-        else return checkId
+        return checkId
       }
     },
-    watch:{
-      selectedDates(val){
-        this.$emit('selectDate', val)
-      }
-    },
-
   }
 </script>
 
@@ -93,7 +97,7 @@
       li {
         flex-basis: 100%;
         padding: 15px;
-        @media screen and (min-width: $lg-width){
+        @media screen and (min-width: $lg-width) {
           flex-basis: calc(100% / 5);
           min-width: 200px;
         }

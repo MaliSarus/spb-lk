@@ -59,7 +59,7 @@
   export default {
     name: "Order",
     props: [
-      'type', 'date', 'index', 'selectDate', 'disabled', 'allCheckId'
+      'type', 'date', 'index', 'selectDate', 'disabled', 'allCheckId', 'isAllCheck'
     ],
     data() {
       return {
@@ -75,12 +75,15 @@
       }
     },
     methods: {
-      ...mapMutations(["addProduct", "deleteProduct"]),
+      ...mapMutations(["addProduct", "deleteProduct", "deleteAllSingleProducts"]),
       uncheckRadio($event, product, productType) {
         if (this.checkedDate === +$event.target.value) {
           $event.target.checked = false;
           this.deleteProduct(this.checkedDate)
-          this.dateType = "";
+          if (this.allCheckId) {
+            this.deleteAllSingleProducts()
+          }
+          this.checkedDate = ""
         } else {
           if (!this.checkedDate) {
             this.deleteProduct(this.checkedDate)
@@ -97,7 +100,10 @@
       }
     },
     updated() {
-      if (this.allCheckId){
+      if (this.isAllCheck) {
+        this.checkedDate = ''
+      }
+      if (this.allCheckId) {
         this.checkedDate = this.allCheckId
       }
     }

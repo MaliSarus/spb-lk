@@ -23,9 +23,9 @@
               </div>
               <countdown :end-time="new Date(2021, 2, 31).getTime()" class="order-cart__countdown">
                 <template
-                    v-slot:process="{ timeObj }">
+                        v-slot:process="{ timeObj }">
 
-                  <span>Скидка действует при оплате до 31 марта 2021 г. До повышения стомости осталось <b> {{timeObj.d}} дней {{timeObj.h}} часов {{timeObj.m}} минуты {{timeObj.s}} секунды</b></span>
+                  <span>Скидка действует при оплате до 31 марта 2021 г. До повышения стомости осталось <b> {{timeObj.d}} дней {{timeObj.h}} часов {{timeObj.m}} минуты</b></span>
                 </template>
               </countdown>
             </div>
@@ -43,7 +43,7 @@
 <script>
   import Loader from "../components/UI/Loader";
   import OrdersList from "../components/PersonalCab/OrderCart/OrdersList";
-  import {mapActions} from "vuex";
+  import {mapActions, mapGetters} from "vuex";
 
   export default {
     name: "OrderCart",
@@ -55,22 +55,20 @@
       };
     },
     computed: {
+      ...mapGetters(["userCart"]),
       totalPrice() {
-        // if (this.selectedDates.length) {
-        //   return this.selectedDates.reduce((acc, date) => acc + date.price, 0)
-        // } else {
-        //   return 0
-        // }
-        return 0
+
+        return this.userCart.reduce((acc, product) => acc + product.price, 0)
+
       }
     },
-    methods:{
+    methods: {
       ...mapActions(["fetchProducts"])
     },
     created() {
       this.fetchProducts()
-        .then(res=>{
-          if (res == 'ok'){
+        .then(res => {
+          if (res == 'ok') {
             this.isLoading = false
           }
         })

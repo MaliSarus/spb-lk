@@ -53,7 +53,7 @@
         .then((res)=>{
           console.log(res);
           if (res.data.status !== "error"){
-            this.$router.push(`/lk/${this.user.id}`)
+            this.$router.push(`/user/${this.user.id}`)
           }
         })
       }

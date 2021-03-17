@@ -18,10 +18,16 @@
           <div class="row">
             <div class="col-12">
               <Loader v-if="isLoading"/>
+              <div v-else-if="placeholder" class="order-cart__placeholder">
+                <p>
+                  Функционал покупки появится в ближайшее время
+                </p>
+                <button type="button" class="button button_yellow" @click="$router.go(-1)">Вернуться назад</button>
+              </div>
               <div v-else class="order-cart__dates">
                 <orders-list/>
               </div>
-              <countdown :end-time="new Date(2021, 2, 31).getTime()" class="order-cart__countdown">
+              <countdown v-if="!placeholder && !isLoading" :end-time="new Date(2021, 2, 31).getTime()" class="order-cart__countdown">
                 <template
                         v-slot:process="{ timeObj }">
 
@@ -34,7 +40,7 @@
       </form>
     </div>
 
-    <div class="order__price">
+    <div v-if="!placeholder && !isLoading" class="order__price">
       ИТОГО: <b>{{totalPrice}}</b>
     </div>
   </div>
@@ -45,13 +51,15 @@
   import OrdersList from "../components/PersonalCab/OrderCart/OrdersList";
   import {mapActions, mapGetters} from "vuex";
 
+
   export default {
     name: "OrderCart",
-    components: {OrdersList, Loader},
+    components: { OrdersList, Loader},
     data() {
       return {
         isLoading: true,
         countDate: new Date(2021, 2, 31).getTime(),
+        placeholder: true
       };
     },
     computed: {
@@ -118,6 +126,12 @@
 
 
   .order-cart {
+    &__placeholder{
+      margin: 0 auto;
+      padding: 20px;
+      max-width: 540px;
+      text-align: center;
+    }
     &__form {
       width: 100%;
       border: none;

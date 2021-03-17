@@ -6,8 +6,8 @@
     <label for="user-country">Страна</label>
     <Select v-model="formInputs.country" input-id="user-country" :options="countriesWithoutId"/>
 
-    <label for="user-city"  v-if="countryId === 1">Город</label>
-    <Select v-model="formInputs.city" input-id="user-city" :options="russiaCities"  v-if="countryId === 1"/>
+    <label for="user-city" v-if="countryId === 1">Город</label>
+    <Select v-model="formInputs.city" input-id="user-city" :options="russiaCities" v-if="countryId === 1"/>
 
     <label for="user-phone">Телефон</label>
     <Input v-model="formInputs.phone" input-id="user-phone"/>
@@ -42,20 +42,27 @@
     components: {
       Select, Input, DateInput
     },
-    props:['formInputs'],
-    model:{
+    props: ['formInputs'],
+    model: {
       prop: 'formInputs',
-      event:'formInputsChange',
+      event: 'formInputsChange',
     },
     computed: {
-      ...mapGetters([ "russiaCities", "countries", "departments", "ranks", "degrees"]),
+      ...mapGetters(["russiaCities", "countries", "departments", "ranks", "degrees"]),
       countriesWithoutId() {
         return this.countries.map((country) => country.name);
       },
       countryId() {
-        return +this.countries.find(
+        if (+this.countries.find(
           (country) => country.name === this.formInputs.country
-        ).id;
+        ).id) {
+          return +this.countries.find(
+            (country) => country.name === this.formInputs.country
+          ).id
+        }
+        else{
+          return ''
+        }
       },
     },
 

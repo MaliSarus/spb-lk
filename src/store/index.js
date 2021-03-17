@@ -74,7 +74,6 @@ export default new Vuex.Store({
               commit('setUser', user);
               setWithExpiry('user', user, 3600 * 1000)
             }
-            this._vm.$toast.info(JSON.stringify(res.data));
             return res;
           }
         )
@@ -105,11 +104,10 @@ export default new Vuex.Store({
         .then(res => {
           if (res.data.status === 'ok') {
             commit('setCountries', res.data.country);
-            this._vm.$toast.info('fetch Departments: ' + res.data.status);
+
           }
-          else{
-            this._vm.$toast.error('fetch Departments error', res.data.message);
-          }
+
+
         })
     },
     fetchDepartments({commit}) {
@@ -119,7 +117,7 @@ export default new Vuex.Store({
           if (res.data.status === 'ok') {
             commit('setDepartments', res.data.items)
           }
-          this._vm.$toast.info('fetch Departments: ' + res.data.status);
+
         })
     },
     fetchRanks({commit}) {
@@ -129,7 +127,7 @@ export default new Vuex.Store({
           if (res.data.status === 'ok') {
             commit('setRanks', res.data.items);
           }
-          this._vm.$toast.info('fetch Ranks: ' + res.data.status);
+
         })
     },
     fetchDegrees({commit}) {
@@ -139,7 +137,6 @@ export default new Vuex.Store({
           if (res.data.status === 'ok') {
             commit('setDegrees', res.data.items);
           }
-          this._vm.$toast.info('fetch Degrees: ' + res.data.status);
 
         })
     },
@@ -150,7 +147,6 @@ export default new Vuex.Store({
           if (res.data.status === 'ok') {
             commit('setRussiaCities', res.data.city);
           }
-          this._vm.$toast.info('fetch City: ' + res.data.status);
         })
     },
     fetchPayedOrders({commit}){
@@ -174,12 +170,8 @@ export default new Vuex.Store({
             commit('setProducts', res.data.sections)
             this._vm.$toast.info('fetch Products: ' + res.data.status);
           }
-          else{
-            this._vm.$toast.warning('fetch City: something wrong');
-          }
           return res.data.status;
         })
-        .catch(e => this._vm.$toast.warning('fetch Products: ' + e))
     }
   },
   getters: {

@@ -1,6 +1,6 @@
 module.exports = {
     indexPath: 'index.php',
-    publicPath: '/front/',
+    publicPath: '/lk/',
     filenameHashing: false,
     css: {
         loaderOptions: {

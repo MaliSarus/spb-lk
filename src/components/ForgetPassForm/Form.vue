@@ -9,7 +9,7 @@
       />
       <Button
               ref="submitButton"
-              class="form__submit"
+              class="button button_yellow flex-grow-1"
               type="submit"
               text="Получить пароль"
       />
@@ -71,11 +71,6 @@
   };
 </script>
 <style lang="scss" scoped>
-  form {
-    @media screen and (min-width: $lg-width) {
-      padding: 0 40px;
-    }
-  }
 
   .form {
     &__group {

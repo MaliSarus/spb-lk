@@ -38,7 +38,7 @@
         косметология /
         дерматология.
       </p>
-      <router-link :to="{name:'Verify'}" class="form__submit">Перейти к верификации</router-link>
+      <router-link :to="{name:'Verify'}" tag="button" class="button button_yellow">Перейти к верификации</router-link>
     </div>
 
     <UserDataFormInputs v-model="userForm"/>
@@ -46,7 +46,7 @@
     <div class="user-data__controls">
       <div class="row">
         <div class="col-12 col-lg-6">
-          <router-link tag="button" :to="{name: 'ChangePass'}"
+          <router-link tag="button" type="button" :to="{name: 'ChangePass'}"
                        class="button button_yellow button_transparent user-data__pass">
             Изменить пароль
           </router-link>
@@ -101,7 +101,6 @@
       },
 
       changeData() {
-
         const data = {
           birthday: this.userForm.birthday,
           country: this.countryToId(this.userForm.country),
@@ -112,6 +111,7 @@
           rank: this.userForm.rank,
           degree: this.userForm.degree,
           ordinator: this.userForm.ordinator,
+          phone: this.userForm.phone
         }
         axios
           .put('/api/user/', data)

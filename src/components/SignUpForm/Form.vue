@@ -3,17 +3,19 @@
     <div class="row">
       <div class="col-12">
         <div class="form__page" v-if="formPage === 1">
-          <Input
-              label="Фамилия *"
-              input-id="signup-lastname"
-              input-type="text"
-              v-model="$v.form.lastName.$model"
+          <Input :class="{invalid: validForm.lastName}"
+                 label="Фамилия *"
+                 input-id="signup-lastname"
+                 input-type="text"
+                 v-model="$v.form.lastName.$model"
+                 @input="validate($event,'lastName')"
           />
-          <Input
-              label="Имя *"
-              input-id="signup-name"
-              input-type="text"
-              v-model="$v.form.name.$model"
+          <Input :class="{invalid: validForm.name}"
+                 label="Имя *"
+                 input-id="signup-name"
+                 input-type="text"
+                 v-model="$v.form.name.$model"
+                 @input="validate($event,'name')"
           />
 
           <Input
@@ -22,24 +24,25 @@
               input-type="text"
               v-model="form.secondName"
           />
-          <DateInput
-              v-model="$v.form.birthday.$model"
-              label="Дата рождения"
-              input-id="signup-birthday"
+          <DateInput :class="{invalid: validForm.birthday}"
+                     v-model="$v.form.birthday.$model"
+                     label="Дата рождения"
+                     input-id="signup-birthday"
+                     @inputDateChange="validateDate($event,'birthday')"/>
+          <Select :class="{invalid: validForm.country}"
+                  v-model="$v.country.$model"
+                  label="Страна *"
+                  input-id="signup-country"
+                  :options="countriesWithoutId"
+                  @pick="countryToId($event,'country')"
           />
-          <Select
-              v-model="$v.country.$model"
-              label="Страна *"
-              input-id="signup-country"
-              :options="countriesWithoutId"
-              @pick="countryToId"
-          />
-          <Select
-              v-if="form.country === 1"
-              v-model="$v.form.city.$model"
-              label="Город *"
-              input-id="signup-city"
-              :options="russiaCities"
+          <Select :class="{invalid: validForm.city}"
+                  v-if="form.country === 1"
+                  v-model="$v.form.city.$model"
+                  label="Город *"
+                  input-id="signup-city"
+                  :options="russiaCities"
+                  @pick="validateSelect($event,'city')"
           />
           <Button
               class="form__button"
@@ -55,18 +58,26 @@
               input-id="signup-company"
               input-type="text"
               v-model="form.company"
+              :class="{invalid: this.validForm.company}"
+              @input="validate($event,'company')"
+
           />
           <Input
               label="Должность *"
               input-id="signup-position"
               input-type="text"
               v-model="$v.form.position.$model"
+              :class="{invalid: this.validForm.position}"
+              @input="validate($event,'position')"
+
           />
           <Select
               v-model="$v.form.department.$model"
               label="Специализация *"
               input-id="signup-department"
               :options="departments"
+              :class="{invalid: this.validForm.department}"
+              @pick="validateSelect($event,'department')"
           />
           <Select
               v-model="form.rank"
@@ -102,24 +113,32 @@
               input-id="signup-phone"
               input-type="tel"
               v-model="$v.form.phone.$model"
+              :class="{invalid: this.validForm.phone}"
+              @input="validate($event,'phone')"
           />
           <Input
               label="Email *"
               input-id="signup-email"
               input-type="tel"
               v-model="$v.form.email.$model"
+              :class="{invalid: this.validForm.email}"
+              @input="validate($event,'email')"
           />
           <Input
               label="Пароль *"
               input-id="signup-pass"
               input-type="password"
               v-model="$v.form.password.$model"
+              :class="{invalid: this.validForm.password}"
+              @input="validate($event,'password')"
           />
           <Input
               label="Пароль повторно *"
               input-id="signup-cpass"
               input-type="password"
               v-model="form.confirmPassword"
+              :class="{invalid: this.validForm.confirmPassword}"
+              @input="validate($event,'confirmPassword')"
           />
           <Checkbox input-id="signup-ordinator" v-model="form.ordinator">
             Я являюсь ординатором или очным аспирантом кафедры: пластическая
@@ -152,6 +171,7 @@
             На Ваш email отправлено письмо с подтверждением, пожалуйста,
             пройдите по ссылке и активируйте аккаунт.
           </p>
+          <router-link tag="button" :to="{name: 'LogIn'}" class="button button_yellow">Перейти в личный кабинет</router-link>
         </div>
       </div>
     </div>
@@ -169,7 +189,6 @@
   import {mapGetters} from "vuex";
   import successImage from "@/assets/img/ui/success-signup.svg"
   import {mailPattern, namePattern, phonePattern} from "../../helpers/defaultValues";
-
 
 
   export default {
@@ -207,57 +226,123 @@
           policy: false,
         },
         country: "",
+        validForm: {
+          name: false,
+          lastName: false,
+          birthday: false,
+          city: false,
+          country: false,
+          company: false,
+          department: false,
+          position: false,
+          phone: false,
+          email: false,
+          password: false,
+          confirmPassword: false,
+          policy: false,
+        }
       };
     },
-    validations: {
-      country: {
-        required,
-      },
-      form: {
-        name: {
-          required,
-          alpha: (val) => namePattern.test(val)
+    validations() {
+      if (this.form.country === 1) {
+        return {
+          country: {
+            required,
+          },
+          form: {
+            name: {
+              required,
+              alpha: (val) => namePattern.test(val)
 
-        },
-        lastName: {
-          required,
-          alpha: (val) => namePattern.test(val)
+            },
+            lastName: {
+              required,
+              alpha: (val) => namePattern.test(val)
 
-        },
-        birthday: {
-          required,
-        },
-        city: {
-          required,
-        },
-        company: {
-          required,
-        },
-        department: {
-          required,
-        },
-        position: {
-          required,
-        },
-        phone: {
-          required,
-          alpha: (val) => phonePattern.test(val)
+            },
+            birthday: {
+              required,
+            },
+            city: {
+              required
+            },
+            company: {
+              required,
+            },
+            department: {
+              required,
+            },
+            position: {
+              required,
+            },
+            phone: {
+              required,
+              alpha: (val) => phonePattern.test(val)
 
-        },
-        email: {
+            },
+            email: {
+              required,
+              alpha: (val) => mailPattern.test(val)
+            },
+            password: {
+              required,
+            },
+            confirmPassword: {
+              sameAsPassword: sameAs("password"),
+            },
+            policy: {
+              required,
+            },
+          }
+        }
+      } else return {
+        country: {
           required,
-          alpha: (val) => mailPattern.test(val)
         },
-        password: {
-          required,
+        form: {
+          name: {
+            required,
+            alpha: (val) => namePattern.test(val)
+
+          },
+          lastName: {
+            required,
+            alpha: (val) => namePattern.test(val)
+
+          },
+          birthday: {
+            required,
+          },
+          city: {},
+          company: {
+            required,
+          },
+          department: {
+            required,
+          },
+          position: {
+            required,
+          },
+          phone: {
+            required,
+            alpha: (val) => phonePattern.test(val)
+
+          },
+          email: {
+            required,
+            alpha: (val) => mailPattern.test(val)
+          },
+          password: {
+            required,
+          },
+          confirmPassword: {
+            sameAsPassword: sameAs("password"),
+          },
+          policy: {
+            required,
+          },
         },
-        confirmPassword: {
-          sameAsPassword: sameAs("password"),
-        },
-        policy: {
-          required,
-        },
-      },
+      }
     },
     computed: {
       ...mapGetters([
@@ -270,45 +355,119 @@
       countriesWithoutId() {
         return this.countries.map((country) => country.name);
       },
+      pageValidate() {
+        const validateHandler = this.$v;
+        switch (this.formPage) {
+          case 1:
+            return validateHandler.form.name.$invalid ||
+              validateHandler.form.lastName.$invalid ||
+              validateHandler.form.birthday.$invalid ||
+              validateHandler.form.city.$invalid ||
+              validateHandler.country.$invalid;
+          case 2:
+            return validateHandler.form.company.$invalid ||
+              validateHandler.form.position.$invalid ||
+              validateHandler.form.department.$invalid;
+          case 3:
+            return validateHandler.form.phone.$invalid ||
+              validateHandler.form.email.$invalid ||
+              validateHandler.form.password.$invalid ||
+              validateHandler.form.confirmPassword.$invalid;
+          default:
+            return true
+        }
+      }
     },
     methods: {
+      validate(event, validFormField) {
+        this.validForm[validFormField] = event.target.value === '';
+      },
+      validateDate(event, validFormField) {
+        this.validForm[validFormField] = event === '';
+      },
+      validateSelect(event, validFormField) {
+        this.validForm[validFormField] = event === '';
+
+      },
       nextPage() {
-        this.formPage += 1;
+        if (this.pageValidate) {
+          const validForm = this.validForm;
+          switch (this.formPage) {
+            case 1: {
+              validForm.name = this.$v.form.name.$invalid;
+              validForm.lastName = this.$v.form.lastName.$invalid;
+              validForm.birthday = this.$v.form.birthday.$invalid;
+              validForm.country = this.$v.country.$invalid;
+              validForm.city = this.$v.form.city.$invalid;
+              break;
+            }
+            case 2: {
+              validForm.company = this.$v.form.company.$invalid;
+              validForm.position = this.$v.form.position.$invalid;
+              validForm.department = this.$v.form.department.$invalid;
+              break;
+            }
+            case 3: {
+              validForm.phone = this.$v.form.phone.$invalid
+              validForm.email = this.$v.form.email.$invalid
+              validForm.password = this.$v.form.password.$invalid
+              validForm.confirmPassword = this.$v.form.confirmPassword.$invalid;
+            }
+          }
+        } else {
+          for (const key in this.validForm) {
+            this.validForm[key] = false;
+          }
+          this.formPage += 1;
+        }
       },
       prevPage() {
         this.formPage -= 1;
       },
-      countryToId(countryName) {
+      countryToId(countryName, validFormField) {
         this.form.country = +this.countries.find(
           (country) => country.name === countryName
         ).id;
+
+        this.validForm[validFormField] = countryName === '';
+
       },
       signUp() {
         const vueForm = this.form;
-        const formData = {
-          name: vueForm.name,
-          lastName: vueForm.lastName,
-          secondName: vueForm.secondName,
-          birthday: vueForm.birthday,
-          country: vueForm.country,
-          city: vueForm.city,
-          phone: vueForm.phone,
-          email: vueForm.email,
-          company: vueForm.company,
-          position: vueForm.position,
-          department: vueForm.department,
-          rank: vueForm.rank,
-          degree: vueForm.degree,
-          ordinator: vueForm.ordinator,
-          password: vueForm.password,
-          confirmPassword: vueForm.confirmPassword,
-        };
-
-        if (!this.$v.$invalid) {
-          axios.put("/api/signup/", formData).then((res) => {
-            this.formPage = 4;
-            console.log(res);
-          });
+        if (this.pageValidate) {
+          const validForm = this.validForm;
+          validForm.phone = this.$v.form.phone.$invalid
+          validForm.email = this.$v.form.email.$invalid
+          validForm.password = this.$v.form.password.$invalid
+          validForm.confirmPassword = this.$v.form.confirmPassword.$invalid;
+        } else {
+          for (const key in this.validForm) {
+            this.validForm[key] = false;
+          }
+          const formData = {
+            name: vueForm.name,
+            lastName: vueForm.lastName,
+            secondName: vueForm.secondName,
+            birthday: vueForm.birthday,
+            country: vueForm.country,
+            city: vueForm.city,
+            phone: vueForm.phone,
+            email: vueForm.email,
+            company: vueForm.company,
+            position: vueForm.position,
+            department: vueForm.department,
+            rank: vueForm.rank,
+            degree: vueForm.degree,
+            ordinator: vueForm.ordinator,
+            password: vueForm.password,
+            confirmPassword: vueForm.confirmPassword,
+          };
+          if (!this.$v.$invalid) {
+            axios.put("/api/signup/", formData).then((res) => {
+              this.formPage = 4;
+              console.log(res);
+            });
+          }
         }
       },
 
@@ -354,6 +513,10 @@
 
     &__input {
       margin-bottom: 15px;
+
+      &.invalid {
+        border-color: red;
+      }
     }
 
     &__button {

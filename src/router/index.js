@@ -19,7 +19,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/lk/:id',
+    path: '/user/:id',
     component: PersonalCab,
     children: [
       {path: 'user-data', component: UserData, name: 'UserData'},

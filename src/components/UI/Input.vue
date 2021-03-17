@@ -1,6 +1,6 @@
 <template>
   <div class="form__input">
-    <input :type="inputType" :id="inputId" v-model="inputValue" >
+    <input :type="inputType" :id="inputId" v-model="inputValue" @input="$emit('input', $event)">
     <label v-if="label" :for="inputId" :class="{active: labelActive}">{{ label }}</label>
   </div>
 </template>

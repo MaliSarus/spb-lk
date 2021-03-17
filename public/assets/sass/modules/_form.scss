@@ -49,7 +49,6 @@
     outline: none;
     text-align: center;
     background-color: #FFCC40;
-    background-image: url('../img/ui/submit-button-arrow.svg');
     background-repeat: no-repeat;
     background-size: 20px;
     background-position: calc(100% - 12px) center;
@@ -86,16 +85,6 @@
           background-image: url("../img/ui/checkbox_checked.svg");
         }
       }
-    }
-  }
-  &__input-datepicker{
-    &::before {
-      background: url("../img/ui/datepicker-icon.svg") center no-repeat;
-    }
-  }
-  &__input-select {
-    &::before{
-      background: url("../img/ui/select-icon.svg") center no-repeat;
     }
   }
 

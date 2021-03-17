@@ -30,15 +30,31 @@
     },
     methods:{
       enterInPersonalCab(){
-        this.$router.push(`/lk/${this.userId}`)
+        this.$router.push(`/user/${this.userId}`)
       }
     }
   };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .form {
+    &__forget{
+      width: 100%;
+      max-width: 450px;
+      background: #FFFFFF;
+      border: 1px solid #A8BBD3;
+      box-shadow: 0px 0px 30px 30px rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      padding: 35px 35px 55px;
+    }
     &__title {
+      font-size: 28px;
+      line-height: 32;
+      font-weight: bold;
       margin-bottom: 15px;
+      @media screen and (min-width: $lg-width){
+        font-size: 36px;
+        line-height: 42px;
+      }
     }
 
     .text {

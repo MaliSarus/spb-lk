@@ -24,7 +24,7 @@
                 Данные успешно обновлены!
               </div>
               <div class="success__button">
-                <router-link tag="button" :to="`/lk/${userId}`" class="button button_yellow">Вернуться в личный кабинет</router-link>
+                <router-link tag="button" :to="`/user/${userId}`" class="button button_yellow">Вернуться в личный кабинет</router-link>
               </div>
             </div>
           </div>

@@ -70,7 +70,7 @@
                   Также информация про статус верификации появится в личном кабинете.
                 </div>
                 <div class="verify-success__button">
-                  <router-link tag="button" class="button button_yellow" :to="'/lk/'+userId">Вернуться в личный
+                  <router-link tag="button" class="button button_yellow" :to="'/user/'+userId">Вернуться в личный
                     кабинет
                   </router-link>
                 </div>

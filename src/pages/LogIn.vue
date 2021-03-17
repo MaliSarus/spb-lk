@@ -23,7 +23,7 @@
           .then((res) => {
             console.log(res)
             if (res) {
-              this.$router.push(`/lk/${res.id}`)
+              this.$router.push(`/user/${res.id}`)
             }
           })
       },

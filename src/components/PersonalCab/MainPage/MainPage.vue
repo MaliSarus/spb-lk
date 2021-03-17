@@ -8,8 +8,7 @@
               Оплаченные заказы
             </div>
             <Loader v-if="isLoading"/>
-            <div v-else-if="payedOrders.length === 0">Купеленных товаров нет</div>
-            <PayedOrder v-else :payed-orders="payedOrders"/>
+            <PayedOrder v-else-if="payedOrders.length === 0" :payed-orders="payedOrders"/>
           </div>
         </div>
       </div>

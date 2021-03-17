@@ -1,5 +1,8 @@
 <template>
-  <div class="form__input form__input-select"  :class="{open:isOpen}" v-on-clickaway="closeSelect" @click="formInputClick($event)">
+  <div class="form__input form__input-select" :class="{open:isOpen}" v-on-clickaway="closeSelect"
+       @mousedown="inputClick">
+    <button type="button" class="form__input-trigger" :style="{backgroundImage: `url('${selectIcon}')`}"
+            @click="triggerClick"></button>
     <input type="text" :id="inputId"
            @focus="inputFocus"
            @input="$event => searchString = $event.target.value"
@@ -28,6 +31,7 @@
 
 <script>
   import vuescroll from 'vuescroll'
+  import selectIcon from '@/assets/img/ui/select-icon.svg'
 
   export default {
     name: "Select",
@@ -64,20 +68,26 @@
         selectMenuPos: 'bottom',
         selectMenuOverflow: false,
         selectMenuHeight: 0,
+        selectIcon
       }
     },
     methods: {
-      formInputClick($event){
-        if(this.$refs.select.contains($event.target)){
-          this.isOpen = false
-        }
-        else {
-          this.isOpen = true
-          this.$nextTick(() => {
-            this.$refs.selectInput.focus();
-          })
+      triggerClick() {
+        this.isOpen = !this.isOpen
+      },
+      inputClick($event) {
+        if (!$event.target.classList.contains('form__input-trigger')) {
+          console.log($event.target)
+          if (!this.isOpen) {
+
+            this.isOpen = true;
+            this.$nextTick(() => {
+              this.$refs.selectInput.focus();
+            })
+          }
         }
       },
+
       selectOption(option) {
         this.selectedOption = option;
         this.isOpen = false;
@@ -95,8 +105,7 @@
             this.selectMenuPos = inputElBottom < windowHeight ? 'bottom' : 'top'
             this.selectMenuHeight = inputElBottom
           });
-        }
-        else {
+        } else {
           const windowHeight = window.innerHeight;
           this.selectMenuPos = this.selectMenuHeight < windowHeight ? 'bottom' : 'top'
         }
@@ -134,22 +143,10 @@
 <style lang="scss" scoped>
   .form {
     &__input-select {
-      &::before {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        display: block;
-        content: '';
-        width: 18px;
-        height: 6px;
-        transform: translateY(-50%);
-        transition: transform .25s;
-        background-size: contain;
-        cursor: pointer;
-      }
+      cursor: pointer;
 
       &.open {
-        &::before {
+        .form__input-trigger {
           transform: translateY(-50%) rotate(180deg);
         }
       }
@@ -157,6 +154,24 @@
       input {
         padding-right: 35px;
       }
+    }
+
+    &__input-trigger {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      display: block;
+      content: '';
+      width: 18px;
+      height: 6px;
+      transform: translateY(-50%);
+      transition: transform .25s;
+      background-size: contain;
+      cursor: pointer;
+      border: none;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: transparent;
     }
   }
 
@@ -203,12 +218,13 @@
     }
   }
 
-  span{
+  span {
     position: absolute;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    &.invisible{
+
+    &.invisible {
       opacity: 0;
       visibility: hidden;
     }

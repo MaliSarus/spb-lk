@@ -7,19 +7,24 @@
                 label="Email"
                 input-id="login-email"
                 input-type="email"
+                :class="{invalid: this.valid.email}"
+                @input="validInput($event,'email')"
         />
         <Input
                 v-model="password"
                 label="Пароль"
                 input-id="login-password"
                 input-type="password"
+                :class="{invalid: this.valid.password}"
+                @input="validInput($event,'password')"
         />
       </div>
     </div>
     <div class="form__group">
-      <Button class="form__submit" type="submit" text="Войти"/>
+      <Button class=" button button_yellow form__submit" type="submit" text="Войти"/>
       <router-link :to="{name:'ForgetPass'}" class="form__remember">Забыли пароль ?</router-link>
     </div>
+    <p v-if="errorMessage" class="auth__error">{{errorMessage}}</p>
   </form>
 
 </template>
@@ -38,12 +43,27 @@
     data() {
       return {
         email: '',
-        password: ''
+        password: '',
+        errorMessage:'',
+        valid:{
+          email: false,
+          password: false
+        }
       }
     },
     methods: {
       ...mapActions(['authUser']),
+      validInput(event, validFormField){
+        this.valid[validFormField] = event.target.value === ''
+        this.errorMessage = '';
+      },
       submitLogin() {
+        if (!this.email){
+          this.valid.email = true
+        }
+        if (!this.password){
+          this.valid.password = true
+        }
         this.authUser(
           {
             email: this.email,
@@ -54,6 +74,9 @@
           console.log(res);
           if (res.data.status !== "error"){
             this.$router.push(`/user/${this.user.id}`)
+          }
+          else {
+            this.errorMessage = res.data.error;
           }
         })
       }
@@ -85,11 +108,15 @@
 
     &__input {
       margin-bottom: 15px;
+      &.invalid{
+        border: 1px solid red
+      }
     }
 
     &__submit {
       max-width: 150px;
       margin-right: 30px;
+      text-transform: none;
     }
 
 
@@ -108,6 +135,11 @@
       align-items: center;
       justify-content: space-between;
     }
+  }
+  .auth__error{
+    margin-top: 15px;
+    margin-bottom: 0;
+    color: red;
   }
 
 </style>

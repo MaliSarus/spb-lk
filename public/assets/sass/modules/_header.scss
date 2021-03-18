@@ -1,6 +1,5 @@
 .header {
   background: $accent-color;
-  height: 80px;
   position: relative;
   z-index: 1001;
   @media screen and (min-width: $xl-width) {
@@ -8,19 +7,13 @@
   }
 
   &__mobile-control {
-    width: 80px;
     height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 100%;
     overflow: hidden;
     background: $accent-color;
-    transition: background-color .25s;
 
-    &:hover {
-      background-color: lighten($accent-color, 5);
-    }
 
     button {
       outline: none !important;
@@ -28,13 +21,9 @@
   }
 
   &__wrapper {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
     display: flex;
     justify-content: space-between;
-    padding: 0 35px;
+    padding: 0 20px;
     align-items: center;
 
     @media screen and (min-width: $xl-width) {
@@ -49,14 +38,21 @@
   }
 
   &__logo {
-    width: 149px;
+    height: 80px;
     padding: 11px 7px 9px;
     border-radius: 5px;
     background: $accent-color;
     @media screen and (min-width: $xl-width) {
+      width: 149px;
+      height: auto;
       position: absolute;
       left: 35px;
       top: 0;
+    }
+    img{
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
     }
   }
 
@@ -80,7 +76,7 @@
         a {
           display: block;
           padding: 30px 15px;
-          font-weight: 700;
+          font-weight: 400;
           font-size: 14px;
           line-height: 21px;
           color: white;
@@ -203,7 +199,8 @@
         li {
           list-style: none;
 
-          a {
+          a, button {
+            width: 100%;
             display: block;
             padding: 8.5px 35px 8.5px 15px;
             color: #282828;
@@ -215,6 +212,12 @@
             background-size: 5px 10px;
             background-position: calc(100% - 10px) center;
             background-repeat: no-repeat;
+            border: none;
+            background-color: transparent;
+            text-align: left;
+            &.logout{
+              background-image: none;
+            }
 
             &:hover {
               background-color: #F4F9FF;
@@ -245,7 +248,7 @@
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  background: white;
+  background: rgba($accent-color,.9);
 
   &.open {
     opacity: 1;
@@ -264,6 +267,25 @@
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
+  }
+  &__menu{
+    margin-bottom: 20px;
+    ul{
+      margin: 0;
+      padding: 0;
+    }
+    li{
+      list-style: none;
+    }
+    a{
+      color: white;
+      display: block;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 18px;
+      line-height: 21px;
+      text-decoration: none;
+    }
   }
 
   &__accordion {
@@ -286,13 +308,39 @@
 
     .accordion {
       &__title {
+        position: relative;
         font-size: 18px;
+        text-align: center;
+        text-transform: none;
+        &::before{
+          position: absolute;
+          top: 50%;
+          right: 17px;
+          display: block;
+          content: '';
+          height: 10px;
+          width: 5px;
+          background-image: url("../img/ui/arrow.svg");
+          background-position: center;
+          background-size: contain;
+          background-repeat: no-repeat;
+          transform: translateY(-50%) rotate(-90deg);
+          transition: transform .25s;
+        }
+        &.open{
+          &::before{
+            transform: translateY(-50%) rotate(90deg);
+
+          }
+        }
+
+        &:hover{
+          background-color: $yellow-color!important;
+        }
       }
 
       &__inner-content {
-        padding: 10px 0 0;
-
-        a {
+        a, button {
           color: $main-text-color;
           text-decoration: none;
         }
@@ -300,9 +348,20 @@
         nav {
           padding: 10px 0;
 
-          a {
+          a, button {
             display: block;
+            width: 100%;
+            background-color: transparent;
+            border: none;
             padding: 10px 10px;
+            font-size: 18px;
+            text-align: left;
+            &:not(.logout) {
+              background-image: url("../img/ui/arrow.svg");
+              background-position: calc(100% - 15px) center;
+              background-repeat: no-repeat;
+              background-size: 5px 10px;
+            }
 
             &:hover {
               background-color: darken(#F4F9FF, 5);
@@ -312,9 +371,10 @@
       }
 
       &__content {
+        transform: translateY(-5px);
         &-wrapper {
-          background: #F4F9FF;
-          border-radius: 2px;
+          background: white;
+          border-radius: 0 0 10px 10px;
           color: $main-text-color;
         }
       }

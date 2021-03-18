@@ -1,17 +1,17 @@
 <template>
   <form action="#" @submit.prevent="getUser">
-    <Input v-model="email" input-type="email" label="Email"/>
+    <Input v-model="email" input-type="email" label="Email" :class="{invalid: validForm.email}" @input="validate"/>
     <div class="form__group d-flex">
       <router-link
-              ref="backButton"
-              class="form__button form__button_prev"
-              :to="{ name: 'LogIn' }"
+          ref="backButton"
+          class="form__button form__button_prev"
+          :to="{ name: 'LogIn' }"
       />
       <Button
-              ref="submitButton"
-              class="button button_yellow flex-grow-1"
-              type="submit"
-              text="Получить пароль"
+          ref="submitButton"
+          class="button button_yellow flex-grow-1"
+          type="submit"
+          text="Получить пароль"
       />
     </div>
   </form>
@@ -19,6 +19,7 @@
 <script>
   import Input from "@/components/UI/Input.vue";
   import Button from "@/components/UI/Button.vue";
+  import axios from 'axios'
 
   export default {
     components: {Input, Button},
@@ -28,6 +29,9 @@
         email: '',
         formPage: this.page,
         id: this.userId,
+        validForm: {
+          email: false,
+        }
       }
     },
     watch: {
@@ -42,7 +46,7 @@
       resizeSquareButton() {
         const submitButton = this.$refs.submitButton;
         const backButton = this.$refs.backButton;
-        if (submitButton && backButton){
+        if (submitButton && backButton) {
           const submitButtonHeight = submitButton.$el.offsetHeight;
           backButton.$el.style.width = submitButtonHeight + "px";
           window.addEventListener("resize", () => {
@@ -52,16 +56,27 @@
         }
 
       },
-      getUser(){
-        const status = 'err';
-        if (status === 'ok'){
-          this.formPage += 1;
-          this.id = 1;
+      validate(event){
+        this.validForm.email = event.target.value === ''
+      },
+      getUser() {
+        if (this.email) {
+
+          axios
+            .post('/api/auth/forgot/', {
+              email: this.email
+            })
+            .then(res => {
+              const status = res.data.status
+              if (status === 'ok') {
+                this.formPage += 1;
+              } else {
+                this.formPage = 'error';
+              }
+            })
         }
         else{
-          this.formPage = 'error';
-          this.id = 'error';
-
+          this.validForm.email = true
         }
       }
     },
@@ -93,6 +108,9 @@
         flex-shrink: 0;
         margin-right: 15px;
       }
+    }
+    .invalid{
+      border: 1px solid red;
     }
   }
 </style>

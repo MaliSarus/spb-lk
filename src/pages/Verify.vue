@@ -45,9 +45,8 @@
               <div class="verify__controls">
                 <Button
                     class="form__button form__button_prev"
-                    text=""
                     type="button"
-                    @buttonClick="$router.go(-1)"
+                    @click="$router.push('/user/'+userId +/user-data/)"
 
                 />
                 <button type="submit" class="button button_yellow user-data__submit">Отправить на верификацию</button>
@@ -194,8 +193,14 @@
     position: relative;
     max-width: 240px;
     margin: 0 auto;
+    img{
+      transition: filter .2s;
+    }
 
     &:hover {
+      img{
+        filter: opacity(.5);
+      }
       .change-file {
         opacity: 1;
       }

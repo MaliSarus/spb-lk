@@ -10,6 +10,7 @@ import ChangePass from "@/pages/ChangePass";
 import ChangeFIO from "@/pages/ChangeFIO";
 import OrderCart from "@/pages/OrderCart";
 import Verify from "@/pages/Verify";
+import ErrorPage from "@/pages/ErrorPage";
 
 import store from '@/store'
 
@@ -22,12 +23,12 @@ const routes = [
     path: '/user/:id',
     component: PersonalCab,
     children: [
-      {path: 'user-data', component: UserData, name: 'UserData'},
-      {path: 'change-pass', component: ChangePass, name: 'ChangePass'},
-      {path: 'change-fio', component: ChangeFIO, name: 'ChangeFIO'},
-      {path: 'order-cart', component: OrderCart, name: 'OrderCart'},
-      {path: 'verify', component: Verify, name: 'Verify'},
-      {path: '', component: MainPage, name: 'MainPage'},
+      {path: 'user-data', component: UserData, name: 'UserData', meta:{title: 'Личный кабинет - Персональная информация'}},
+      {path: 'change-pass', component: ChangePass, name: 'ChangePass', meta:{title: 'Личный кабинет - Изменить пароль'}},
+      {path: 'change-fio', component: ChangeFIO, name: 'ChangeFIO', meta:{title: 'Личный кабинет - Изменить ФИО'}},
+      {path: 'order-cart', component: OrderCart, name: 'OrderCart', meta:{title: 'Личный кабинет - Оформить заказ'}},
+      {path: 'verify', component: Verify, name: 'Verify', meta:{title: 'Личный кабинет - Подтверждение статуса'}},
+      {path: '', component: MainPage, name: 'MainPage', meta:{title: 'Личный кабинет'}},
     ],
     meta: {
       auth: true,
@@ -36,19 +37,26 @@ const routes = [
   {
     path: '/sign-up',
     name: 'SignUp',
-    component: SignUp
+    component: SignUp,
+    meta:{title: 'Регистрация'}
   },
   {
     path: '/forget-pass',
     name: 'ForgetPass',
-    component: ForgetPath
+    component: ForgetPath,
+    meta:{title: 'Забыли пароль'}
   },
   {
     path: '/',
     name: 'LogIn',
-    component: LogIn
+    component: LogIn,
+    meta:{title: 'Авторизация'}
   },
-
+  {
+    path: '*',
+    component: ErrorPage,
+    meta:{title: 'Страница не найдена'}
+  }
 ]
 
 const router = new VueRouter({
@@ -59,6 +67,8 @@ const router = new VueRouter({
 
 // eslint-disable-next-line no-unused-vars
 router.beforeEach((to, from, next) => {
+  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+  if(nearestWithTitle) document.title = nearestWithTitle.meta.title;
   const requiredAuth = to.matched.some(route => route.meta.auth);
   if (requiredAuth) {
     store.dispatch('fetchUser')

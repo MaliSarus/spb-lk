@@ -1,10 +1,11 @@
 .button{
   display: inline-block;
-  border: 1px solid transparent;
-  border-radius: 2px;
+  border: 2px solid transparent;
+  border-radius: 5px;
   font-size: 14px;
   line-height: 16px;
   text-align: center;
+  font-weight: normal;
   padding: 15px;
   background-color: transparent;
   transition: background-color .25s;
@@ -13,16 +14,37 @@
     line-height: 21px;
   }
   &_yellow{
-    background-color: $yellow-color;
-    border-color: $yellow-color;
+    color: black;
+    border-color:$yellow-color;
+    background-color: $yellow-color;;
+    text-transform: uppercase;
     &:hover{
-      background-color: darken($yellow-color, 10);
+      background-color: white;
+    }
+  }
+  &_blue{
+    color: white;
+    background-color: $accent-color;
+    background-position: center center;
+    border-color: transparent;
+    border-style: solid;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    &:hover{
+      background-color: $yellow-color;
+      border-color: $yellow-color;
+      color: black;
     }
   }
   &_transparent{
-    background-color: transparent;
+    color: $accent-color;
+    background-color: white;
+    background-position: center center;
+    border-color: $yellow-color;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
     &:hover{
       background-color: $yellow-color;
+      border-color: $yellow-color;
+      color: black;
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="form form__login">
     <div class="form__title">Личный кабинет</div>
     <LogInForm/>
-    <router-link tag="button" :to="{name: 'SignUp'}" class="form__button">Зарегистрироваться</router-link>
+    <router-link tag="button" :to="{name: 'SignUp'}" class="button button_blue form__button">Зарегистрироваться</router-link>
   </div>
 </template>
 
@@ -57,26 +57,21 @@
     }
 
     &__title {
-
-      margin-bottom: 28px;
-      text-align: center;
+      font-size: 28px;
+      line-height: 32px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      @media screen and (min-width: $lg-width){
+        font-size: 36px;
+        line-height: 42px;
+      }
     }
 
     &__button {
       margin-top: 40px;
-
-      font-weight: 500;
-      font-size: 18px;
-      line-height: 21px;
       text-align: center;
-      color: white;
-      background: $accent-color;
-      border: 1px solid #F3F3F3;
-      box-sizing: border-box;
-      border-radius: 5px;
       padding: 15px 15px;
       width: 100%;
-
     }
   }
 

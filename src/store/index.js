@@ -115,7 +115,9 @@ export default new Vuex.Store({
         .get('/api/specializations/')
         .then(res => {
           if (res.data.status === 'ok') {
-            commit('setDepartments', res.data.items)
+            const departments = res.data.items;
+            departments.push('другое')
+            commit('setDepartments', departments)
           }
 
         })
@@ -125,7 +127,9 @@ export default new Vuex.Store({
         .get('/api/ranks/')
         .then(res => {
           if (res.data.status === 'ok') {
-            commit('setRanks', res.data.items);
+            const ranks = res.data.items;
+            ranks.push('\u2014')
+            commit('setRanks', ranks);
           }
 
         })
@@ -135,7 +139,9 @@ export default new Vuex.Store({
         .get('/api/degrees/')
         .then(res => {
           if (res.data.status === 'ok') {
-            commit('setDegrees', res.data.items);
+            const degrees = res.data.items;
+            degrees.push('\u2014')
+            commit('setDegrees', degrees);
           }
 
         })

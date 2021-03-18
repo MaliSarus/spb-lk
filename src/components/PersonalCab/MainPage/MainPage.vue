@@ -4,11 +4,11 @@
       <div class="row">
         <div class="col-12">
           <div class="personal-cab__payed payed-order">
-            <div class="personal-cab__subtitle">
+            <Loader v-if="isLoading"/>
+            <div v-else-if="payedOrders.length !== 0" class="personal-cab__subtitle">
               Оплаченные заказы
             </div>
-            <Loader v-if="isLoading"/>
-            <PayedOrder v-else-if="payedOrders.length === 0" :payed-orders="payedOrders"/>
+            <PayedOrder v-if="payedOrders.length !== 0"  :payed-orders="payedOrders"/>
           </div>
         </div>
       </div>

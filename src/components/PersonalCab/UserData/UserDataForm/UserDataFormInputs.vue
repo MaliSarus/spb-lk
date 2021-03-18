@@ -10,7 +10,7 @@
     <Select v-model="formInputs.city" input-id="user-city" :options="russiaCities" v-if="countryId === 1"/>
 
     <label for="user-phone">Телефон</label>
-    <Input v-model="formInputs.phone" input-id="user-phone"/>
+    <Input v-model="formInputs.phone" input-id="user-phone" input-type="tel" @input="inputCheck"/>
 
     <label for="user-company">Учреждение</label>
     <Input v-model="formInputs.company" input-id="user-company"/>
@@ -46,6 +46,11 @@
     model: {
       prop: 'formInputs',
       event: 'formInputsChange',
+    },
+    methods:{
+      inputCheck(e){
+        console.log(e)
+      }
     },
     computed: {
       ...mapGetters(["russiaCities", "countries", "departments", "ranks", "degrees"]),

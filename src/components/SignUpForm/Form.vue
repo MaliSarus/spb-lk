@@ -26,7 +26,7 @@
           />
           <DateInput :class="{invalid: validForm.birthday}"
                      v-model="$v.form.birthday.$model"
-                     label="Дата рождения"
+                     label="Дата рождения *"
                      input-id="signup-birthday"
                      @inputDateChange="validateDate($event,'birthday')"/>
           <Select :class="{invalid: validForm.country}"
@@ -45,7 +45,7 @@
                   @pick="validateSelect($event,'city')"
           />
           <Button
-              class="form__button"
+              class="button button_blue form__button"
               text="Далее"
               @buttonClick="nextPage"
               type="button"
@@ -54,7 +54,7 @@
 
         <div class="form__page" v-show="formPage === 2">
           <Input
-              label="Учредение *"
+              label="Учреждение *"
               input-id="signup-company"
               input-type="text"
               v-model="form.company"
@@ -94,13 +94,13 @@
 
           <div class="form__group">
             <Button
-                class="form__button form__button_prev"
+                class="form__button_prev"
                 text=""
                 @buttonClick="prevPage"
                 type="button"
             />
             <Button
-                class="form__button"
+                class="button_blue button form__button"
                 text="Далее"
                 @buttonClick="nextPage"
                 type="button"
@@ -119,7 +119,7 @@
           <Input
               label="Email *"
               input-id="signup-email"
-              input-type="tel"
+              input-type="email"
               v-model="$v.form.email.$model"
               :class="{invalid: this.validForm.email}"
               @input="validate($event,'email')"
@@ -144,7 +144,7 @@
             Я являюсь ординатором или очным аспирантом кафедры: пластическая
             хирургия / челюстно-лицевая хирургия / косметология / дерматология.
           </Checkbox>
-          <Checkbox v-model="$v.form.policy.$model" input-id="signup-policy">
+          <Checkbox v-model="$v.form.policy.$model" :class="{invalid:validForm.policy}" input-id="signup-policy" @check="validateCheckBox($event, 'policy')">
             Я согласен с <a href="#">Политикой конфиденциальности</a>
           </Checkbox>
           <div class="form__group">
@@ -155,7 +155,7 @@
                 type="button"
             />
             <Button
-                class="form__button"
+                class="button button_blue form__button"
                 text="Зарегистрироваться"
                 @buttonClick="signUp"
                 type="button"
@@ -291,7 +291,7 @@
               sameAsPassword: sameAs("password"),
             },
             policy: {
-              required,
+              sameAs: sameAs( () => true )
             },
           }
         }
@@ -339,7 +339,7 @@
             sameAsPassword: sameAs("password"),
           },
           policy: {
-            required,
+            sameAs: sameAs( () => true )
           },
         },
       }
@@ -372,13 +372,15 @@
             return validateHandler.form.phone.$invalid ||
               validateHandler.form.email.$invalid ||
               validateHandler.form.password.$invalid ||
-              validateHandler.form.confirmPassword.$invalid;
+              validateHandler.form.confirmPassword.$invalid ||
+              validateHandler.form.policy.$invalid;
           default:
             return true
         }
       }
     },
     methods: {
+
       validate(event, validFormField) {
         this.validForm[validFormField] = event.target.value === '';
       },
@@ -388,6 +390,9 @@
       validateSelect(event, validFormField) {
         this.validForm[validFormField] = event === '';
 
+      },
+      validateCheckBox(value,validFormField){
+        this.validForm[validFormField] = value !== true;
       },
       nextPage() {
         if (this.pageValidate) {
@@ -412,6 +417,7 @@
               validForm.email = this.$v.form.email.$invalid
               validForm.password = this.$v.form.password.$invalid
               validForm.confirmPassword = this.$v.form.confirmPassword.$invalid;
+              validForm.policy = this.$v.form.policy.$invalid;
             }
           }
         } else {
@@ -440,6 +446,7 @@
           validForm.email = this.$v.form.email.$invalid
           validForm.password = this.$v.form.password.$invalid
           validForm.confirmPassword = this.$v.form.confirmPassword.$invalid;
+          validForm.policy = this.$v.form.policy.$invalid;
         } else {
           for (const key in this.validForm) {
             this.validForm[key] = false;
@@ -495,12 +502,16 @@
     form {
       margin-top: 45px;
     }
+    &__button{
+      width: 100%;
+    }
 
     &__group {
       display: flex;
 
       .form__button:not(.form__button_prev) {
         flex-grow: 1;
+        width: auto;
       }
     }
 
@@ -508,6 +519,7 @@
       &_prev {
         margin-right: 15px;
         max-width: 45px;
+        flex-grow: 1;
       }
     }
 
@@ -521,6 +533,9 @@
 
     &__button {
       margin-top: 30px;
+      &_prev{
+        margin-top: 30px;
+      }
     }
 
     &__checkbox {

@@ -55,6 +55,12 @@ export default {
     a{
       color: #5E5E5E;
     }
+    &.invalid{
+      color:red;
+      a{
+        color: red;
+      }
+    }
   }
 }
 

@@ -19,6 +19,7 @@
     <span v-if="selectedOption" :class="{invisible:isOpen}">{{selectedOption}}</span>
     <div ref="select" class="select-options" v-show="isOpen" :class="selectMenuPos">
       <vuescroll :ops="ops">
+
         <ul>
           <li v-for="(option, index) in searchingOptions" :key="`option_${option}_${index}`"
               @click="selectOption(option)">{{ option }}
@@ -180,12 +181,12 @@
     position: absolute;
     left: 0;
     right: 0;
-    padding: 18px 15px 18px 18px;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     background: white;
     overflow: hidden;
     z-index: 10;
+
 
     &.bottom {
       bottom: 0;
@@ -207,13 +208,11 @@
 
     li {
       cursor: pointer;
+      padding: 18px 15px 18px 18px;
 
-      &:not(:last-child) {
-        margin-bottom: 30px;
-      }
 
       &:hover {
-        color: #3b7dee;
+        background-color: rgba(59, 125, 238, 0.2);
       }
     }
   }

@@ -5,7 +5,7 @@
         <div class="col-12">
           <div class="personal-cab__user-data">
             <div class="personal-cab__subtitle">
-              Заявка на корректировку ФИО:
+              Заявка на корректировку ФИО/Email:
             </div>
           </div>
         </div>
@@ -17,7 +17,7 @@
               <div class="user-data__text text">
                 <p>
                   Для изменения ФИО отправьте, пожалуйста, скан документа, удостоверяющего личность. Если вы хотите
-                  сообщить нам дополнительные сведения, напишите их в комментарии ниже.
+                  сообщить нам дополнительные сведения (например, для смены email адреса), напишите их в комментарии ниже.
                   <br><br>
                   <b>Принимаемые форматы: JPG, PNG, PDF, DOCX, DOC.</b>
                 </p>
@@ -48,9 +48,8 @@
               <div class="verify__controls">
                 <Button
                     class="form__button form__button_prev"
-                    text=""
                     type="button"
-                    @buttonClick="$router.go(-1)"
+                    @click="$router.push('/user/'+userId +/user-data/)"
 
                 />
                 <button type="submit" class="button button_yellow user-data__submit">Отправить на верификацию</button>

@@ -1,63 +1,79 @@
 <template>
-  <form action="#" @submit.prevent="changeData">
-    <div class="user-data__name">
-      {{userForm.name}}
-      <div class="user-data__rename">
-        <v-popover offset="20" placement="right" style="height: 100%">
-          <!-- This will be the popover target (for the events and position) -->
-          <div style="width: 18px;height: 18px;"></div>
-          <!-- This will be the content of the popover -->
-          <template slot="popover">
-            <button class="tooltip__close" v-close-popover :style="{backgroundImage:`url(${tooltipClose})`}"></button>
-            <div class="tooltip__title">
-              Эти данные меняются только по официальному запросу.
-            </div>
-            <div class="tooltip__body text">
-              Заполните форму отправив запрос с просьбой изменить контактую информацию, а также скан документа подтверждающего личность.
-            </div>
-            <router-link :to="{name:'ChangeFIO'}" tag="button" class="tooltip__button button button_yellow">Перейти</router-link>
-          </template>
-        </v-popover>
+  <div class="form-wrapper">
+    <form action="#" @submit.prevent="changeData" v-if="page === 1">
+      <div class="user-data__name">
+        {{userForm.name}}
+        <div class="user-data__email">
+          {{userForm.email}}
+        </div>
+        <div class="user-data__rename">
+          <v-popover offset="20" placement="right" style="height: 100%">
+            <!-- This will be the popover target (for the events and position) -->
+            <div style="width: 18px;height: 18px;"></div>
+            <!-- This will be the content of the popover -->
+            <template slot="popover">
+              <button class="tooltip__close" v-close-popover :style="{backgroundImage:`url(${tooltipClose})`}"></button>
+              <div class="tooltip__title">
+                Эти данные меняются только по официальному запросу.
+              </div>
+              <div class="tooltip__body text">
+                Заполните форму отправив запрос с просьбой изменить контактую информацию, а также скан документа
+                подтверждающего личность.
+              </div>
+              <router-link :to="{name:'ChangeFIO'}" tag="button" class="tooltip__button button button_yellow">Перейти
+              </router-link>
+            </template>
+          </v-popover>
+        </div>
+
+      </div>
+      <hr>
+      <div v-if="isVerify" class="user-data__verify">
+        Вы успешно подтвердили Ваш статус! <b>Ваш аккаунт верифицирован.</b>
+        В разделе “Оформление участия” для Вас специальные цены.
+      </div>
+      <Checkbox v-if="!userForm.ordinator" v-model="verifyCheck" input-id="user-verify"
+                class="user-data__verify-check">Являюсь клиническим ординатором или
+        очным аспирантом кафедры
+      </Checkbox>
+      <div class="user-data__verify-no" v-if="!isVerify && userForm.ordinator || verifyCheck">
+        <p>
+          Обращаем внимание, что Вам необходимо подтвердить, что Вы являетесь клиническим
+          ординатором или
+          очным аспирантом кафедры: пластическая хирургия / челюстно-лицевая хирургия /
+          косметология /
+          дерматология.
+        </p>
+        <router-link :to="{name:'Verify'}" tag="button" class="button button_yellow">Перейти к верификации</router-link>
       </div>
 
-    </div>
-    <hr>
-    <div v-if="isVerify" class="user-data__verify">
-      Вы успешно подтвердили Ваш статус! <b>Ваш аккаунт верифицирован.</b>
-      В разделе “Оформление участия” для Вас специальные цены.
-    </div>
-    <Checkbox v-if="!userForm.ordinator" v-model="verifyCheck" input-id="user-verify"
-              class="user-data__verify-check">Являюсь клиническим ординатором или
-      очным аспирантом кафедры
-    </Checkbox>
-    <div class="user-data__verify-no" v-if="!isVerify">
-      <p>
-        Обращаем внимание, что Вам необходимо подтвердить, что Вы являетесь клиническим
-        ординатором или
-        очным аспирантом кафедры: пластическая хирургия / челюстно-лицевая хирургия /
-        косметология /
-        дерматология.
-      </p>
-      <router-link :to="{name:'Verify'}" tag="button" class="button button_yellow">Перейти к верификации</router-link>
-    </div>
+      <UserDataFormInputs v-model="userForm"/>
 
-    <UserDataFormInputs v-model="userForm"/>
-
-    <div class="user-data__controls">
-      <div class="row">
-        <div class="col-12 col-lg-6">
-          <router-link tag="button" type="button" :to="{name: 'ChangePass'}"
-                       class="button button_yellow button_transparent user-data__pass">
-            Изменить пароль
-          </router-link>
-        </div>
-        <div class="col-12 col-lg-6">
-          <button type="submit" class="button button_yellow user-data__submit">Сохранить
-          </button>
+      <div class="user-data__controls">
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <router-link tag="button" type="button" :to="{name: 'ChangePass'}"
+                         class="button button_yellow button_transparent user-data__pass">
+              Изменить пароль
+            </router-link>
+          </div>
+          <div class="col-12 col-lg-6">
+            <button type="submit" class="button button_yellow user-data__submit">Сохранить
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+    <form action="#" @submit.prevent="changeData" v-if="page === 2">
+      <div class="user-data__success-image"><img :src="succesIcon" alt=""></div>
+      <div class="user-data__success-text">Данные успешно обновлены!</div>
+      <div class="user-data__success-button">
+        <router-link tag="button" :to="'/user/' + $route.params.id" class="button button_yellow">Вернуться в личный
+          кабинет
+        </router-link>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -66,14 +82,17 @@
   import {mapGetters, mapMutations} from 'vuex'
   import UserDataFormInputs from "./UserDataFormInputs";
   import tooltipClose from "@/assets/img/ui/tooltip-close.svg"
+  import succesIcon from "@/assets/img/ui/success-signup.svg"
 
   export default {
     name: "UserDataForm",
-    components: { UserDataFormInputs, Checkbox},
+    components: {UserDataFormInputs, Checkbox},
     data() {
       return {
+        page: 1,
         isTooltipOpen: false,
         tooltipClose,
+        succesIcon,
         verifyCheck: false
       }
     },
@@ -87,7 +106,7 @@
           this.setUser(value)
         }
       },
-      isVerify(){
+      isVerify() {
         return this.ordinator && this.userForm.verify
       }
     },
@@ -115,7 +134,11 @@
         }
         axios
           .put('/api/user/', data)
-          .then(console.log)
+          .then(res => {
+            if (res.data.status === 'ok') {
+              this.page = 2;
+            }
+          })
       }
     },
   }
@@ -130,16 +153,23 @@
       margin: 20px 0;
     }
   }
-  form{
+
+  .form-wrapper {
     width: 100%;
     max-width: 540px;
   }
-  .v-popover{
+
+  form {
+    width: 100%;
+  }
+
+  .v-popover {
     display: flex;
     cursor: pointer;
   }
-  .tooltip{
-    &__close{
+
+  .tooltip {
+    &__close {
       position: absolute;
       right: 10px;
       top: 10px;
@@ -153,21 +183,25 @@
       outline: none;
       border-radius: 100%;
       transition: box-shadow .2s;
-      &:hover{
+
+      &:hover {
         box-shadow: 0 0 10px rgba($accent-color, .1);
       }
     }
-    &__title{
+
+    &__title {
       color: $accent-color;
       font-weight: bold;
       margin-bottom: 30px;
     }
-    &__body{
+
+    &__body {
       color: $main-text-color;
       font-size: 14px;
       line-height: 16px;
     }
-    &__button{
+
+    &__button {
       width: 100%;
       padding-top: 8px;
       padding-bottom: 8px;
@@ -258,8 +292,18 @@
         font-size: 24px;
         line-height: 28px;
       }
-    }
+      .user-data__email{
+        color: $light-text-color;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        @media screen and (min-width: $lg-width) {
+          font-size: 16px;
+          line-height: 20px;
 
+        }
+      }
+    }
 
 
     &__controls {
@@ -270,12 +314,12 @@
     }
 
     &__submit, &__pass {
-      padding: 8px;
       width: 100%;
     }
-    &__pass{
+
+    &__pass {
       margin-bottom: 15px;
-      @media screen and (min-width: $lg-width){
+      @media screen and (min-width: $lg-width) {
         margin-bottom: 0;
 
       }
@@ -317,6 +361,28 @@
       padding: 8px;
       font-size: 14px;
       line-height: 16px;
+    }
+  }
+  .user-data__success{
+    &-image{
+      width: 140px;
+      height: 140px;
+      margin: 0 auto;
+      margin-bottom: 20px;
+    }
+    &-text{
+      font-size: 18px;
+      line-height: 21px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    &-button{
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      button{
+        width: 100%;
+      }
     }
   }
 </style>

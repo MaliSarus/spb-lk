@@ -54,22 +54,13 @@
     background-position: calc(100% - 12px) center;
   }
   &__button{
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 1;
-    text-align: center;
-    color: white;
-    background: #013066;
-    border: 1px solid #F3F3F3;
-    box-sizing: border-box;
-    border-radius: 5px;
-    padding: 13px 15px;
-    width: 100%;
     &_prev{
+      background-color: $accent-color;
       border: 1px solid $accent-color;
       background-image: url("../img/ui/white-back-arrow.svg");
       background-repeat: no-repeat;
       background-position: center;
+      border-radius: 5px;
     }
   }
   &__checkbox {

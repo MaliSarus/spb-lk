@@ -11,8 +11,9 @@
     <div class="form__confirm text" v-if="page === 2">
       Пожалуйста, дождитесь письма, данные для авторизации были высланы на email.
     </div>
-    <ForgetPassForm v-if="page === 1" :page.sync="page" :user-id.sync="userId"/>
-    <Button v-if="page === 2" text="Войти в личный кабинет" class="form__button" type="button" @buttonClick="enterInPersonalCab"/>
+    <ForgetPassForm v-if="page === 1" :page.sync="page"/>
+    <Button v-if="page === 2" text="На страницу авторизации" class="button button_yellow" type="button" @buttonClick="enterInAuthPage"/>
+    <Button v-if="page === 'error'" text="Назад" class="button button_yellow" type="button" @buttonClick="page = 1"/>
   </div>
 </template>
 <script>
@@ -25,12 +26,11 @@
     data() {
       return {
         page: 1,
-        userId:''
       }
     },
     methods:{
-      enterInPersonalCab(){
-        this.$router.push(`/user/${this.userId}`)
+      enterInAuthPage(){
+        this.$router.push(`/`)
       }
     }
   };
@@ -48,7 +48,7 @@
     }
     &__title {
       font-size: 28px;
-      line-height: 32;
+      line-height: 32px;
       font-weight: bold;
       margin-bottom: 15px;
       @media screen and (min-width: $lg-width){
@@ -78,6 +78,9 @@
       @media screen and (min-width: $lg-width){
         margin: 60px 0;
       }
+    }
+    .button{
+      width: 100%;
     }
   }
 </style>

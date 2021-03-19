@@ -2,13 +2,14 @@
   display: inline-block;
   border: 2px solid transparent;
   border-radius: 5px;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 16px;
+  line-height: 18px;
   text-align: center;
   font-weight: normal;
   padding: 15px;
   background-color: transparent;
   transition: background-color .25s;
+  text-decoration: none;
   @media screen and (min-width: $lg-width){
     font-size: 18px;
     line-height: 21px;

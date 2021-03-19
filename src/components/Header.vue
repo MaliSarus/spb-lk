@@ -2,9 +2,9 @@
   <div class="header-wrapper">
     <header class="header" ref="header">
       <div class="header__wrapper">
-        <router-link to="/" class="header__logo">
+        <a href="/" class="header__logo">
           <img :src="images.logo" alt="">
-        </router-link>
+        </a>
         <div class="header__menu">
           <nav>
             <ul>
@@ -23,14 +23,18 @@
         </div>
         <div class="header__controls">
           <div class="header__account">
-            <button class="header__account-button account-button_login" ref="accountButton" @click="openAccountMenu()">{{user.name ? user.name : 'Личный кабинет'}}</button>
+            <button class="header__account-button account-button_login" ref="accountButton" @click="openAccountMenu()">
+              {{user.name ? user.name : 'Личный кабинет'}}
+            </button>
             <div v-if="user.name" class="header__account-menu" :class="{open:accountMenuOpen}" ref="accountMenu">
               <ul>
                 <li>
-                  <router-link to="/">Учетные данные</router-link>
+                  <button @click="linkClick('/user/' + $route.params.id + '/user-data/')" to="/">Учетные данные</button>
                 </li>
-                <li><a href="#">Оформить участие</a></li>
-                <li><button class="logout" @click="logout">Выход</button></li>
+                <li><button @click="linkClick('/user/' + $route.params.id + '/order-cart/')" to="/">Оформить участие</button></li>
+                <li>
+                  <button class="logout" @click="logout">Выход</button>
+                </li>
               </ul>
             </div>
           </div>
@@ -41,7 +45,8 @@
           </div>
         </div>
         <div class="header__mobile-control d-xl-none">
-          <button class="hamburger hamburger--squeeze header__hamburger" :class="{'is-active': mobileOpen}" type="button" @click="hamburgerClick()">
+          <button class="hamburger hamburger--squeeze header__hamburger" :class="{'is-active': mobileOpen}"
+                  type="button" @click="hamburgerClick()">
               <span class="hamburger-box">
                 <span class="hamburger-inner"></span>
               </span>
@@ -54,18 +59,18 @@
         <div class="container">
           <div class="row">
             <div class="col-12" style="padding: 0 40px">
-                <div class="mobile-menu__menu">
-                      <nav>
-                        <ul>
-                          <li v-for="(link, index) in headerMenu" :key="'mobile-link_' + index">
-                            <a :href="link.link">{{link.name}}</a>
-                          </li>
-                        </ul>
-                      </nav>
-                </div>
+              <div class="mobile-menu__menu">
+                <nav>
+                  <ul>
+                    <li v-for="(link, index) in headerMenu" :key="'mobile-link_' + index">
+                      <a :href="link.link">{{link.name}}</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
               <v-collapse-group :onlyOneActive="true" class="accordion mobile-menu__accordion">
                 <v-collapse-wrapper @onStatusChange="afterOpen" class="accordion__item">
-                  <div class="accordion__title button button_yellow"  v-collapse-toggle>
+                  <div class="accordion__title button button_yellow" v-collapse-toggle>
                     {{user.name ? user.name : 'Личный кабинет'}}
                   </div>
                   <div class="my-content accordion__content" v-collapse-content>
@@ -73,9 +78,13 @@
                       <div class="accordion__content-wrapper">
                         <nav>
                           <ul>
-                            <li><router-link to="/">Учетные данные</router-link></li>
-                            <li><a href="#">Оформить участие</a></li>
-                            <li><button class="logout" @click="logout">Выход</button></li>
+                            <li>
+                              <button @click="linkClick('/user/' + $route.params.id + '/user-data/')">Учетные данные</button>
+                            </li>
+                            <li><button  @click="linkClick('/user/' + $route.params.id + '/order-cart/')">Оформить участие</button></li>
+                            <li>
+                              <button class="logout" @click="logout">Выход</button>
+                            </li>
                           </ul>
                         </nav>
                       </div>
@@ -122,20 +131,27 @@
       ...mapGetters(["user"]),
     },
     methods: {
-      openAccountMenu(){
-        if ( this.$refs.accountMenu) {
+      linkClick(path){
+        this.$router.push(path);
+        this.mobileOpen = false;
+        this.accountMenuOpen = false;
+
+      },
+      openAccountMenu() {
+        if (this.$refs.accountMenu) {
           this.$refs.accountMenu.style.width = (this.$refs.accountButton.offsetWidth - 2) + 'px'
         }
         this.accountMenuOpen = !this.accountMenuOpen;
       },
       hamburgerClick() {
         this.mobileOpen = !this.mobileOpen
+        const body = document.querySelector('body')
         if (this.mobileOpen) {
-
           this.$refs.mobileMenu.style.paddingTop = this.$refs.header.offsetHeight + 'px'
+          body.classList.add('overflow_hidden')
         } else {
-
           this.$refs.mobileMenu.removeAttribute('style')
+          body.classList.remove('overflow_hidden')
         }
       },
       afterOpen(object) {
@@ -147,16 +163,17 @@
           accContent.removeAttribute('style')
           : accContent.style.maxHeight = accContent.scrollHeight + "px";
       },
-      logout(){
+      logout() {
+        this.mobileOpen = false;
+        this.accountMenuOpen = false;
         axios.post('/?logout=yes')
-        .then(()=>{
-          if(this.$route.path !== '/') {
-            this.$router.push('/')
-          }
-          else{
-            this.$router.go(0);
-          }
-        })
+          .then(() => {
+            if (this.$route.path !== '/') {
+              this.$router.push('/')
+            } else {
+              this.$router.go(0);
+            }
+          })
       }
     },
     created() {
@@ -165,6 +182,7 @@
         .then(res => {
           if (res.data.status === 'ok') {
             this.headerMenu = res.data.items;
+            this.$emit('loaded')
           }
           console.log(res)
         })

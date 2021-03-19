@@ -20,7 +20,7 @@
                 Заполните форму отправив запрос с просьбой изменить контактую информацию, а также скан документа
                 подтверждающего личность.
               </div>
-              <router-link :to="{name:'ChangeFIO'}" tag="button" class="tooltip__button button button_yellow">Перейти
+              <router-link :to="{name:'ChangeFIO'}" tag="button" class="tooltip__button button button_yellow" >Перейти
               </router-link>
             </template>
           </v-popover>
@@ -32,11 +32,11 @@
         Вы успешно подтвердили Ваш статус! <b>Ваш аккаунт верифицирован.</b>
         В разделе “Оформление участия” для Вас специальные цены.
       </div>
-      <Checkbox v-if="!userForm.ordinator" v-model="verifyCheck" input-id="user-verify"
+      <Checkbox v-if="!isVerify" v-model="verifyCheck" input-id="user-verify"
                 class="user-data__verify-check">Являюсь клиническим ординатором или
         очным аспирантом кафедры
       </Checkbox>
-      <div class="user-data__verify-no" v-if="!isVerify && userForm.ordinator || verifyCheck">
+      <div class="user-data__verify-no" v-if="!isVerify && verifyCheck">
         <p>
           Обращаем внимание, что Вам необходимо подтвердить, что Вы являетесь клиническим
           ординатором или
@@ -44,7 +44,7 @@
           косметология /
           дерматология.
         </p>
-        <router-link :to="{name:'Verify'}" tag="button" class="button button_yellow">Перейти к верификации</router-link>
+        <button class="button button_yellow" @click="toVerify">Перейти к верификации</button>
       </div>
 
       <UserDataFormInputs v-model="userForm"/>
@@ -93,9 +93,10 @@
         isTooltipOpen: false,
         tooltipClose,
         succesIcon,
-        verifyCheck: false
+        verifyCheck: this.ordinatorCheck,
       }
     },
+    props:['ordinatorCheck'],
     computed: {
       ...mapGetters(['user', 'countries']),
       userForm: {
@@ -107,12 +108,16 @@
         }
       },
       isVerify() {
-        return this.ordinator && this.userForm.verify
+        return this.userForm.ordinator && this.userForm.verify
       }
     },
 
     methods: {
       ...mapMutations(["setUser"]),
+      toVerify(){
+        this.$router.push({name:'Verify'})
+        this.changeData();
+      },
       countryToId(countryName) {
         return +this.countries.find(
           (country) => country.name === countryName
@@ -129,7 +134,7 @@
           department: this.userForm.department,
           rank: this.userForm.rank,
           degree: this.userForm.degree,
-          ordinator: this.userForm.ordinator,
+          ordinator: this.verifyCheck,
           phone: this.userForm.phone
         }
         axios

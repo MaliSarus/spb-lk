@@ -174,7 +174,6 @@ export default new Vuex.Store({
         .then(res => {
           if (res.data.status === 'ok') {
             commit('setProducts', res.data.sections)
-            this._vm.$toast.info('fetch Products: ' + res.data.status);
           }
           return res.data.status;
         })

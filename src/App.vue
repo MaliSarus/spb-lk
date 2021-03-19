@@ -1,6 +1,6 @@
 <template>
-  <div id="app-one">
-    <Header/>
+  <div id="app-one" v-show="!isLoading" >
+    <Header @loaded="isLoading = false"/>
     <main>
       <router-view/>
     </main>
@@ -17,6 +17,11 @@
   export default {
     name: "app",
     components: {Footer, Header},
+    data(){
+      return{
+        isLoading: true
+      }
+    },
     methods: {
       ...mapActions(['fetchCountries', 'fetchDepartments', 'fetchRanks', 'fetchDegrees', 'fetchCities']),
       initFetch() {
@@ -34,6 +39,8 @@
 </script>
 
 <style lang="scss" scoped>
+
+
   #app-one {
     display: flex;
     flex-direction: column;

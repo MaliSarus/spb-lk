@@ -10,7 +10,9 @@
       </div>
     </div>
     <div class="personal-cab__content-block">
-      <router-view/>
+      <transition name="fade" mode="out-in">
+        <router-view/>
+      </transition>
     </div>
   </section>
 </template>
@@ -30,6 +32,12 @@
 </script>
 
 <style lang="scss" scoped>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+    opacity: 0;
+  }
   .personal-cab__content-block {
     position: relative;
     margin: 0;
@@ -40,7 +48,7 @@
     border-top: 1px solid #EDEDED;
     border-bottom: 1px solid #EDEDED;
 
-    @media screen and (min-width: $lg-width){
+    @media screen and (min-width: $lg-width) {
       margin: 0 auto 35px;
       border: 1px solid #EDEDED;
       width: calc(100% - 20px);

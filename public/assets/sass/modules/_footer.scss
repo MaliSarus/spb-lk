@@ -1,6 +1,8 @@
 .footer{
   background: $accent-color;
-  height: 33px;
   position: relative;
   z-index: 999;
+  @media screen and (min-width: $lg-width){
+    height: 33px;
+  }
 }

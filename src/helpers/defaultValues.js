@@ -7,4 +7,4 @@ export const phonePattern = /^[+]?[\d\-\(\)\s]+$/;
 // eslint-disable-next-line no-useless-escape
 export const phoneAllowPattern = /[^0-9\s+\(\)]/g;
 // eslint-disable-next-line no-useless-escape
-export const emailAllowPattern = /[^a-z0-9\._@]/gi;
+export const emailAllowPattern = /[^a-z0-9\._@-]/gi;

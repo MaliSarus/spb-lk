@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-12">
           <div class="user-data__form form">
-            <UserDataForm/>
+            <UserDataForm :ordinator-check="user.ordinator"/>
           </div>
         </div>
       </div>
@@ -25,10 +25,14 @@
 
 <script>
   import UserDataForm from "../components/PersonalCab/UserData/UserDataForm/UserDataForm";
+  import {mapGetters} from 'vuex'
   export default {
     name: "UserData",
     components:{
       UserDataForm
+    },
+    computed:{
+      ...mapGetters(["user"])
     }
   }
 </script>

@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      checked: false,
+      checked: this.isChecked,
     }
   },
   watch:{

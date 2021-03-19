@@ -105,7 +105,7 @@ button {
   line-height: 160%;
 }
 
-.hidden {
+.overflow_hidden {
   overflow: hidden;
 }
 
@@ -262,8 +262,8 @@ button {
   display: inline-block;
   border: 2px solid transparent;
   border-radius: 5px;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 16px;
+  line-height: 18px;
   text-align: center;
   font-weight: normal;
   padding: 15px;
@@ -271,6 +271,7 @@ button {
   -webkit-transition: background-color .25s;
   -o-transition: background-color .25s;
   transition: background-color .25s;
+  text-decoration: none;
 }
 
 .button_yellow {
@@ -955,6 +956,10 @@ button {
   text-decoration: none;
 }
 
+.header__menu ul li a:hover {
+  background-color: #003c80;
+}
+
 .header__menu > nav > ul > li:hover .dropdown {
   opacity: 1;
   visibility: visible;
@@ -1328,23 +1333,6 @@ button {
   transform: translateY(0);
 }
 
-.form__submit {
-  padding: 15px 35px;
-  width: 100%;
-  border: 1px solid #F3F3F3;
-  border-radius: 5px;
-  color: #686868;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
-  outline: none;
-  text-align: center;
-  background-color: #FFCC40;
-  background-repeat: no-repeat;
-  background-size: 20px;
-  background-position: calc(100% - 12px) center;
-}
-
 .form__button_prev {
   background-color: #003066;
   border: 1px solid #003066;
@@ -1454,7 +1442,6 @@ button {
 
 .footer {
   background: #003066;
-  height: 33px;
   position: relative;
   z-index: 999;
 }
@@ -1482,6 +1469,10 @@ button {
   .personal-cab__title {
     padding-top: 20px;
     padding-bottom: 25px;
+  }
+
+  .footer {
+    height: 33px;
   }
 }
 

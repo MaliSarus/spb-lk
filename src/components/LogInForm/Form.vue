@@ -109,11 +109,45 @@
     &__input {
       margin-bottom: 15px;
       &.invalid{
-        border: 1px solid red
+        border: 1px solid red;
+        animation: invalid .5s forwards;
+      }
+    }
+    @keyframes invalid {
+      0%{
+        transform: translateX(0);
+      }
+      10%{
+        transform: translateX(10px);
+      }
+      30%{
+        transform: translateX(-10px);
+      }
+      40%{
+        transform: translateX(7px);
+      }
+      50%{
+        transform: translateX(-7px);
+      }
+      60%{
+        transform: translateX(5px);
+      }
+      70%{
+        transform: translateX(-5px);
+      }
+      80%{
+        transform: translateX(2px);
+      }
+      90%{
+        transform: translateX(-2px);
+      }
+      100%{
+        transform: translateX(0);
       }
     }
 
     &__submit {
+      width: 100%;
       max-width: 150px;
       margin-right: 30px;
       text-transform: none;

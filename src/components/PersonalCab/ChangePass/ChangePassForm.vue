@@ -93,8 +93,7 @@
         margin-right: 10px;
       }
       .change-pass__submit{
-        padding-top: 8px;
-        padding-bottom: 8px;
+
       }
     }
     &__form-grid {

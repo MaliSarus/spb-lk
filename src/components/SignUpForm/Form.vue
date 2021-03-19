@@ -147,6 +147,9 @@
           <Checkbox v-model="$v.form.policy.$model" :class="{invalid:validForm.policy}" input-id="signup-policy" @check="validateCheckBox($event, 'policy')">
             Я согласен с <a href="#">Политикой конфиденциальности</a>
           </Checkbox>
+          <div class="error-message" v-if="errorMessage">
+            <p>{{errorMessage}}</p>
+          </div>
           <div class="form__group">
             <Button
                 class="form__button form__button_prev"
@@ -240,7 +243,8 @@
           password: false,
           confirmPassword: false,
           policy: false,
-        }
+        },
+        errorMessage: ''
       };
     },
     validations() {
@@ -471,8 +475,12 @@
           };
           if (!this.$v.$invalid) {
             axios.put("/api/signup/", formData).then((res) => {
-              this.formPage = 4;
-              console.log(res);
+              if (res.data.status === 'ok'){
+                this.formPage = 4
+              }
+              else {
+                this.errorMessage = res.data.error;
+              }
             });
           }
         }
@@ -485,6 +493,15 @@
 
 <style lang="scss" scoped>
   $smWidth: 557px;
+  .error-message{
+    p{
+      color: red;
+      margin: 0;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 20px;
+    }
+  }
   .form {
     padding: 38px 50px 50px;
 

@@ -21,6 +21,7 @@
 <style lang="scss" scoped>
   .footer__text {
     padding-top: 10px;
+    padding-bottom: 10px;
     color: #93acc9;
     font-size: 14px;
     line-height: 1.2;

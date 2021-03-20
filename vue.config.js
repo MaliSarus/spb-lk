@@ -8,5 +8,5 @@ module.exports = {
                 additionalData: `@import "~@/assets/sass/variables.scss";`
             },
         }
-    }
+    },
 }

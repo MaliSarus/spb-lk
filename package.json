@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "test": "cross-env VUE_APP_MODE=test vue-cli-service build ",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "gulp": "npm-run-all --serial gulp serve"
+    "lint": "vue-cli-service lint"
+  },
+  "config": {
+    "myPort": "8080"
   },
   "dependencies": {
     "@types/vuelidate": "^0.7.13",
@@ -32,6 +35,7 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "gulp": "^4.0.2",

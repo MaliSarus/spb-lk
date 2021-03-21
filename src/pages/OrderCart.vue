@@ -27,6 +27,7 @@
               <div v-else class="order-cart__dates">
                 <orders-list/>
               </div>
+              <additional-services-list/>
               <countdown v-if="!placeholder && !isLoading" :end-time="new Date(2021, 2, 31).getTime()" class="order-cart__countdown">
                 <template
                         v-slot:process="{ timeObj }">
@@ -50,11 +51,12 @@
   import Loader from "../components/UI/Loader";
   import OrdersList from "../components/PersonalCab/OrderCart/OrdersList";
   import {mapActions, mapGetters} from "vuex";
+  import AdditionalServicesList from "../components/OrderCart/AdditionalServices/AdditionalServicesList";
 
 
   export default {
     name: "OrderCart",
-    components: { OrdersList, Loader},
+    components: {AdditionalServicesList, OrdersList, Loader},
     data() {
       return {
         isLoading: true,

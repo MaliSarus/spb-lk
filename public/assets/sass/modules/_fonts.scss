@@ -6,7 +6,6 @@
     src: local($fname),
     url($furl) format('woff2'),
     url($furl2) format('woff');
-  ;
     font-display: swap; // Uncomment to initially display system fonts
   }
 }

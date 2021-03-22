@@ -17,3 +17,22 @@ $z-medium: 100;
 $z-high: 500;
 $z-highest: 1000;
 
+
+@mixin font($fname, $fstyle, $fweight, $furl, $furl2) {
+  @font-face {
+    font-family: $fname;
+    font-style: $fstyle;
+    font-weight: $fweight;
+    src: local($fname),
+    url($furl) format('woff2'),
+    url($furl2) format('woff');
+    font-display: swap; // Uncomment to initially display system fonts
+  }
+}
+
+@include font('Roboto', normal, normal, '/assets/sass/roboto-regular.woff2', '/assets/sass/roboto-regular.woff');
+@include font('Roboto', normal, 500, '/assets/sass/roboto-500.woff2', '/assets/sass/roboto-500.woff');
+@include font('Roboto', normal, bold, '/assets/sass/roboto-700.woff2','/assets/sass/roboto-700.woff');
+@include font('Roboto', normal, 800, '/assets/sass/roboto-800.woff2','/assets/sass/roboto-800.woff');
+
+

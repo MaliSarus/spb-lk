@@ -1440,6 +1440,14 @@ button {
   right: 15px !important;
 }
 
+.add-service__name input:checked + label::before {
+  background-image: url("../img/ui/checkbox_checked.svg");
+}
+
+.add-service__name label::before {
+  background-image: url("../img/ui/checkbox_unchecked.svg");
+}
+
 .footer {
   background: #003066;
   position: relative;

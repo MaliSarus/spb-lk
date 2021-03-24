@@ -10,6 +10,14 @@ const en = {
       buttons:{
         save: 'Save'
       }
+    },
+    orderCart:{
+      orderCartDates:{
+        countdown:{
+          text:'Sale to 15 april 2021 y. Time remain',
+          time: '{d} d. {h} h. {m} m.'
+        }
+      }
     }
   }
 }

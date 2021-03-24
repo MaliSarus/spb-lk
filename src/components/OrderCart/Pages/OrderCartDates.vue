@@ -9,9 +9,18 @@
           <countdown :end-time="new Date(2021, 3, 15).getTime()"
                      class="order-cart__countdown">
             <template
-                v-slot:process="{ timeObj }">
+              v-slot:process="{ timeObj }">
 
-              <span>Скидка действует при оплате до 15 апреля 2021 г. До повышения стомости осталось <b> {{timeObj.d}} дн.{{timeObj.h}} час. {{timeObj.m}} мин.  </b></span>
+              <span>
+                {{$t('message.orderCart.orderCartDates.countdown.text')}}
+                <b>
+                  {{$t('message.orderCart.orderCartDates.countdown.time',{
+                    d:timeObj.d,
+                    h: timeObj.h,
+                    m:timeObj.m
+                  })}}
+                </b>
+              </span>
             </template>
           </countdown>
           <div class="advantages-table">
@@ -75,22 +84,22 @@
 
 <script>
 
-  import OrdersList from "@/components/OrderCart/OrdersList";
-  import yesIcon from "@/assets/img/ui/yes.svg"
-  import noIcon from "@/assets/img/ui/no.svg"
+    import OrdersList from "@/components/OrderCart/OrdersList";
+    import yesIcon from "@/assets/img/ui/yes.svg"
+    import noIcon from "@/assets/img/ui/no.svg"
 
-  export default {
-    name: "OrderCartDates",
-    data() {
-      return {
-        yesIcon,
-        noIcon,
-      }
-    },
-    components: {
-      OrdersList
-    },
-  }
+    export default {
+        name: "OrderCartDates",
+        data() {
+            return {
+                yesIcon,
+                noIcon,
+            }
+        },
+        components: {
+            OrdersList
+        },
+    }
 </script>
 
 <style lang="scss" scoped>

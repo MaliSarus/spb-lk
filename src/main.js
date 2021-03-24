@@ -13,6 +13,8 @@ import FileSelector from 'vue-file-selector';
 import vueAwesomeCountdown from 'vue-awesome-countdown'
 import VueCollapse from 'vue2-collapse'
 import initAccordion from "./helpers/accordion";
+import VModal from "vue-js-modal/dist/index.nocss.js";
+import i18n from "./locales";
 
 
 // Plugins
@@ -31,6 +33,7 @@ Vue.use(Toast, {
 Vue.use(VTooltip)
 Vue.use(FileSelector)
 Vue.use(VueCollapse)
+Vue.use(VModal)
 
 
 // Directives
@@ -80,6 +83,7 @@ if (document.querySelector('#app-one')) {
   new Vue({
     router,
     store,
+    i18n,
     render: h => h(App)
   }).$mount('#app-one')
 }

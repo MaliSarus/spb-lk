@@ -39,7 +39,7 @@
             </div>
           </div>
           <div class="header__lang">
-            <a href="#">
+            <a href="#" @click.prevent="$i18n.locale = $i18n.locale === 'ru' ? 'en' : 'ru'">
               <img :src="images.rusLangIcon" width="35" height="35" alt="">
             </a>
           </div>
@@ -95,11 +95,11 @@
             </div>
           </div>
         </div>
-        <div class="mobile-menu__lang">
-          <a href="#">
-            <img :src="images.rusLangIcon" width="35" height="35" alt="">
-          </a>
-        </div>
+<!--        <div class="mobile-menu__lang">-->
+<!--          <a href="#">-->
+<!--            <img :src="images.rusLangIcon" width="35" height="35" alt="">-->
+<!--          </a>-->
+<!--        </div>-->
       </div>
 
 

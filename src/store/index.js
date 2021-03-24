@@ -15,6 +15,7 @@ export default new Vuex.Store({
     russiaCities: [],
     payedOrder:[],
     userCart:[],
+    userBasket:[],
     products: [],
   },
   mutations: {
@@ -50,6 +51,13 @@ export default new Vuex.Store({
     },
     deleteAllSingleProducts (state){
       state.userCart = state.userCart.filter(product => product.type !== 'single')
+    },
+    deleteAllProducts (state){
+      state.userCart = [];
+    },
+    setUserBasket(state, payload){
+      state.userBasket = payload
+
     }
   },
   actions: {
@@ -206,6 +214,9 @@ export default new Vuex.Store({
     },
     products(state){
       return state.products
+    },
+    userBasket(state){
+      return state.userBasket
     }
   }
 })

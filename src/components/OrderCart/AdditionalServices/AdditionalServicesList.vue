@@ -21,7 +21,7 @@
         .get('/api/catalog/workshops/')
         .then(res=>{
           if (res.data.status === "ok"){
-            this.workshops = res.data.items;
+            this.workshops = res.data.items
           }
         })
     }

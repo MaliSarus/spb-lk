@@ -18,9 +18,9 @@
             <span class="date__price-name">Онлайн</span>
             <span class="date__price-empty"></span>
             <span class="date__price-price price">
-              <span class="price_prev"></span>
+              <span v-if="onlineDate.price.discount" class="price_prev">{{onlineDate.price.basePrice}}</span>
               <span class="price_current">
-                {{ onlineDate.price.basePrice}}&nbsp;&#8381;
+                {{ onlineDate.price.discount ? onlineDate.price.discountPrice : onlineDate.price.basePrice}}&nbsp;&#8381;
               </span>
             </span>
           </label>
@@ -41,9 +41,9 @@
             <span class="date__price-name">Офлайн</span>
             <span class="date__price-empty"></span>
             <span class="date__price-price price">
-              <span class="price_prev"></span>
+              <span v-if="offlineDate.price.discount" class="price_prev">{{offlineDate.price.basePrice}}</span>
               <span class="price_current">
-                {{ offlineDate.price.basePrice}}&nbsp;&#8381;
+                {{ offlineDate.price.discount ? offlineDate.price.discountPrice : offlineDate.price.basePrice}}&nbsp;&#8381;
               </span>
             </span>
           </label>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import {mapMutations} from "vuex";
+  import {mapMutations, mapGetters} from "vuex";
 
   export default {
     name: "Order",
@@ -67,11 +67,12 @@
       }
     },
     computed: {
+      ...mapGetters(["userCart"]),
       dateOfflineItems() {
-        return this.date.items.filter(item => item.type == 'offline')
+        return this.date.items.filter(item => item.type === 'offline' || item.type === 'all')
       },
       dateOnlineItems() {
-        return this.date.items.filter(item => item.type == 'online')
+        return this.date.items.filter(item => item.type === 'online')
       }
     },
     methods: {
@@ -85,7 +86,7 @@
           }
           this.checkedDate = ""
         } else {
-          if (!this.checkedDate) {
+          if (this.checkedDate) {
             this.deleteProduct(this.checkedDate)
           }
           const selectDate = {
@@ -100,11 +101,23 @@
       }
     },
     updated() {
-      if (this.isAllCheck) {
+      if (this.isAllCheck || this.disabled) {
         this.checkedDate = ''
       }
       if (this.allCheckId) {
         this.checkedDate = this.allCheckId
+        if(!this.userCart.find(product => +product.id === this.allCheckId)) {
+          this.deleteAllSingleProducts();
+          const product = this.date.items.find(item => item.id == this.allCheckId);
+          const selectDate = {
+            name: this.date.sectionName,
+            id: this.allCheckId,
+            price: product.price.basePrice,
+            type: 'all',
+            style: product.type
+          }
+          this.addProduct(selectDate)
+        }
       }
     }
   }
@@ -149,7 +162,7 @@
           input {
             &:checked ~ label {
               &::before {
-                background-image: url("/assets/img/ui/radio_checked.svg");
+                background-image: url(~@/assets/img/ui/radio_checked.svg);
               }
             }
           }
@@ -174,7 +187,7 @@
               width: 21px;
               height: 21px;
               content: "";
-              background-image: url("/assets/img/ui/radio_unchecked.svg");
+              background-image: url(~@/assets/img/ui/radio_unchecked.svg);
               background-position: center;
               background-repeat: no-repeat;
               background-size: contain;
@@ -184,7 +197,7 @@
 
           &-empty {
             flex-grow: 1;
-            background-image: url("/assets/img/ui/empty-dots.svg");
+            background-image: url(~@/assets/img/ui/empty-dots.svg);
             background-position: left calc(100% - 2px);
             background-repeat: repeat-x;
             margin: 0 3px;

@@ -5,7 +5,7 @@
         <div class="col-12">
           <div class="personal-cab__user-data">
             <div class="personal-cab__subtitle">
-              Изменение пароля
+              {{$t('message.changePass.title')}}
             </div>
           </div>
         </div>

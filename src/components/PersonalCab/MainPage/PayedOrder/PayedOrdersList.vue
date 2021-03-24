@@ -7,7 +7,7 @@
                       :key="order.id"
                       :button-active="order.activated"
       >
-        <p>{{order.name}}</p>
+        <p>{{order.section_name ? order.name + ' - ' : order.name}} <b>{{order.section_name}}</b></p>
       </PayedOrderItem>
     </ul>
   </div>

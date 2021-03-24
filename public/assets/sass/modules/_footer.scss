@@ -2,7 +2,5 @@
   background: $accent-color;
   position: relative;
   z-index: 999;
-  @media screen and (min-width: $lg-width){
-    height: 33px;
-  }
+
 }

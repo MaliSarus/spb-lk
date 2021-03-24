@@ -5,7 +5,7 @@
         <div class="col-12">
           <div class="personal-cab__user-data">
             <div class="personal-cab__subtitle">
-              Выберите формат и даты участия в конгрессе:
+              {{pageTitle[page - 1]}}
             </div>
           </div>
         </div>
@@ -24,56 +24,126 @@
                 </p>
                 <button type="button" class="button button_yellow" @click="$router.go(-1)">Вернуться назад</button>
               </div>
-              <div v-else class="order-cart__dates">
-                <orders-list/>
-              </div>
-              <additional-services-list/>
-              <countdown v-if="!placeholder && !isLoading" :end-time="new Date(2021, 2, 31).getTime()" class="order-cart__countdown">
-                <template
-                        v-slot:process="{ timeObj }">
-
-                  <span>Скидка действует при оплате до 31 марта 2021 г. До повышения стомости осталось <b> {{timeObj.d}} дней {{timeObj.h}} часов {{timeObj.m}} минуты</b></span>
-                </template>
-              </countdown>
             </div>
           </div>
         </div>
+        <keep-alive>
+          <component v-if="!placeholder && !isLoading" :is="pages[page-1]" :prop="{name: 'some'}"/>
+        </keep-alive>
       </form>
     </div>
 
     <div v-if="!placeholder && !isLoading" class="order__price">
-      ИТОГО: <b>{{totalPrice}}</b>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="order__price-content">
+              ИТОГО: <b>{{totalPrice}}</b>
+              <button v-if="page > 1" class="button button_transparent button_prev" @click="prevClick">Назад</button>
+              <button v-if="page < 3" class="button button_yellow button_next" @click="nextClick">Далее</button>
+              <a v-else class="button button_yellow button_next" :href="`${baseURL}/api/makeorder/`">Оформить заказ</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ord-modal" ref="ordModal" v-show="user.ordinator && !user.verify && isModalOpen">
+      <div class="ord-modal__block">
+        <div class="ord-modal__text">
+          <p>Вы зарегистрировались как клинический ординатор или очный аспирант кафедры: пластическая хирургия / челюстно-лицевая хирургия / косметология / дерматология.</p>
+          <p><b>Обращаем внимание, что для получения дополнительной  скидки Вам необходимо пройти верификацию!</b></p>
+        </div>
+        <div class="ord-modal__controls">
+          <button class="button button_transparent" @click="toVerify">Пройти верификацию</button>
+          <button class="button button_yellow" type="button" @click="isModalOpen = false">Позже</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import Loader from "../components/UI/Loader";
-  import OrdersList from "../components/PersonalCab/OrderCart/OrdersList";
-  import {mapActions, mapGetters} from "vuex";
+  import OrdersList from "../components/OrderCart/OrdersList";
+  import {mapActions, mapGetters, mapMutations} from "vuex";
   import AdditionalServicesList from "../components/OrderCart/AdditionalServices/AdditionalServicesList";
-
+  import yesIcon from "@/assets/img/ui/yes.svg"
+  import noIcon from "@/assets/img/ui/no.svg"
+  import axios from 'axios'
+  import PayedOrder from "../components/PersonalCab/MainPage/PayedOrder/PayedOrdersList";
+  import OrderCartDates from "../components/OrderCart/Pages/OrderCartDates";
+  import OrderCartBasket from "../components/OrderCart/Pages/OrderCartBasket";
+  import OrderCartWorkshops from "../components/OrderCart/Pages/OrderCartWorkshops";
+  import {baseURL} from "../helpers/defaultValues";
 
   export default {
     name: "OrderCart",
-    components: {AdditionalServicesList, OrdersList, Loader},
+    components: {PayedOrder, AdditionalServicesList, OrdersList, Loader},
     data() {
       return {
         isLoading: true,
         countDate: new Date(2021, 2, 31).getTime(),
-        placeholder: true
+        placeholder: process.env.NODE_ENV === 'production' && process.env.VUE_APP_MODE !== 'test',
+        yesIcon,
+        noIcon,
+        page: 1,
+        pages: [
+          OrderCartDates,
+          OrderCartWorkshops,
+          OrderCartBasket,
+        ],
+        pageTitle: [
+          'Выберите формат и даты участия в конгрессе:',
+          'Дополнительные услуги',
+          'Ваш заказ'
+        ],
+        baseURL,
+        isModalOpen: true,
       };
     },
     computed: {
-      ...mapGetters(["userCart"]),
+      ...mapGetters(["userCart","user"]),
       totalPrice() {
-
         return this.userCart.reduce((acc, product) => acc + product.price, 0)
+      },
+    },
+    methods: {
+      ...mapActions(["fetchProducts"]),
+      ...mapMutations(["setUserBasket", "deleteAllProducts"]),
+      toVerify(){
+        this.$router.push({name: 'Verify'});
+        this.isModalOpen = false;
+      },
+      nextClick() {
+        if (this.page !== 2) {
+          this.page += 1;
+        } else if (this.page == 2) {
+          const userCart = this.userCart;
+          const postData = userCart.map(item => +item.id)
+          axios
+            .post('/api/user/basket/', {
+              items: postData
+            })
+            .then(res => {
+              console.log(res)
+              axios
+                .get('/api/user/basket/')
+                .then(res => {
+                  this.setUserBasket(res.data.items);
+                  this.page += 1;
+                  console.log(this.page)
+                  // this.deleteAllProducts()
+                })
+            })
+        }
+      },
+      prevClick() {
+        this.page -= 1;
 
       }
     },
-    methods: {
-      ...mapActions(["fetchProducts"])
+    mounted() {
+      document.body.append(this.$refs.ordModal)
     },
     created() {
       this.fetchProducts()
@@ -87,6 +157,50 @@
 </script>
 
 <style lang="scss" scoped>
+  .ord-modal{
+   position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(#F4F9FF,.8);
+    &__block{
+      padding: 20px 20px 25px;
+      width: 420px;
+      max-width: 100%;
+      background: white;
+      border: 1px solid #EDEDED;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+    &__text{
+      text-align: center;
+      font-size: 18px;
+      line-height: 21px;
+      color: $main-text-color;
+    }
+    &__controls{
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      button{
+        padding: 8px 15px;
+        font-size: 16px;
+        text-transform: none;
+        flex-grow: 1;
+        &:nth-child(1){
+          margin-right: 15px;
+        }
+        &:nth-child(2){
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+
   .personal-cab {
     flex-grow: 1;
     width: 100%;
@@ -128,12 +242,15 @@
 
 
   .order-cart {
-    &__placeholder{
+
+
+    &__placeholder {
       margin: 0 auto;
       padding: 20px;
       max-width: 540px;
       text-align: center;
     }
+
     &__form {
       width: 100%;
       border: none;
@@ -141,28 +258,6 @@
       /*max-width: none;*/
       form {
         max-width: none;
-      }
-    }
-
-    &__countdown {
-      border: 1px solid #CC1E1E;
-      background: transparent;
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      display: block;
-      color: #CC1E1E;
-      margin-bottom: 20px;
-      @media screen and (min-width: $lg-width) {
-        margin-bottom: 40px;
-      }
-    }
-
-    &__dates {
-      width: 100%;
-      margin-bottom: 30px;
-      @media screen and (min-width: $lg-width) {
-        margin-bottom: 50px;
       }
     }
   }
@@ -178,5 +273,19 @@
       left: 0;
       right: 0;
     }
+
+    &-content {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+
+  .button_next, .button_prev {
+    margin-left: 20px;
+    text-transform: none;
+    padding: 8px 15px;
+    min-width: 100px;
+    /*width: 100%;*/
   }
 </style>

@@ -2,22 +2,60 @@
   <li class="add-service__item">
     <div class="add-service__left">
       <div class="add-service__name">
-        <input :id="'workshop-'+workshop.id" type="checkbox" :value="workshop.id" style="display: none">
-        <label :for="'workshop-'+workshop.id">{{workshop.name}}</label>
+        <input v-if="workshop.availability" :id="'workshop-'+workshop.id" type="checkbox" v-model="checked" :checked="workshop.id"
+               style="display: none" @change="check">
+        <label :for="workshop.availability ? 'workshop-'+workshop.id : ''" :class="{static:!workshop.availability}"><b>{{workshopFullName.type}}</b>{{workshopFullName.name}}</label>
       </div>
     </div>
     <div class="add-service__right">
-      <div class="add-service__price">{{workshop.price.basePrice}}</div>
-      <div class="add-service__link"><a href="#">Подробнее</a></div>
+      <div class="add-service__price">{{workshop.price.basePrice}} &#8381;</div>
+      <div class="add-service__link"><a href="#">{{workshop.availability ? 'Подробнее' : 'Сайт партнера'}}</a></div>
     </div>
   </li>
 </template>
 
 <script>
-    export default {
-        name: "AdditionalServicesItem",
-        props: ['workshop']
-    }
+  import {mapMutations} from 'vuex'
+
+  export default {
+    name: "AdditionalServicesItem",
+    props: ['workshop'],
+    data() {
+      return {
+        checked: false
+      }
+    },
+    methods: {
+      ...mapMutations(["addProduct", "deleteProduct"]),
+      check(){
+        console.log(this.checked)
+        if (this.checked){
+          this.addProduct({
+            id: this.workshop.id,
+            price: this.workshop.price.basePrice
+          })
+        }
+        else this.deleteProduct(this.workshop.id)
+      }
+    },
+    computed: {
+      workshopFullName() {
+        const nameArray = this.workshop.name.split(':');
+        if (nameArray.length > 1) {
+          return {
+            type: nameArray[0] + ':',
+            name: nameArray[1]
+          }
+        } else {
+          return {
+            type: '',
+            name: nameArray[0]
+          }
+        }
+      },
+    },
+
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -59,18 +97,21 @@
     }
 
     &__name {
-      padding: 20px;
-
+      padding-left: 20px;
       @media screen and (min-width: $lg-width) {
-        padding: 30px 20px 30px 25px;
+        padding: 0 0 0 25px;
       }
 
       label {
         cursor: pointer;
         position: relative;
         display: block;
-        padding-left: 45px;
+        padding:  20px;
         color: $accent-color;
+        @media screen and (min-width: $lg-width) {
+          padding:  30px 20px 30px 45px;
+
+        }
 
         &::before {
           position: absolute;
@@ -86,6 +127,11 @@
           @media screen and (min-width: $lg-width) {
             width: 20px;
             height: 20px;
+          }
+        }
+        &.static{
+          &::before{
+            content: none;
           }
         }
       }
@@ -118,6 +164,8 @@
         justify-content: center;
         align-items: center;
         padding: 10px;
+        text-align: center;
+
         @media screen and (min-width: $lg-width) {
           padding: 0 10px;
         }

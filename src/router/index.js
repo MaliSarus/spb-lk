@@ -13,6 +13,7 @@ import Verify from "@/pages/Verify";
 import ErrorPage from "@/pages/ErrorPage";
 
 import store from '@/store'
+import SuccessPayment from "../pages/SuccessPayment";
 
 
 
@@ -45,6 +46,15 @@ const routes = [
     name: 'ForgetPass',
     component: ForgetPath,
     meta:{title: 'Забыли пароль'}
+  },
+  {
+    path: '/success',
+    name: 'SuccessPay',
+    component: SuccessPayment,
+    meta:{
+      auth: true,
+      title: 'Успешная оплата'
+    }
   },
   {
     path: '/',

@@ -79,6 +79,16 @@
               :class="{invalid: this.validForm.department}"
               @pick="validateSelect($event,'department')"
           />
+          <Input
+              v-if="form.department === 'другое'"
+              label="Специализация (другое)"
+              input-id="signup-department-other"
+              input-type="text"
+              v-model="form.otherDepartment"
+              :class="{invalid: this.validForm.otherDepartment}"
+              @input="validate($event,'otherDepartment')"
+
+          />
           <Select
               v-model="form.rank"
               label="Ученое звание"
@@ -125,7 +135,7 @@
               @input="validate($event,'email')"
           />
           <Input
-              label="Пароль *"
+              label="Пароль (мин. 6 символов) *"
               input-id="signup-pass"
               input-type="password"
               v-model="$v.form.password.$model"
@@ -144,7 +154,8 @@
             Я являюсь ординатором или очным аспирантом кафедры: пластическая
             хирургия / челюстно-лицевая хирургия / косметология / дерматология.
           </Checkbox>
-          <Checkbox v-model="$v.form.policy.$model" :class="{invalid:validForm.policy}" input-id="signup-policy" @check="validateCheckBox($event, 'policy')">
+          <Checkbox v-model="$v.form.policy.$model" :class="{invalid:validForm.policy}" input-id="signup-policy"
+                    @check="validateCheckBox($event, 'policy')">
             Я согласен с <a href="#">Политикой конфиденциальности</a>
           </Checkbox>
           <div class="error-message" v-if="errorMessage">
@@ -174,7 +185,8 @@
             На Ваш email отправлено письмо с подтверждением, пожалуйста,
             пройдите по ссылке и активируйте аккаунт.
           </p>
-          <router-link tag="button" :to="{name: 'LogIn'}" class="button button_yellow">Перейти в личный кабинет</router-link>
+          <router-link tag="button" :to="{name: 'LogIn'}" class="button button_yellow">Перейти в личный кабинет
+          </router-link>
         </div>
       </div>
     </div>
@@ -227,6 +239,7 @@
           confirmPassword: "",
           ordinator: false,
           policy: false,
+          otherDepartment: '',
         },
         country: "",
         validForm: {
@@ -243,6 +256,7 @@
           password: false,
           confirmPassword: false,
           policy: false,
+          otherDepartment: false,
         },
         errorMessage: ''
       };
@@ -295,7 +309,7 @@
               sameAsPassword: sameAs("password"),
             },
             policy: {
-              sameAs: sameAs( () => true )
+              sameAs: sameAs(() => true)
             },
           }
         }
@@ -317,7 +331,6 @@
           birthday: {
             required,
           },
-          city: {},
           company: {
             required,
           },
@@ -343,7 +356,7 @@
             sameAsPassword: sameAs("password"),
           },
           policy: {
-            sameAs: sameAs( () => true )
+            sameAs: sameAs(() => true)
           },
         },
       }
@@ -361,17 +374,23 @@
       },
       pageValidate() {
         const validateHandler = this.$v;
+        console.log(validateHandler.form.city ? validateHandler.form.city.$invalid : false)
         switch (this.formPage) {
-          case 1:
+          case 1: {
+            const city = validateHandler.form.city ? validateHandler.form.city.$invalid : false;
             return validateHandler.form.name.$invalid ||
               validateHandler.form.lastName.$invalid ||
               validateHandler.form.birthday.$invalid ||
-              validateHandler.form.city.$invalid ||
+              city ||
               validateHandler.country.$invalid;
-          case 2:
+          }
+          case 2: {
+            const otherDepartment = this.form.department === "другое" ? this.form.otherDepartment === '' : false;
             return validateHandler.form.company.$invalid ||
               validateHandler.form.position.$invalid ||
-              validateHandler.form.department.$invalid;
+              validateHandler.form.department.$invalid ||
+              otherDepartment;
+          }
           case 3:
             return validateHandler.form.phone.$invalid ||
               validateHandler.form.email.$invalid ||
@@ -395,7 +414,7 @@
         this.validForm[validFormField] = event === '';
 
       },
-      validateCheckBox(value,validFormField){
+      validateCheckBox(value, validFormField) {
         this.validForm[validFormField] = value !== true;
       },
       nextPage() {
@@ -407,13 +426,14 @@
               validForm.lastName = this.$v.form.lastName.$invalid;
               validForm.birthday = this.$v.form.birthday.$invalid;
               validForm.country = this.$v.country.$invalid;
-              validForm.city = this.$v.form.city.$invalid;
+              validForm.city = this.$v.form.city ? this.$v.form.city.$invalid : false;
               break;
             }
             case 2: {
               validForm.company = this.$v.form.company.$invalid;
               validForm.position = this.$v.form.position.$invalid;
               validForm.department = this.$v.form.department.$invalid;
+              validForm.otherDepartment = this.form.department === 'другое' ? this.form.otherDepartment === '' : false
               break;
             }
             case 3: {
@@ -466,7 +486,7 @@
             email: vueForm.email,
             company: vueForm.company,
             position: vueForm.position,
-            department: vueForm.department,
+            department: vueForm.otherDepartment ? vueForm.otherDepartment : vueForm.department,
             rank: vueForm.rank,
             degree: vueForm.degree,
             ordinator: vueForm.ordinator,
@@ -475,10 +495,10 @@
           };
           if (!this.$v.$invalid) {
             axios.put("/api/signup/", formData).then((res) => {
-              if (res.data.status === 'ok'){
+              console.log(res)
+              if (res.data.status === 'ok') {
                 this.formPage = 4
-              }
-              else {
+              } else {
                 this.errorMessage = res.data.error;
               }
             });
@@ -493,8 +513,8 @@
 
 <style lang="scss" scoped>
   $smWidth: 557px;
-  .error-message{
-    p{
+  .error-message {
+    p {
       color: red;
       margin: 0;
       font-size: 14px;
@@ -502,6 +522,7 @@
       margin-top: 20px;
     }
   }
+
   .form {
     padding: 38px 50px 50px;
 
@@ -519,7 +540,8 @@
     form {
       margin-top: 45px;
     }
-    &__button{
+
+    &__button {
       width: 100%;
     }
 
@@ -550,7 +572,8 @@
 
     &__button {
       margin-top: 30px;
-      &_prev{
+
+      &_prev {
         margin-top: 30px;
       }
     }

@@ -1,9 +1,9 @@
 <template>
   <form action="#" @submit.prevent="submitForm">
     <div class="change-pass__form-grid">
-      <label for="change-pass-new">Новый пароль</label>
+      <label for="change-pass-new">{{$t('message.changePass.labels.newPass')}}</label>
       <Input v-model="$v.newPass.$model" input-type="password" input-id="change-pass-new"/>
-      <label for="change-pass-repeat">Повторите пароль</label>
+      <label for="change-pass-repeat">{{$t('message.changePass.labels.confirmPass')}}</label>
       <Input v-model="$v.confirmPass.$model" input-type="password" input-id="change-pass-repeat"/>
     </div>
     <div class="change-pass__controls">
@@ -15,7 +15,7 @@
           ref="prevButton"
       />
       <button type="submit"
-              ref="submitButton" class="button button_yellow change-pass__submit user-data__submit">Сохранить</button>
+              ref="submitButton" class="button button_yellow change-pass__submit user-data__submit">{{$t('message.changePass.buttons.save')}}</button>
     </div>
   </form>
 </template>

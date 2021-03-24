@@ -1,12 +1,11 @@
 <template>
   <li class="order d-flex flex-column flex-sm-row align-items-center justify-content-center justify-content-sm-between">
     <div class="order__text">
-      <!--      <p>Online доступ к фигне - <b>18 июня</b></p>-->
       <slot/>
     </div>
-    <div class="order__button">
-      <button class="order__btn" :class="buttonClass" :disabled="!buttonActive">{{buttonText}}</button>
-    </div>
+<!--    <div class="order__button">-->
+<!--      <button class="order__btn" :class="buttonClass" :disabled="!buttonActive">{{buttonText}}</button>-->
+<!--    </div>-->
   </li>
 </template>
 

@@ -1037,7 +1037,6 @@ button {
   color: #282828;
   background: #FFCC40;
   border-radius: 2px;
-  border: 1px solid #034795;
 }
 
 .header__account-button.account-button_login {
@@ -1477,10 +1476,6 @@ button {
   .personal-cab__title {
     padding-top: 20px;
     padding-bottom: 25px;
-  }
-
-  .footer {
-    height: 33px;
   }
 }
 

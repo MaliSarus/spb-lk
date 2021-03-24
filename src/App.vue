@@ -1,10 +1,11 @@
 <template>
-  <div id="app-one" v-show="!isLoading" >
-    <Header @loaded="isLoading = false"/>
+  <div id="app-one" >
+    <Header  v-show="!isLoading" @loaded="isLoading = false"/>
     <main>
-      <router-view/>
+      <loader v-if="isLoading"/>
+      <router-view v-else/>
     </main>
-    <Footer/>
+    <Footer v-show="!isLoading"/>
   </div>
 </template>
 
@@ -13,10 +14,11 @@
   import {mapActions} from "vuex";
   import Header from "./components/Header";
   import Footer from "./components/Footer";
+  import Loader from "./components/UI/Loader";
 
   export default {
     name: "app",
-    components: {Footer, Header},
+    components: {Loader, Footer, Header},
     data(){
       return{
         isLoading: true

@@ -1,22 +1,22 @@
 <template>
   <ul class="dates__list">
     <Order
-            v-for="(date, index) in singleDates"
-            :date="date"
-            :index="index"
-            type="single"
-            :is-all-check="everyDingleDatesCheckedToAllId ? true : false"
-            :key="'single-date_'+index"
-            :disabled="isAllDatesChecked"/>
+        v-for="(date, index) in singleDates"
+        :date="date"
+        :index="index"
+        type="single"
+        :is-all-check="everySingleDatesCheckedToAllId ? true : false"
+        :key="'single-date_'+index"
+        :disabled="isAllDatesChecked"/>
     <Order
-            v-for="(date, index) in allDates"
-            @select="selectDate"
-            :date="date"
-            :index="index"
-            type="all"
-            :all-check-id="everyDingleDatesCheckedToAllId"
-            :key="'all-dates_' + index"
-            :disabled="isSingleDatesChecked"/>
+        v-for="(date, index) in allDates"
+        @select="selectDate"
+        :date="date"
+        :index="index"
+        type="all"
+        :all-check-id="everySingleDatesCheckedToAllId"
+        :key="'all-dates_' + index"
+        :disabled="isSingleDatesChecked"/>
   </ul>
 </template>
 
@@ -63,18 +63,25 @@
         return this.userCart.some(product => product.type === 'all') || this.isEverySingleDatesChecked;
       },
       isEverySingleDatesChecked() {
-        const allChecked = this.userCart.filter(product => product.type === 'single').length === this.singleDates.length;
-        return allChecked
+        const singleDates = this.userCart.filter(product => product.type === 'single');
+        const isEveryIsOffline = singleDates.every(product => product.style === 'offline');
+        const isEveryIsOnline = singleDates.every(product => product.style === 'online');
+        let isEqualLength = false;
+        if (isEveryIsOnline || isEveryIsOffline){
+             isEqualLength = singleDates.length === this.singleDates.length
+        }
+         return isEqualLength || (this.userCart.filter(product => product.type === 'all').length !== 0)
+
+
       },
-      everyDingleDatesCheckedToAllId() {
+      everySingleDatesCheckedToAllId() {
         let checkId = ''
         if (this.isEverySingleDatesChecked) {
-          const offlineChecked = this.userCart.every(product => product.style === 'offline')
-          const onlineChecked = this.userCart.every(product => product.style === 'online')
-          console.log(offlineChecked)
+          const offlineChecked = this.userCart.filter(product => product.style === 'offline').length === this.singleDates.length
+          const onlineChecked = this.userCart.filter(product => product.style === 'online').length === this.singleDates.length;
           if (offlineChecked) {
-            checkId = this.allDates[0].items.filter(item => item.type === 'offline')[0].id
-          } else if (onlineChecked){
+            checkId = this.allDates[0].items.filter(item => item.type === 'all')[0].id
+          } else if (onlineChecked) {
             checkId = this.allDates[0].items.filter(item => item.type === 'online')[0].id
           }
         }
@@ -98,6 +105,9 @@
         flex-basis: 100%;
         padding: 15px;
         @media screen and (min-width: $lg-width) {
+          flex-basis: calc(100% / 3);
+        }
+        @media screen and (min-width: 1440px) {
           flex-basis: calc(100% / 5);
           min-width: 200px;
         }

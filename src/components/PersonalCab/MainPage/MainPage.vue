@@ -6,7 +6,7 @@
           <div class="personal-cab__payed payed-order">
             <Loader v-if="isLoading"/>
             <div v-else-if="payedOrders.length !== 0" class="personal-cab__subtitle">
-              Оплаченные заказы
+              {{$t('message.mainPage.title')}}
             </div>
             <PayedOrder v-if="payedOrders.length !== 0"  :payed-orders="payedOrders"/>
           </div>

@@ -4,7 +4,7 @@
       <div class="col-12">
         <Input
                 v-model="email"
-                label="Email"
+                :label="$t('message.logIn.inputs.email')"
                 input-id="login-email"
                 input-type="email"
                 :class="{invalid: this.valid.email}"
@@ -12,7 +12,7 @@
         />
         <Input
                 v-model="password"
-                label="Пароль"
+                :label="$t('message.logIn.inputs.password')"
                 input-id="login-password"
                 input-type="password"
                 :class="{invalid: this.valid.password}"
@@ -21,8 +21,8 @@
       </div>
     </div>
     <div class="form__group">
-      <Button class=" button button_yellow form__submit" type="submit" text="Войти"/>
-      <router-link :to="{name:'ForgetPass'}" class="form__remember">Забыли пароль ?</router-link>
+      <Button class=" button button_yellow form__submit" type="submit" :text="$t('message.logIn.buttons.signIn')"/>
+      <router-link :to="{name:'ForgetPass'}" class="form__remember">{{$t('message.logIn.forgetPass')}}</router-link>
     </div>
     <p v-if="errorMessage" class="auth__error">{{errorMessage}}</p>
   </form>

@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="order-cart__dates">
-      <orders-list/>
+      <p v-if="$attrs.done" style="text-align: center; font-size: 24px;">{{$t('message.orderCart.done')}}</p>
+      <orders-list v-else/>
     </div>
     <div class="container">
       <div class="row">
@@ -28,50 +29,15 @@
               <thead>
               <tr>
                 <th></th>
-                <th>ОФЛАЙН доступ</th>
-                <th>ОНЛАЙН доступ</th>
+                <th>{{$t('message.orderCart.orderCartDates.table.head[0]')}}</th>
+                <th>{{$t('message.orderCart.orderCartDates.table.head[1]')}}</th>
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <td>Очный доступ на научные заседания Конгресса</td>
-                <td class="yes"></td>
-                <td class="no"></td>
-              </tr>
-              <tr>
-                <td>Online доступ на трансляцию Конгресса</td>
-                <td class="yes"></td>
-                <td class="yes"></td>
-              </tr>
-              <tr>
-                <td>Бесплатный доступ к видеозаписям Конгресса</td>
-                <td class="yes"></td>
-                <td class="yes"></td>
-              </tr>
-              <tr>
-                <td>Информационный пакет участника: печатная версия программы, сборник материалов</td>
-                <td class="yes"></td>
-                <td class="no"></td>
-              </tr>
-              <tr>
-                <td>Персональный бейдж</td>
-                <td class="yes"></td>
-                <td class="no"></td>
-              </tr>
-              <tr>
-                <td>Номерной электронный сертификат участника Конгресса</td>
-                <td class="yes"></td>
-                <td class="yes"></td>
-              </tr>
-              <tr>
-                <td>Выдача баллов НМО</td>
-                <td class="yes"></td>
-                <td class="yes"></td>
-              </tr>
-              <tr>
-                <td>Выставка, кофе-брейки, обеды</td>
-                <td class="yes"></td>
-                <td class="no"></td>
+              <tr v-for="(data,index) in tableBody" :key="'tr_'+index">
+                <td>{{data.title}}</td>
+                <td :class="{yes: data.offline, no: !data.offline }"></td>
+                <td :class="{yes: data.offline, no: !data.online}"></td>
               </tr>
               </tbody>
             </table>
@@ -99,6 +65,11 @@
         components: {
             OrdersList
         },
+      computed:{
+          tableBody(){
+            return this.$t('message.orderCart.orderCartDates.table.body');
+          }
+      }
     }
 </script>
 

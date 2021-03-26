@@ -1,10 +1,17 @@
+export const breakpoints = {
+  xsWidth: 0,
+  smWidth: 576,
+  mdWidth: 768,
+  lgWidth: 992,
+  xlWidth: 1200,
+}
+
 export let baseURL = 'http://test.spbcongres.beget.tech';
 
 if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_MODE !== 'test') {
-    baseURL = 'https://spbcongress.com';
-}
-else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_MODE === 'test'){
-    baseURL = 'http://test.spbcongres.beget.tech';
+  baseURL = 'https://spbcongress.com';
+} else if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_MODE === 'test') {
+  baseURL = 'http://test.spbcongres.beget.tech';
 }
 
 

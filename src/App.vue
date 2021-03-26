@@ -36,12 +36,12 @@
     },
     created() {
       this.initFetch();
+
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
 
   #app-one {
     display: flex;

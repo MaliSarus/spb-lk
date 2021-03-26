@@ -236,8 +236,11 @@
   }
 
   &__lang {
-    a {
+    button {
       display: flex;
+      background-color: transparent;
+      border: none;
+      padding: 0;
     }
   }
 }
@@ -270,6 +273,12 @@
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
+    button{
+      display: flex;
+      background-color: transparent;
+      border: none;
+      padding: 0;
+    }
   }
   &__menu{
     margin-bottom: 20px;

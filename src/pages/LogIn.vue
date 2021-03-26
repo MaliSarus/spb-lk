@@ -1,8 +1,8 @@
 <template>
   <div class="form form__login">
-    <div class="form__title">Личный кабинет</div>
+    <div class="form__title">{{$t('message.logIn.title')}}</div>
     <LogInForm/>
-    <router-link tag="button" :to="{name: 'SignUp'}" class="button button_blue form__button">Зарегистрироваться</router-link>
+    <router-link tag="button" :to="{name: 'SignUp'}" class="button button_blue form__button">{{$t('message.logIn.buttons.signUp')}}</router-link>
   </div>
 </template>
 

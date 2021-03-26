@@ -1,31 +1,31 @@
 <template>
   <div class="user-data__form-grid">
-    <label for="user-birth">Дата рождения</label>
+    <label for="user-birth">{{$t('message.userData.inputs.birthday')}}</label>
     <DateInput v-model="formInputs.birthday" input-id="user-birth"/>
 
-    <label for="user-country">Страна</label>
+    <label for="user-country">{{$t('message.userData.inputs.country')}}</label>
     <Select v-model="formInputs.country" input-id="user-country" :options="countriesWithoutId"/>
 
-    <label for="user-city" v-if="countryId === 1">Город</label>
+    <label for="user-city" v-if="countryId === 1">{{$t('message.userData.inputs.city')}}</label>
     <Select v-model="formInputs.city" input-id="user-city" :options="russiaCities" v-if="countryId === 1"/>
 
-    <label for="user-phone">Телефон</label>
+    <label for="user-phone">{{$t('message.userData.inputs.phone')}}</label>
     <Input v-model="formInputs.phone" input-id="user-phone" input-type="tel" @input="inputCheck"/>
 
-    <label for="user-company">Учреждение</label>
+    <label for="user-company">{{$t('message.userData.inputs.company')}}</label>
     <Input v-model="formInputs.company" input-id="user-company"/>
 
-    <label for="user-position">Должность</label>
+    <label for="user-position">{{$t('message.userData.inputs.position')}}</label>
     <Input v-model="formInputs.position" input-id="user-position"/>
 
-    <label for="user-department">Специализация</label>
+    <label for="user-department">{{$t('message.userData.inputs.department')}}</label>
     <Select v-model="formInputs.department" input-id="user-department"
             :options="departments"/>
 
-    <label for="user-rank">Ученое звание</label>
+    <label for="user-rank">{{$t('message.userData.inputs.rank')}}</label>
     <Select v-model="formInputs.rank" input-id="user-rank" :options="ranks"/>
 
-    <label for="user-degree">Ученая степень</label>
+    <label for="user-degree">{{$t('message.userData.inputs.degree')}}</label>
     <Select v-model="formInputs.degree" input-id="user-degree" :options="degrees"/>
 
   </div>

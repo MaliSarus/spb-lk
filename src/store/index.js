@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
-import { setWithExpiry} from "../helpers/localStorage";
+import {setWithExpiry} from "../helpers/localStorage";
 
 Vue.use(Vuex)
 
@@ -13,9 +13,9 @@ export default new Vuex.Store({
     ranks: [],
     degrees: [],
     russiaCities: [],
-    payedOrder:[],
-    userCart:[],
-    userBasket:[],
+    payedOrder: [],
+    userCart: [],
+    userBasket: [],
     products: [],
   },
   mutations: {
@@ -37,27 +37,32 @@ export default new Vuex.Store({
     setUser(state, payload) {
       state.user = payload;
     },
-    setPayedOrders(state, payload){
+    setPayedOrders(state, payload) {
       state.payedOrder = payload
     },
-    setProducts(state, payload){
+    setProducts(state, payload) {
       state.products = payload
     },
-    addProduct(state, payload){
+    addProduct(state, payload) {
       state.userCart.push(payload)
     },
-    deleteProduct(state, payload){
-      state.userCart = state.userCart.filter(product=> +product.id !== payload)
+    deleteProduct(state, payload) {
+      state.userCart = state.userCart.filter(product => +product.id !== payload)
     },
-    deleteAllSingleProducts (state){
+    deleteAllSingleProducts(state) {
       state.userCart = state.userCart.filter(product => product.type !== 'single')
     },
-    deleteAllProducts (state){
+    deleteAllProducts(state) {
       state.userCart = [];
     },
-    setUserBasket(state, payload){
+    setUserBasket(state, payload) {
       state.userBasket = payload
-
+    },
+    clearUser(state){
+      state.user = {};
+      state.userBasket = [];
+      state.userForm = [];
+      state.payedOrder =[];
     }
   },
   actions: {
@@ -88,23 +93,22 @@ export default new Vuex.Store({
     },
     fetchUser({commit}) {
       return axios
-          .get('/api/user/')
-          .then(res=> {
-            console.log(res)
-            if (res.data.auth) {
-              const data = res.data;
-              const user = {
-                ...data.user,
-                ordinator: data.ordinator,
-                verify: data.verify,
-              }
-              commit('setUser', user)
-              return user
+        .get('/api/user/')
+        .then(res => {
+          console.log(res)
+          if (res.data.auth) {
+            const data = res.data;
+            const user = {
+              ...data.user,
+              ordinator: data.ordinator,
+              verify: data.verify,
             }
-            else {
-                return false
-            }
-          })
+            commit('setUser', user)
+            return user
+          } else {
+            return false
+          }
+        })
     },
     fetchCountries({commit}) {
       axios
@@ -163,20 +167,19 @@ export default new Vuex.Store({
           }
         })
     },
-    fetchPayedOrders({commit}){
+    fetchPayedOrders({commit}) {
       return axios
         .get('/api/user/orders/')
-        .then(res=>{
+        .then(res => {
           if (res.data.status === 'ok') {
             commit('setPayedOrders', res.data.orders);
             return true
-          }
-          else {
+          } else {
             return false
           }
         })
     },
-    fetchProducts({commit}){
+    fetchProducts({commit}) {
       return axios
         .get('/api/catalog/items/')
         .then(res => {
@@ -185,6 +188,11 @@ export default new Vuex.Store({
           }
           return res.data.status;
         })
+    },
+    logout({commit}){
+      commit('clearUser');
+      return axios
+        .post('/?logout=yes');
     }
   },
   getters: {
@@ -206,16 +214,16 @@ export default new Vuex.Store({
     russiaCities(state) {
       return state.russiaCities
     },
-    payedOrders(state){
+    payedOrders(state) {
       return state.payedOrder
     },
-    userCart(state){
+    userCart(state) {
       return state.userCart
     },
-    products(state){
+    products(state) {
       return state.products
     },
-    userBasket(state){
+    userBasket(state) {
       return state.userBasket
     }
   }

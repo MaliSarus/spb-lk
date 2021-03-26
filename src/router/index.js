@@ -91,6 +91,7 @@ router.beforeEach((to, from, next) => {
           next('/')
         }
       })
+      .catch(()=>next('/'))
   }
   else{
     next()

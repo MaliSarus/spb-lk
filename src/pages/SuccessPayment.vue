@@ -1,21 +1,21 @@
 <template>
   <div class="form__wrapper">
     <form  v-if="orderNum" action="#" class="success-form" @submit.prevent="submitSuccess">
-      <div class="success-form__title">Успешная оплата</div>
+      <div class="success-form__title">{{$t('message.payment.success.title')}}</div>
       <div class="success-form__content">
         <img :src="successIcon" alt="">
-        <div class="success-form__subtitle">Оплата прошла успешно!</div>
-        <p>Спасибо, заказ #{{orderNum}} успешно оплачен!</p>
+        <div class="success-form__subtitle">{{$t('message.payment.success.subtitle')}}</div>
+        <p>{{$t('message.payment.success.text',{orderNum})}}</p>
       </div>
-      <button type="submit" class="button button_yellow">Перейти в личный кабинет</button>
+      <button type="submit" class="button button_yellow">{{$t('message.payment.success.link')}}</button>
     </form>
     <form  v-else action="#" class="success-form" @submit.prevent="submitSuccess">
-      <div class="success-form__title">Ошибка</div>
+      <div class="success-form__title">{{$t('message.payment.error.title')}}</div>
       <div class="success-form__content">
-        <div class="success-form__subtitle">Произошла ошибка</div>
+        <div class="success-form__subtitle">{{$t('message.payment.error.subtitle')}}</div>
         <p>{{errorMessage}}</p>
       </div>
-      <button type="submit" class="button button_yellow">Перейти в личный кабинет</button>
+      <button type="submit" class="button button_yellow">{{$t('message.payment.error.link')}}</button>
     </form>
   </div>
 </template>

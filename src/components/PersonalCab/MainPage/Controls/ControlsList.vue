@@ -2,19 +2,19 @@
   <div class="control__list d-flex flex-wrap">
     <ControlItem :icon-src="images.userIcon"  :to="{name: 'UserData'}">
       <template v-slot:control-title>
-        Личные данные
+        {{$t('message.mainPage.controls.userData.title')}}
       </template>
       <template v-slot:control-text>
-        Просмотреть / изменить персональные данные, пройти верификацию
+        {{$t('message.mainPage.controls.userData.text')}}
       </template>
     </ControlItem>
 
     <ControlItem :icon-src="images.orderIcon" :to="{name: 'OrderCart'}">
       <template v-slot:control-title>
-        Оформление, заказ услуг
+        {{$t('message.mainPage.controls.orderCart.title')}}
       </template>
       <template v-slot:control-text>
-        Выбрать даты, формат участия в конгрессе, а также заказать дополнительные услуги
+        {{$t('message.mainPage.controls.orderCart.text')}}
       </template>
     </ControlItem>
   </div>

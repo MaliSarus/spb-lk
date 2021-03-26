@@ -1103,10 +1103,13 @@ button {
   display: block;
 }
 
-.header__lang a {
+.header__lang button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  background-color: transparent;
+  border: none;
+  padding: 0;
 }
 
 .mobile-menu {
@@ -1140,6 +1143,15 @@ button {
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
+}
+
+.mobile-menu__lang button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: transparent;
+  border: none;
+  padding: 0;
 }
 
 .mobile-menu__menu {
@@ -1437,14 +1449,6 @@ button {
   top: 18px !important;
   bottom: 18px !important;
   right: 15px !important;
-}
-
-.add-service__name input:checked + label::before {
-  background-image: url("../img/ui/checkbox_checked.svg");
-}
-
-.add-service__name label::before {
-  background-image: url("../img/ui/checkbox_unchecked.svg");
 }
 
 .footer {

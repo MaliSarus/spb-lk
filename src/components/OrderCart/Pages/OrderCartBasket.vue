@@ -3,6 +3,19 @@
     <div class="row">
       <div class="col-12">
         <BasketList :orders="userBasket"/>
+        <div class="row">
+          <div class="col-12 col-sm-8 col-lg-6 offset-sm-2 offset-lg-3">
+            <div class="coupon" :class="{
+              invalid: isDiscountWasError,
+              valid: isDiscountWasSuccess,
+            }">
+              <input type="text" v-model="coupon" :placeholder="$t('message.orderCart.orderCartBasket.coupon.placeholder')" :readonly="couponUpload">
+              <button v-if="!couponUpload" type="button" class="button button_yellow" @click="checkDiscount">{{$t('message.orderCart.orderCartBasket.coupon.submit')}}</button>
+              <button v-if="couponUpload" type="button" class="button button_yellow" @click="deleteCoupon">{{$t('message.orderCart.orderCartBasket.coupon.delete')}}</button>
+            </div>
+            <small style="color: red; padding: 10px;" v-if="isDiscountWasError">{{$t('message.orderCart.orderCartBasket.coupon.error')}}</small>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -18,12 +31,17 @@
 
   export default {
     name: "OrderCartBasket",
+    props:['discount'],
     components: {
       BasketList,
     },
     data(){
       return{
-        baseURL
+        baseURL,
+        coupon: '',
+        discountSuccess: false,
+        discountError: false,
+        couponUpload: false
       }
     },
     methods: {
@@ -31,15 +49,84 @@
         axios
           .post('/api/makeorder/')
           .then(console.log)
+      },
+      checkDiscount(){
+        if (this.coupon) {
+          axios
+            .post('/api/coupon/', {
+              coupon: this.coupon
+            })
+            .then(res => {
+              console.log(res)
+              const saleAmount = res.data.saleAmount;
+              if (saleAmount !== 0) {
+                this.$emit('update:discount', res.data.discountPrice);
+                this.couponUpload = true;
+                this.discountSuccess = true;
+              } else {
+                this.discountError = true;
+                this.couponUpload = true;
+                this.discountError = true;
+              }
+            })
+        }
+      },
+      deleteCoupon(){
+        this.coupon = '';
+        this.couponUpload = false;
+        this.discountSuccess = false;
+        this.discountError = false;
+        this.$emit('update:discount',0);
+        axios
+          .post('/api/coupon.php')
+        .then(console.log)
       }
     },
     computed: {
       ...mapGetters(["userBasket"]),
-
+      isDiscountWasSuccess(){
+        return !this.discountError && this.discountSuccess
+      },
+      isDiscountWasError(){
+        return this.discountError && !this.discountSuccess
+      }
     }
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .coupon{
+    margin-top: 40px;
+    background: #F4F9FF;
+    border: 1px solid #F3F3F3;
+    box-sizing: border-box;
+    border-radius: 2px;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    &.valid{
+      border-color: #375B28;
+      input{
+        color: #375B28;
+      }
+    }
+    &.invalid{
+      border-color: red;
+
+    }
+    input{
+      flex-grow: 1;
+      padding-left: 10px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      line-height: 16px;
+      outline: none;
+    }
+    button{
+      padding: 8px;
+      text-transform: none;
+    }
+  }
 
 </style>

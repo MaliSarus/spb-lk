@@ -1,9 +1,8 @@
 <template>
   <div class="form form__error">
     <div class="form__title">404</div>
-    <p>Ошибка
-      Неправильно набран адрес, или такой страницы на сайте больше не существует.</p>
-    <a href="/" class="button button_yellow error__button">Вернуться на главную страницу</a>
+    <p>{{$t('message.errorPage.text')}}</p>
+    <a href="/" class="button button_yellow error__button">{{$t('message.errorPage.link')}}</a>
   </div>
 </template>
 

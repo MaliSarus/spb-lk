@@ -1,19 +1,18 @@
 <template>
   <div class="form form__forget">
-    <div class="form__title">Восстановить пароль</div>
+    <div class="form__title">{{$t('message.forgetPass.title')}}</div>
     <div class="form__confirm text" v-if="page === 'error'">
-      Пользователь не найден
+      {{$t('message.forgetPass.error')}}
     </div>
     <div class="form__subtitle text" v-if="page === 1">
-      Если вы забыли пароль, введите Email. Данные для авторизации будут высланы
-      вам по E-Mail.
+      {{$t('message.forgetPass.subtitle')}}
     </div>
     <div class="form__confirm text" v-if="page === 2">
-      Пожалуйста, дождитесь письма, данные для авторизации были высланы на email.
+      {{$t('message.forgetPass.success')}}
     </div>
     <ForgetPassForm v-if="page === 1" :page.sync="page"/>
-    <Button v-if="page === 2" text="На страницу авторизации" class="button button_yellow" type="button" @buttonClick="enterInAuthPage"/>
-    <Button v-if="page === 'error'" text="Назад" class="button button_yellow" type="button" @buttonClick="page = 1"/>
+    <Button v-if="page === 2" :text="$t('message.forgetPass.links.logIn')" class="button button_yellow" type="button" @buttonClick="enterInAuthPage"/>
+    <Button v-if="page === 'error'" :text="$t('message.forgetPass.links.back')" class="button button_yellow" type="button" @buttonClick="page = 1"/>
   </div>
 </template>
 <script>

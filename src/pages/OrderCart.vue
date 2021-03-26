@@ -20,15 +20,17 @@
               <Loader v-if="isLoading"/>
               <div v-else-if="placeholder" class="order-cart__placeholder">
                 <p>
-                  Функционал покупки появится в ближайшее время
+                  {{$t('message.orderCart.placeholder.text')}}
                 </p>
-                <button type="button" class="button button_yellow" @click="$router.go(-1)">Вернуться назад</button>
+                <button type="button" class="button button_yellow" @click="$router.go(-1)">
+                  {{$t('message.orderCart.placeholder.link')}}
+                </button>
               </div>
             </div>
           </div>
         </div>
         <keep-alive>
-          <component v-if="!placeholder && !isLoading" :is="pages[page-1]" :prop="{name: 'some'}"/>
+          <component v-if="!placeholder && !isLoading" :is="pages[page-1]" :done="productsDone" :discount.sync="discount"/>
         </keep-alive>
       </form>
     </div>
@@ -38,10 +40,15 @@
         <div class="row">
           <div class="col-12">
             <div class="order__price-content">
-              ИТОГО: <b>{{totalPrice}}</b>
-              <button v-if="page > 1" class="button button_transparent button_prev" @click="prevClick">Назад</button>
-              <button v-if="page < 3" class="button button_yellow button_next" @click="nextClick">Далее</button>
-              <a v-else class="button button_yellow button_next" :href="`${baseURL}/api/makeorder/`">Оформить заказ</a>
+              {{this.discount === 0 ? $t('message.orderCart.totalPrice.text') : $t('message.orderCart.totalPrice.discountText')}}:
+              <b style="margin-left: 5px;">{{discount === 0 ? totalPrice : discount}} &#8381;</b>
+              <button v-if="page > 1" class="button button_transparent button_prev" @click="prevClick">
+                {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.back') : ''}}
+              </button>
+              <button v-if="page < 3" class="button button_yellow button_next" @click="nextClick">
+                {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.next') : ''}}
+              </button>
+              <a v-else class="button button_yellow button_next" :href="`${baseURL}/api/makeorder/`">{{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.makeOrder') : ''}}</a>
             </div>
           </div>
         </div>
@@ -49,13 +56,13 @@
     </div>
     <div class="ord-modal" ref="ordModal" v-show="user.ordinator && !user.verify && isModalOpen">
       <div class="ord-modal__block">
-        <div class="ord-modal__text">
-          <p>Вы зарегистрировались как клинический ординатор или очный аспирант кафедры: пластическая хирургия / челюстно-лицевая хирургия / косметология / дерматология.</p>
-          <p><b>Обращаем внимание, что для получения дополнительной  скидки Вам необходимо пройти верификацию!</b></p>
-        </div>
+        <div class="ord-modal__text" v-html="$t('message.orderCart.modal.text')"/>
         <div class="ord-modal__controls">
-          <button class="button button_transparent" @click="toVerify">Пройти верификацию</button>
-          <button class="button button_yellow" type="button" @click="isModalOpen = false">Позже</button>
+          <button class="button button_transparent" @click="toVerify">{{$t('message.orderCart.modal.buttons.verify')}}
+          </button>
+          <button class="button button_yellow" type="button" @click="isModalOpen = false">
+            {{$t('message.orderCart.modal.buttons.skip')}}
+          </button>
         </div>
       </div>
     </div>
@@ -75,6 +82,7 @@
   import OrderCartBasket from "../components/OrderCart/Pages/OrderCartBasket";
   import OrderCartWorkshops from "../components/OrderCart/Pages/OrderCartWorkshops";
   import {baseURL} from "../helpers/defaultValues";
+  import {breakpoints} from "../helpers/defaultValues";
 
   export default {
     name: "OrderCart",
@@ -87,22 +95,29 @@
         yesIcon,
         noIcon,
         page: 1,
+        productsDone: false,
         pages: [
           OrderCartDates,
           OrderCartWorkshops,
           OrderCartBasket,
         ],
-        pageTitle: [
-          'Выберите формат и даты участия в конгрессе:',
-          'Дополнительные услуги',
-          'Ваш заказ'
-        ],
+        discount: 0,
+
         baseURL,
         isModalOpen: true,
+        windowWidth: 0,
+        breakpoints
       };
     },
     computed: {
-      ...mapGetters(["userCart","user"]),
+      ...mapGetters(["userCart", "user"]),
+      pageTitle() {
+        return [
+          this.$t('message.orderCart.orderCartDates.title'),
+          this.$t('message.orderCart.orderCartWorkshops.title'),
+          this.$t('message.orderCart.orderCartBasket.title')
+        ]
+      },
       totalPrice() {
         return this.userCart.reduce((acc, product) => acc + product.price, 0)
       },
@@ -110,7 +125,10 @@
     methods: {
       ...mapActions(["fetchProducts"]),
       ...mapMutations(["setUserBasket", "deleteAllProducts"]),
-      toVerify(){
+      handleResize() {
+        this.windowWidth = window.innerWidth;
+      },
+      toVerify() {
         this.$router.push({name: 'Verify'});
         this.isModalOpen = false;
       },
@@ -120,21 +138,20 @@
         } else if (this.page == 2) {
           const userCart = this.userCart;
           const postData = userCart.map(item => +item.id)
-          axios
-            .post('/api/user/basket/', {
-              items: postData
-            })
-            .then(res => {
-              console.log(res)
-              axios
-                .get('/api/user/basket/')
-                .then(res => {
-                  this.setUserBasket(res.data.items);
-                  this.page += 1;
-                  console.log(this.page)
-                  // this.deleteAllProducts()
-                })
-            })
+          if (postData.length) {
+            axios
+              .post('/api/user/basket/', {
+                items: postData
+              })
+              .then(() => {
+                axios
+                  .get('/api/user/basket/')
+                  .then(res => {
+                    this.setUserBasket(res.data.items);
+                    this.page += 1;
+                  })
+              })
+          }
         }
       },
       prevClick() {
@@ -146,10 +163,15 @@
       document.body.append(this.$refs.ordModal)
     },
     created() {
+      window.addEventListener('resize', this.handleResize);
+      this.handleResize();
       this.fetchProducts()
         .then(res => {
-          if (res == 'ok') {
+          if (res === 'ok' || res === 'done') {
             this.isLoading = false
+            if (res === 'done') {
+              this.productsDone = true;
+            }
           }
         })
     }
@@ -157,8 +179,8 @@
 </script>
 
 <style lang="scss" scoped>
-  .ord-modal{
-   position: fixed;
+  .ord-modal {
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
@@ -166,8 +188,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(#F4F9FF,.8);
-    &__block{
+    background: rgba(#F4F9FF, .8);
+
+    &__block {
       padding: 20px 20px 25px;
       width: 420px;
       max-width: 100%;
@@ -176,25 +199,30 @@
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
       border-radius: 10px;
     }
-    &__text{
+
+    &__text {
       text-align: center;
       font-size: 18px;
       line-height: 21px;
       color: $main-text-color;
     }
-    &__controls{
+
+    &__controls {
       display: flex;
       justify-content: space-between;
       margin-top: 20px;
-      button{
+
+      button {
         padding: 8px 15px;
         font-size: 16px;
         text-transform: none;
         flex-grow: 1;
-        &:nth-child(1){
+
+        &:nth-child(1) {
           margin-right: 15px;
         }
-        &:nth-child(2){
+
+        &:nth-child(2) {
           margin-left: 15px;
         }
       }
@@ -263,10 +291,11 @@
   }
 
   .order__price {
-    padding: 15px 105px;
+    padding: 15px 0;
     background-color: #F4F9FF;
     margin-top: 40px;
     @media screen and (min-width: $lg-width) {
+      padding: 15px 105px;
       margin-top: 0;
       position: absolute;
       bottom: 0;
@@ -282,10 +311,27 @@
   }
 
   .button_next, .button_prev {
-    margin-left: 20px;
+    margin-left: 10px;
+    padding: 15px;
     text-transform: none;
-    padding: 8px 15px;
-    min-width: 100px;
-    /*width: 100%;*/
+    background-position: center;
+    background-size: 6px;
+    background-repeat: no-repeat;
+    background-image: url(~@/assets/img/ui/arrow.svg);
+    @media screen and (max-width: $lg-width){
+      border-radius: 100%;
+    }
+    @media screen and (min-width: $lg-width){
+      margin-left: 20px;
+      padding: 8px 15px;
+      min-width: 100px;
+      background-image: none;
+    }
+  }
+  .button_prev{
+    transform: rotate(180deg);
+    @media screen and (min-width: $lg-width){
+      transform: none;
+    }
   }
 </style>

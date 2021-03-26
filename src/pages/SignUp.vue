@@ -1,6 +1,6 @@
 <template>
   <div class="form form__signup">
-    <div class="form__title">Регистрация</div>
+    <div class="form__title">{{$t('message.signUp.title')}}</div>
     <div class="form__progressbar">
       <div
         class="progress"

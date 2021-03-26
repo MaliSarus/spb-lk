@@ -11,7 +11,7 @@
           ref="submitButton"
           class="button button_yellow flex-grow-1"
           type="submit"
-          text="Получить пароль"
+          :text="$t('message.forgetPass.submit')"
       />
     </div>
   </form>

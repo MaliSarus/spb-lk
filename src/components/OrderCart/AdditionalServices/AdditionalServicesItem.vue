@@ -9,7 +9,7 @@
     </div>
     <div class="add-service__right">
       <div class="add-service__price">{{workshop.price.basePrice}} &#8381;</div>
-      <div class="add-service__link"><a href="#">{{workshop.availability ? 'Подробнее' : 'Сайт партнера'}}</a></div>
+      <div class="add-service__link"><a href="#">{{workshop.availability ? $t('message.orderCart.orderCartWorkshops.link.more') : $t('message.orderCart.orderCartWorkshops.link.site')}}</a></div>
     </div>
   </li>
 </template>
@@ -101,6 +101,12 @@
       @media screen and (min-width: $lg-width) {
         padding: 0 0 0 25px;
       }
+      input:checked + label{
+        &::before{
+          background-image: url(~@/assets/img/ui/checkbox_checked.svg);
+
+        }
+      }
 
       label {
         cursor: pointer;
@@ -124,6 +130,7 @@
           background-repeat: no-repeat;
           background-position: center;
           transform: translateY(-50%);
+          background-image: url(~@/assets/img/ui/checkbox_unchecked.svg);
           @media screen and (min-width: $lg-width) {
             width: 20px;
             height: 20px;

@@ -19,6 +19,7 @@
     &__list {
       margin: 0;
       padding: 0;
+      border: 1px solid #F4F9FF;
     }
 
     &__item {

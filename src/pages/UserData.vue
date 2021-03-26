@@ -5,7 +5,7 @@
         <div class="col-12">
           <div class="personal-cab__user-data">
             <div class="personal-cab__subtitle">
-              Персональная информация
+              {{$t('message.userData.title')}}
             </div>
           </div>
         </div>

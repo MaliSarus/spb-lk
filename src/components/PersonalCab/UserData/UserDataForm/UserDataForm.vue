@@ -14,13 +14,15 @@
             <template slot="popover">
               <button class="tooltip__close" v-close-popover :style="{backgroundImage:`url(${tooltipClose})`}"></button>
               <div class="tooltip__title">
-                Эти данные меняются только по официальному запросу.
+                {{$t('message.userData.tooltip.title')}}
+
               </div>
               <div class="tooltip__body text">
-                Заполните форму отправив запрос с просьбой изменить контактую информацию, а также скан документа
-                подтверждающего личность.
+                {{$t('message.userData.tooltip.text')}}
+
               </div>
-              <router-link :to="{name:'ChangeFIO'}" tag="button" class="tooltip__button button button_yellow" >Перейти
+              <router-link :to="{name:'ChangeFIO'}" tag="button" class="tooltip__button button button_yellow" >
+                {{$t('message.userData.tooltip.link')}}
               </router-link>
             </template>
           </v-popover>
@@ -28,23 +30,16 @@
 
       </div>
       <hr>
-      <div v-if="isVerify" class="user-data__verify">
-        Вы успешно подтвердили Ваш статус! <b>Ваш аккаунт верифицирован.</b>
-        В разделе “Оформление участия” для Вас специальные цены.
-      </div>
+      <div v-if="isVerify" class="user-data__verify" v-html="$t('message.userData.verify.verified')"/>
       <Checkbox v-if="!isVerify" v-model="verifyCheck" input-id="user-verify"
-                class="user-data__verify-check">Являюсь клиническим ординатором или
-        очным аспирантом кафедры
+                class="user-data__verify-check">
+        {{$t('message.userData.verify.checkbox')}}
       </Checkbox>
       <div class="user-data__verify-no" v-if="!isVerify && verifyCheck">
         <p>
-          Обращаем внимание, что Вам необходимо подтвердить, что Вы являетесь клиническим
-          ординатором или
-          очным аспирантом кафедры: пластическая хирургия / челюстно-лицевая хирургия /
-          косметология /
-          дерматология.
+          {{$t('message.userData.verify.notVerified')}}
         </p>
-        <button class="button button_yellow" @click="toVerify">Перейти к верификации</button>
+        <button class="button button_yellow" @click="toVerify">{{$t('message.userData.verify.link')}}</button>
       </div>
 
       <UserDataFormInputs v-model="userForm"/>
@@ -54,11 +49,12 @@
           <div class="col-12 col-lg-6">
             <router-link tag="button" type="button" :to="{name: 'ChangePass'}"
                          class="button button_yellow button_transparent user-data__pass">
-              Изменить пароль
+              {{$t('message.userData.buttons.changePass')}}
             </router-link>
           </div>
           <div class="col-12 col-lg-6">
-            <button type="submit" class="button button_yellow user-data__submit">Сохранить
+            <button type="submit" class="button button_yellow user-data__submit">
+              {{$t('message.userData.buttons.save')}}
             </button>
           </div>
         </div>
@@ -66,10 +62,10 @@
     </form>
     <form action="#" @submit.prevent="changeData" v-if="page === 2">
       <div class="user-data__success-image"><img :src="succesIcon" alt=""></div>
-      <div class="user-data__success-text">Данные успешно обновлены!</div>
+      <div class="user-data__success-text">{{$t('message.userData.success.text')}}</div>
       <div class="user-data__success-button">
-        <router-link tag="button" :to="'/user/' + $route.params.id" class="button button_yellow">Вернуться в личный
-          кабинет
+        <router-link tag="button" :to="'/user/' + $route.params.id" class="button button_yellow">
+          {{$t('message.userData.success.link')}}
         </router-link>
       </div>
     </form>

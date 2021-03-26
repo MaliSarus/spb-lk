@@ -4,14 +4,14 @@
       <div class="col-12">
         <div class="form__page" v-if="formPage === 1">
           <Input :class="{invalid: validForm.lastName}"
-                 label="Фамилия *"
+                 :label="$t('message.signUp.inputs.lastName')"
                  input-id="signup-lastname"
                  input-type="text"
                  v-model="$v.form.lastName.$model"
                  @input="validate($event,'lastName')"
           />
           <Input :class="{invalid: validForm.name}"
-                 label="Имя *"
+                 :label="$t('message.signUp.inputs.name')"
                  input-id="signup-name"
                  input-type="text"
                  v-model="$v.form.name.$model"
@@ -19,19 +19,19 @@
           />
 
           <Input
-              label="Отчество"
+              :label="$t('message.signUp.inputs.secondName')"
               input-id="signup-secondname"
               input-type="text"
               v-model="form.secondName"
           />
           <DateInput :class="{invalid: validForm.birthday}"
                      v-model="$v.form.birthday.$model"
-                     label="Дата рождения *"
+                     :label="$t('message.signUp.inputs.birthday')"
                      input-id="signup-birthday"
                      @inputDateChange="validateDate($event,'birthday')"/>
           <Select :class="{invalid: validForm.country}"
                   v-model="$v.country.$model"
-                  label="Страна *"
+                  :label="$t('message.signUp.inputs.country')"
                   input-id="signup-country"
                   :options="countriesWithoutId"
                   @pick="countryToId($event,'country')"
@@ -39,14 +39,14 @@
           <Select :class="{invalid: validForm.city}"
                   v-if="form.country === 1"
                   v-model="$v.form.city.$model"
-                  label="Город *"
+                  :label="$t('message.signUp.inputs.city')"
                   input-id="signup-city"
                   :options="russiaCities"
                   @pick="validateSelect($event,'city')"
           />
           <Button
               class="button button_blue form__button"
-              text="Далее"
+              :text="$t('message.signUp.buttons.next')"
               @buttonClick="nextPage"
               type="button"
           />
@@ -54,7 +54,7 @@
 
         <div class="form__page" v-show="formPage === 2">
           <Input
-              label="Учреждение *"
+              :label="$t('message.signUp.inputs.company')"
               input-id="signup-company"
               input-type="text"
               v-model="form.company"
@@ -63,7 +63,7 @@
 
           />
           <Input
-              label="Должность *"
+              :label="$t('message.signUp.inputs.position')"
               input-id="signup-position"
               input-type="text"
               v-model="$v.form.position.$model"
@@ -73,7 +73,7 @@
           />
           <Select
               v-model="$v.form.department.$model"
-              label="Специализация *"
+              :label="$t('message.signUp.inputs.department')"
               input-id="signup-department"
               :options="departments"
               :class="{invalid: this.validForm.department}"
@@ -81,7 +81,7 @@
           />
           <Input
               v-if="form.department === 'другое'"
-              label="Специализация (другое)"
+              :label="$t('message.signUp.inputs.otherDepartment')"
               input-id="signup-department-other"
               input-type="text"
               v-model="form.otherDepartment"
@@ -91,13 +91,13 @@
           />
           <Select
               v-model="form.rank"
-              label="Ученое звание"
+              :label="$t('message.signUp.inputs.rank')"
               input-id="signup-rank"
               :options="ranks"
           />
           <Select
               v-model="form.degree"
-              label="Ученая степень"
+              :label="$t('message.signUp.inputs.degree')"
               input-id="signup-degree"
               :options="degrees"
           />
@@ -111,7 +111,7 @@
             />
             <Button
                 class="button_blue button form__button"
-                text="Далее"
+                :text="$t('message.signUp.buttons.next')"
                 @buttonClick="nextPage"
                 type="button"
             />
@@ -119,7 +119,7 @@
         </div>
         <div class="form__page" v-show="formPage === 3">
           <Input
-              label="Телефон *"
+              :label="$t('message.signUp.inputs.phone')"
               input-id="signup-phone"
               input-type="tel"
               v-model="$v.form.phone.$model"
@@ -127,7 +127,7 @@
               @input="validate($event,'phone')"
           />
           <Input
-              label="Email *"
+              :label="$t('message.signUp.inputs.email')"
               input-id="signup-email"
               input-type="email"
               v-model="$v.form.email.$model"
@@ -135,7 +135,7 @@
               @input="validate($event,'email')"
           />
           <Input
-              label="Пароль (мин. 6 символов) *"
+              :label="$t('message.signUp.inputs.password')"
               input-id="signup-pass"
               input-type="password"
               v-model="$v.form.password.$model"
@@ -143,7 +143,7 @@
               @input="validate($event,'password')"
           />
           <Input
-              label="Пароль повторно *"
+              :label="$t('message.signUp.inputs.confirmPassword')"
               input-id="signup-cpass"
               input-type="password"
               v-model="form.confirmPassword"
@@ -151,12 +151,11 @@
               @input="validate($event,'confirmPassword')"
           />
           <Checkbox input-id="signup-ordinator" v-model="form.ordinator">
-            Я являюсь ординатором или очным аспирантом кафедры: пластическая
-            хирургия / челюстно-лицевая хирургия / косметология / дерматология.
+            {{$t('message.signUp.inputs.ordinator')}}
           </Checkbox>
           <Checkbox v-model="$v.form.policy.$model" :class="{invalid:validForm.policy}" input-id="signup-policy"
                     @check="validateCheckBox($event, 'policy')">
-            Я согласен с <a href="#">Политикой конфиденциальности</a>
+            {{$t('message.signUp.inputs.policy.text')}} <a href="#">{{$t('message.signUp.inputs.policy.link')}}</a>
           </Checkbox>
           <div class="error-message" v-if="errorMessage">
             <p>{{errorMessage}}</p>
@@ -170,7 +169,7 @@
             />
             <Button
                 class="button button_blue form__button"
-                text="Зарегистрироваться"
+                :text="$t('message.signUp.buttons.signUp')"
                 @buttonClick="signUp"
                 type="button"
             />
@@ -180,12 +179,10 @@
           <div class="success__image">
             <img :src="images.successImage" alt=""/>
           </div>
-          <p class="success__title">Регистрация прошла успешно!</p>
-          <p class="success__subtitle">
-            На Ваш email отправлено письмо с подтверждением, пожалуйста,
-            пройдите по ссылке и активируйте аккаунт.
-          </p>
-          <router-link tag="button" :to="{name: 'LogIn'}" class="button button_yellow">Перейти в личный кабинет
+          <p class="success__title">{{$t('message.signUp.success.title')}}</p>
+          <p class="success__subtitle">{{$t('message.signUp.success.subtitle')}}</p>
+          <router-link tag="button" :to="{name: 'LogIn'}" class="button button_yellow">
+            {{$t('message.signUp.success.link')}}
           </router-link>
         </div>
       </div>

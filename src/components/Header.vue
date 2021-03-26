@@ -24,24 +24,24 @@
         <div class="header__controls">
           <div class="header__account">
             <button class="header__account-button account-button_login" ref="accountButton" @click="openAccountMenu()">
-              {{user.name ? user.name : 'Личный кабинет'}}
+              {{user.name ? user.name : $t('message.header.noname')}}
             </button>
             <div v-if="user.name" class="header__account-menu" :class="{open:accountMenuOpen}" ref="accountMenu">
               <ul>
                 <li>
-                  <button @click="linkClick('/user/' + $route.params.id + '/user-data/')" to="/">Учетные данные</button>
+                  <button @click="linkClick('/user/' + $route.params.id + '/user-data/')" to="/">{{$t('message.header.menu.userData')}}</button>
                 </li>
-                <li><button @click="linkClick('/user/' + $route.params.id + '/order-cart/')" to="/">Оформить участие</button></li>
+                <li><button @click="linkClick('/user/' + $route.params.id + '/order-cart/')" to="/">{{$t('message.header.menu.orderCart')}}</button></li>
                 <li>
-                  <button class="logout" @click="logout">Выход</button>
+                  <button class="logout" @click="logout">{{$t('message.header.menu.logout')}}</button>
                 </li>
               </ul>
             </div>
           </div>
           <div class="header__lang">
-            <a href="#" @click.prevent="$i18n.locale = $i18n.locale === 'ru' ? 'en' : 'ru'">
-              <img :src="images.rusLangIcon" width="35" height="35" alt="">
-            </a>
+            <button  @click.prevent="changeLang()">
+              <img :src="$i18n.locale === 'ru' ? images.rusLangIcon : images.engLangIcon" width="35" height="35" alt="">
+            </button>
           </div>
         </div>
         <div class="header__mobile-control d-xl-none">
@@ -71,7 +71,7 @@
               <v-collapse-group :onlyOneActive="true" class="accordion mobile-menu__accordion">
                 <v-collapse-wrapper @onStatusChange="afterOpen" class="accordion__item">
                   <div class="accordion__title button button_yellow" v-collapse-toggle>
-                    {{user.name ? user.name : 'Личный кабинет'}}
+                    {{user.name ? user.name : $t('message.header.noname')}}
                   </div>
                   <div class="my-content accordion__content" v-collapse-content>
                     <div class="accordion__inner-content">
@@ -79,11 +79,11 @@
                         <nav>
                           <ul>
                             <li>
-                              <button @click="linkClick('/user/' + $route.params.id + '/user-data/')">Учетные данные</button>
+                              <button @click="linkClick('/user/' + $route.params.id + '/user-data/')">{{$t('message.header.menu.userData')}}</button>
                             </li>
-                            <li><button  @click="linkClick('/user/' + $route.params.id + '/order-cart/')">Оформить участие</button></li>
+                            <li><button  @click="linkClick('/user/' + $route.params.id + '/order-cart/')">{{$t('message.header.menu.orderCart')}}</button></li>
                             <li>
-                              <button class="logout" @click="logout">Выход</button>
+                              <button class="logout" @click="logout">{{$t('message.header.menu.logout')}}</button>
                             </li>
                           </ul>
                         </nav>
@@ -95,13 +95,12 @@
             </div>
           </div>
         </div>
-<!--        <div class="mobile-menu__lang">-->
-<!--          <a href="#">-->
-<!--            <img :src="images.rusLangIcon" width="35" height="35" alt="">-->
-<!--          </a>-->
-<!--        </div>-->
+        <div class="mobile-menu__lang">
+          <button @click.prevent="changeLang()">
+            <img :src="$i18n.locale === 'ru' ? images.rusLangIcon : images.engLangIcon" width="35" height="35" alt="">
+          </button>
+        </div>
       </div>
-
 
     </div>
   </div>
@@ -109,8 +108,9 @@
 
 <script>
   import logo from '@/assets/img/ui/logo.svg'
-  import rusLangIcon from '@/assets/img/ui/rus-lang.svg'
-  import {mapGetters} from 'vuex'
+  import rusLangIcon from '@/assets/img/ui/ru-lang.svg'
+  import engLangIcon from '@/assets/img/ui/en-lang.svg'
+  import {mapGetters, mapActions} from 'vuex'
   import axios from 'axios'
 
   export default {
@@ -119,7 +119,8 @@
       return {
         images: {
           logo,
-          rusLangIcon
+          rusLangIcon,
+          engLangIcon
         },
         mobileOpen: false,
         headerMenu: [],
@@ -131,6 +132,15 @@
       ...mapGetters(["user"]),
     },
     methods: {
+      ...mapActions({
+        stateLogOut: "logout"
+      }),
+      changeLang(){
+        const currentLang = this.$cookies.get('lang');
+        this.$cookies.set('lang', currentLang === 'ru' ? 'en' : 'ru');
+
+        location.reload();
+      },
       linkClick(path){
         this.$router.push(path);
         this.mobileOpen = false;
@@ -166,7 +176,7 @@
       logout() {
         this.mobileOpen = false;
         this.accountMenuOpen = false;
-        axios.post('/?logout=yes')
+        this.stateLogOut()
           .then(() => {
             if (this.$route.path !== '/') {
               this.$router.push('/')

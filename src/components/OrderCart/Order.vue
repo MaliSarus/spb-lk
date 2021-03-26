@@ -15,7 +15,7 @@
                  :id="onlineDate.type  + '-' + onlineDate.id"
           />
           <label :for="onlineDate.type  + '-' +onlineDate.id">
-            <span class="date__price-name">Онлайн</span>
+            <span class="date__price-name">{{$t('message.orderCart.orderCartDates.date.online')}}</span>
             <span class="date__price-empty"></span>
             <span class="date__price-price price">
               <span v-if="onlineDate.price.discount" class="price_prev">{{onlineDate.price.basePrice}}</span>
@@ -38,7 +38,7 @@
                  :id="offlineDate.type + '-' + offlineDate.id"
           />
           <label :for="offlineDate.type + '-' + offlineDate.id">
-            <span class="date__price-name">Офлайн</span>
+            <span class="date__price-name">{{$t('message.orderCart.orderCartDates.date.offline')}}</span>
             <span class="date__price-empty"></span>
             <span class="date__price-price price">
               <span v-if="offlineDate.price.discount" class="price_prev">{{offlineDate.price.basePrice}}</span>
@@ -92,7 +92,7 @@
           const selectDate = {
             name: this.date.sectionName,
             id: $event.target.value,
-            price: product.price.basePrice,
+            price: product.price.discount ? product.price.discountPrice : product.price.basePrice,
             type: productType,
             style: product.type,
           }
@@ -112,7 +112,7 @@
           const selectDate = {
             name: this.date.sectionName,
             id: this.allCheckId,
-            price: product.price.basePrice,
+            price: product.price.discount ? product.price.discountPrice : product.price.basePrice,
             type: 'all',
             style: product.type
           }

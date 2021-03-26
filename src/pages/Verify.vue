@@ -5,7 +5,7 @@
         <div class="col-12">
           <div class="personal-cab__user-data">
             <div class="personal-cab__subtitle">
-              Прохождение верификации
+              {{$t('message.verify.title')}}
             </div>
           </div>
         </div>
@@ -15,13 +15,7 @@
           <div class="user-data__form form" v-if="page === 1">
             <form action="#" @submit.prevent="uploadFile">
               <div class="user-data__text text">
-                <p>
-                  Для прохождения верификации как клинический ординатор или очный аспирант кафедры: пластическая
-                  хирургия / челюстно-лицевая хирургия / косметология / дерматология Вам необходимо загрузить скан
-                  справки из учебного заведения.
-                  <br><br>
-                  <b>Принимаемые форматы: JPG, PNG, PDF, DOCX, DOC.</b>
-                </p>
+                <p v-html="$t('message.verify.text')"/>
               </div>
               <file-selector v-if="!url"
                              accept-extensions=".jpg,.png,.pdf,.doc,.docx"
@@ -30,16 +24,18 @@
                              @changed="handleFilesChanged"
                              @validated="validation"
               >
-                <template v-slot:loader>ЗАГРУЗКА</template>
-                Выбрать файл
+                <template v-slot:loader>
+                  {{$t('message.verify.file.load')}}
+                </template>
+                {{$t('message.verify.file.choose')}}
               </file-selector>
               <div class="preview" v-else-if="isImage">
                 <img :src="url"/>
-                <button class="change-file" @click="changeFile">Изменить файл</button>
+                <button class="change-file" @click="changeFile">{{$t('message.verify.file.change')}}</button>
               </div>
               <div class="preview doc" v-else-if="url && !isImage">
                 <img :src="docIcon"/>
-                <button class="change-file" @click="changeFile">Изменить файл</button>
+                <button class="change-file" @click="changeFile">{{$t('message.verify.file.change')}}</button>
               </div>
               <p v-if="error">{{error}}</p>
               <div class="verify__controls">
@@ -49,7 +45,7 @@
                     @click="$router.push('/user/'+userId +/user-data/)"
 
                 />
-                <button type="submit" class="button button_yellow user-data__submit">Отправить на верификацию</button>
+                <button type="submit" class="button button_yellow user-data__submit">{{$t('message.verify.upload')}}</button>
               </div>
             </form>
           </div>
@@ -60,17 +56,12 @@
                   <img :src="successIcon" alt="">
                 </div>
                 <div class="verify-success__title">
-                  Данные успешно отправлены!
+                  {{$t('message.verify.success.title')}}
                 </div>
-                <div class="verify-success__text text">
-                  Проверка занимает до двух рабочих дней.
-                  <br><br>
-                  После проходжения верификации Вы получите письмо на электронную почту, указанную в вашем профиле.
-                  Также информация про статус верификации появится в личном кабинете.
-                </div>
+                <div class="verify-success__text text" v-html="$t('message.verify.success.text')"/>
                 <div class="verify-success__button">
-                  <router-link tag="button" class="button button_yellow" :to="'/user/'+userId">Вернуться в личный
-                    кабинет
+                  <router-link tag="button" class="button button_yellow" :to="'/user/'+userId">
+                    {{$t('message.verify.success.link')}}
                   </router-link>
                 </div>
               </div>

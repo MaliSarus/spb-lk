@@ -45,7 +45,7 @@
                   @pick="validateSelect($event,'city')"
           />
           <Button
-              class="button button_blue form__button"
+              class="button button_blue form__button signup__next"
               :text="$t('message.signUp.buttons.next')"
               @buttonClick="nextPage"
               type="button"
@@ -110,7 +110,7 @@
                 type="button"
             />
             <Button
-                class="button_blue button form__button"
+                class="button_blue button form__button signup__next"
                 :text="$t('message.signUp.buttons.next')"
                 @buttonClick="nextPage"
                 type="button"
@@ -168,7 +168,7 @@
                 type="button"
             />
             <Button
-                class="button button_blue form__button"
+                class="button button_blue form__button signup__submit"
                 :text="$t('message.signUp.buttons.signUp')"
                 @buttonClick="signUp"
                 type="button"
@@ -595,6 +595,29 @@
     &__title {
       font-size: 18px;
       margin-bottom: 35px;
+    }
+  }
+
+  .signup__next{
+    padding-left: 30px;
+    padding-right: 30px;
+    background-image: url(~@/assets/img/ui/arrow_white.svg);
+    background-repeat: no-repeat;
+    background-position: calc(100% - 20px) center;
+    background-size: 9px 16px;
+    &:hover{
+      background-image: url(~@/assets/img/ui/arrow.svg);
+    }
+  }
+  .signup__submit{
+    padding-left: 30px;
+    padding-right: 15px;
+    background-image: url(~@/assets/img/ui/submit-icon_white.svg);
+    background-position: calc(0% + 12px) center;
+    background-size: 16px 12px;
+    background-repeat: no-repeat;
+    &:hover{
+      background-image: url(~@/assets/img/ui/submit-icon.svg);
     }
   }
 </style>

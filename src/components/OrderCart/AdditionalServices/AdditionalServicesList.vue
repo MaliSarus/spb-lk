@@ -5,31 +5,17 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import AdditionalServicesItem from "./AdditionalServicesItem";
+    import AdditionalServicesItem from "./AdditionalServicesItem";
 
-  export default {
-    name: "AdditionalServicesList",
-    components: {AdditionalServicesItem},
-    data(){
-      return{
-        workshops:[]
-      }
-    },
-    created() {
-      axios
-        .get('/api/catalog/workshops/')
-        .then(res=>{
-          if (res.data.status === "ok"){
-            this.workshops = res.data.items
-          }
-        })
+    export default {
+        name: "AdditionalServicesList",
+        components: {AdditionalServicesItem},
+        props: ['workshops']
     }
-  }
 </script>
 
 <style lang="scss" scoped>
-  ul{
+  ul {
     margin: 0;
     padding: 0;
   }

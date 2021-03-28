@@ -5,9 +5,6 @@ import en from './en'
 import {getCookie} from "@/helpers/cookie";
 
 
-const currentLang = getCookie('lang');
-
-
 const messages = {
   ru,
   en
@@ -15,9 +12,19 @@ const messages = {
 Vue.use(VueI18n)
 
 const i18n = new VueI18n({
-  locale: currentLang, // set locale
+  locale: getCookie('lang'), // set locale
   fallbackLocale: 'ru',
   messages, // set locale messages
 })
+//
+// const langInterval = setInterval(function () {
+//   const cookieLang = getCookie('lang');
+//   console.log('check lang: ' + cookieLang);
+//   if (cookieLang){
+//     currentLang = cookieLang;
+//     i18n.locale = currentLang;
+//     clearInterval(langInterval);
+//   }
+// }, 100)
 
 export default i18n

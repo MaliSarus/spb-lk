@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 import App from './App.vue'
+import i18n from "./locales";
 import router from './router'
 import store from './store'
 import axios from "axios";
@@ -14,7 +15,6 @@ import vueAwesomeCountdown from 'vue-awesome-countdown'
 import VueCollapse from 'vue2-collapse'
 import initAccordion from "./helpers/accordion";
 import VModal from "vue-js-modal/dist/index.nocss.js";
-import i18n from "./locales";
 import VueCookies from 'vue-cookies'
 import {getCookie, setCookie} from "@/helpers/cookie";
 
@@ -92,7 +92,7 @@ if (document.querySelector('.header.static')) {
 
 
 //Vue JS
-if (document.querySelector('#app-one')) {
+if (document.querySelector('#app-one') ) {
   new Vue({
     router,
     store,

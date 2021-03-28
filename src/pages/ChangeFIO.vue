@@ -5,7 +5,7 @@
         <div class="col-12">
           <div class="personal-cab__user-data">
             <div class="personal-cab__subtitle">
-              Заявка на корректировку ФИО/Email:
+              {{$t('message.changeFio.title')}}
             </div>
           </div>
         </div>
@@ -15,12 +15,7 @@
           <div class="user-data__form form" v-if="page === 1">
             <form action="#" @submit.prevent="uploadFile">
               <div class="user-data__text text">
-                <p>
-                  Для изменения ФИО отправьте, пожалуйста, скан документа, удостоверяющего личность. Если вы хотите
-                  сообщить нам дополнительные сведения (например, для смены email адреса), напишите их в комментарии ниже.
-                  <br><br>
-                  <b>Принимаемые форматы: JPG, PNG, PDF, DOCX, DOC.</b>
-                </p>
+                <p v-html="$t('message.changeFio.text')"/>
               </div>
               <file-selector v-if="!url"
                              accept-extensions=".jpg,.png,.pdf,.doc,.docx"
@@ -29,16 +24,16 @@
                              @changed="handleFilesChanged"
                              @validated="validation"
               >
-                <template v-slot:loader>ЗАГРУЗКА</template>
-                Выбрать файл
+                <template v-slot:loader>{{$t('message.changeFio.file.load')}}</template>
+                {{$t('message.changeFio.file.choose')}}
               </file-selector>
               <div class="preview" v-else-if="isImage">
                 <img :src="url"/>
-                <button class="change-file" @click="changeFile">Изменить файл</button>
+                <button class="change-file" @click="changeFile">{{$t('message.changeFio.file.change')}}</button>
               </div>
               <div class="preview doc" v-else-if="url && !isImage">
                 <img :src="docIcon"/>
-                <button class="change-file" @click="changeFile">Изменить файл</button>
+                <button class="change-file" @click="changeFile">{{$t('message.changeFio.file.change')}}</button>
               </div>
               <p v-if="error">{{error}}</p>
 
@@ -52,7 +47,7 @@
                     @click="$router.push('/user/'+userId +/user-data/)"
 
                 />
-                <button type="submit" class="button button_yellow user-data__submit">Отправить на верификацию</button>
+                <button type="submit" class="button button_yellow user-data__submit">{{$t('message.changeFio.upload')}}</button>
               </div>
             </form>
           </div>
@@ -63,16 +58,12 @@
                   <img :src="successIcon" alt="">
                 </div>
                 <div class="verify-success__title">
-                  Данные успешно отправлены!
+                  {{$t('message.changeFio.success.title')}}
                 </div>
-                <div class="verify-success__text text">
-                  Проверка занимает до двух рабочих дней.
-                  <br><br>
-                  После проходжения проверки данные в личном кабинете автомотически обновятся.
-                </div>
+                <div class="verify-success__text text" v-html=" $t('message.changeFio.success.text')"/>
                 <div class="verify-success__button">
-                  <router-link tag="button" class="button button_yellow" :to="'/user/'+userId">Вернуться в личный
-                    кабинет
+                  <router-link tag="button" class="button button_yellow" :to="'/user/'+userId">
+                    {{$t('message.changeFio.success.link')}}
                   </router-link>
                 </div>
               </div>

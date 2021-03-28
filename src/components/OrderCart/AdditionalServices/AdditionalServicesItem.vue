@@ -172,13 +172,19 @@
         align-items: center;
         padding: 10px;
         text-align: center;
+        background-image: url(~@/assets/img/ui/arrow.svg);
+        background-repeat: no-repeat;
+        background-size: 5px;
+        background-position: calc(100% - 10px) calc(50% - 1px);
 
         @media screen and (min-width: $lg-width) {
-          padding: 0 10px;
+          padding: 0 45px;
+          background-size: 7px;
+          background-position: calc(100% - 25px) calc(50% - 1px);
         }
 
         &:hover {
-          background: $yellow-color;
+          background-color: $yellow-color;
         }
       }
     }

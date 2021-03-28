@@ -10,6 +10,13 @@
       </div>
     </div>
     <div class="personal-cab__content-block">
+      <div class="container" v-if="$route.name !== 'MainPage'">
+        <div class="row">
+          <div class="col-12 position-relative">
+            <button class="button button_yellow button__back" @click="$router.go(-1)"/>
+          </div>
+        </div>
+      </div>
       <transition name="fade" mode="out-in">
         <router-view/>
       </transition>
@@ -18,26 +25,32 @@
 </template>
 
 <script>
-  import {mapActions, mapGetters} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
 
-  export default {
-    name: "PersonalCab",
-    methods: {
-      ...mapActions(['fetchUser'])
-    },
-    computed: {
-      ...mapGetters(['user'])
-    },
-  };
+    export default {
+        name: "PersonalCab",
+        methods: {
+            ...mapActions(['fetchUser'])
+        },
+        computed: {
+            ...mapGetters(['user'])
+        },
+        mounted() {
+            console.log(this.$route)
+        }
+    };
 </script>
 
 <style lang="scss" scoped>
   .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+
+  .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */
+  {
     opacity: 0;
   }
+
   .personal-cab__content-block {
     position: relative;
     margin: 0;
@@ -54,6 +67,24 @@
       width: calc(100% - 20px);
       padding-top: 45px;
       padding-bottom: 110px;
+    }
+
+    .button__back {
+      position: absolute;
+      left: 15px;
+      top: -20px;
+      padding: 15px;
+      border-radius: 100%;
+      transform: translateY(-50%) rotate(180deg);
+      background-image: url(~@/assets/img/ui/arrow.svg);
+      background-size: 6px;
+      background-position: center;
+      background-repeat: no-repeat;
+      @media screen and (min-width: $lg-width) {
+        top: -45px;
+        padding: 20px;
+        background-size: 9px;
+      }
     }
   }
 </style>

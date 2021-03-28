@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="form__group">
-      <Button class=" button button_yellow form__submit" type="submit" :text="$t('message.logIn.buttons.signIn')"/>
+      <Button class=" button button_yellow form__submit login__submit" type="submit" :text="$t('message.logIn.buttons.signIn')"/>
       <router-link :to="{name:'ForgetPass'}" class="form__remember">{{$t('message.logIn.forgetPass')}}</router-link>
     </div>
     <p v-if="errorMessage" class="auth__error">{{errorMessage}}</p>
@@ -166,6 +166,7 @@
 
     &__group {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
     }
@@ -174,6 +175,15 @@
     margin-top: 15px;
     margin-bottom: 0;
     color: red;
+  }
+  
+  .login__submit{
+    background-image: url(~@/assets/img/ui/account-button_login.svg);
+    background-position: calc(100% - 12px) center;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    padding-left: 35px;
+    padding-right: 35px;
   }
 
 </style>

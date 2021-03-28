@@ -30,7 +30,8 @@
           </div>
         </div>
         <keep-alive>
-          <component v-if="!placeholder && !isLoading" :is="pages[page-1]" :done="productsDone" :discount.sync="discount"/>
+          <component v-if="!placeholder && !isLoading" :is="pages[page-1]" :done="productsDone"
+                     :discount.sync="discount"/>
         </keep-alive>
       </form>
     </div>
@@ -40,15 +41,19 @@
         <div class="row">
           <div class="col-12">
             <div class="order__price-content">
-              {{this.discount === 0 ? $t('message.orderCart.totalPrice.text') : $t('message.orderCart.totalPrice.discountText')}}:
+              {{this.discount === 0 ? $t('message.orderCart.totalPrice.text') :
+              $t('message.orderCart.totalPrice.discountText')}}:
               <b style="margin-left: 5px;">{{discount === 0 ? totalPrice : discount}} &#8381;</b>
               <button v-if="page > 1" class="button button_transparent button_prev" @click="prevClick">
                 {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.back') : ''}}
               </button>
-              <button v-if="page < 3" class="button button_yellow button_next" @click="nextClick">
+              <button v-if="page < 3" class="button button_yellow button_next"
+                      :class="{disabled:page === 2 && !userCart.length}" :disabled="page === 2 && !userCart.length"
+                      @click="nextClick">
                 {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.next') : ''}}
               </button>
-              <a v-else class="button button_yellow button_next" :href="`${baseURL}/api/makeorder/`">{{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.makeOrder') : ''}}</a>
+              <a v-else class="button button_yellow button_next" :href="`${baseURL}/api/makeorder/`">{{windowWidth >=
+                breakpoints.lgWidth ? $t('message.orderCart.totalPrice.makeOrder') : ''}}</a>
             </div>
           </div>
         </div>
@@ -70,112 +75,112 @@
 </template>
 
 <script>
-  import Loader from "../components/UI/Loader";
-  import OrdersList from "../components/OrderCart/OrdersList";
-  import {mapActions, mapGetters, mapMutations} from "vuex";
-  import AdditionalServicesList from "../components/OrderCart/AdditionalServices/AdditionalServicesList";
-  import yesIcon from "@/assets/img/ui/yes.svg"
-  import noIcon from "@/assets/img/ui/no.svg"
-  import axios from 'axios'
-  import PayedOrder from "../components/PersonalCab/MainPage/PayedOrder/PayedOrdersList";
-  import OrderCartDates from "../components/OrderCart/Pages/OrderCartDates";
-  import OrderCartBasket from "../components/OrderCart/Pages/OrderCartBasket";
-  import OrderCartWorkshops from "../components/OrderCart/Pages/OrderCartWorkshops";
-  import {baseURL} from "../helpers/defaultValues";
-  import {breakpoints} from "../helpers/defaultValues";
+    import Loader from "../components/UI/Loader";
+    import OrdersList from "../components/OrderCart/OrdersList";
+    import {mapActions, mapGetters, mapMutations} from "vuex";
+    import AdditionalServicesList from "../components/OrderCart/AdditionalServices/AdditionalServicesList";
+    import yesIcon from "@/assets/img/ui/yes.svg"
+    import noIcon from "@/assets/img/ui/no.svg"
+    import axios from 'axios'
+    import PayedOrder from "../components/PersonalCab/MainPage/PayedOrder/PayedOrdersList";
+    import OrderCartDates from "../components/OrderCart/Pages/OrderCartDates";
+    import OrderCartBasket from "../components/OrderCart/Pages/OrderCartBasket";
+    import OrderCartWorkshops from "../components/OrderCart/Pages/OrderCartWorkshops";
+    import {baseURL} from "../helpers/defaultValues";
+    import {breakpoints} from "../helpers/defaultValues";
 
-  export default {
-    name: "OrderCart",
-    components: {PayedOrder, AdditionalServicesList, OrdersList, Loader},
-    data() {
-      return {
-        isLoading: true,
-        countDate: new Date(2021, 2, 31).getTime(),
-        placeholder: process.env.NODE_ENV === 'production' && process.env.VUE_APP_MODE !== 'test',
-        yesIcon,
-        noIcon,
-        page: 1,
-        productsDone: false,
-        pages: [
-          OrderCartDates,
-          OrderCartWorkshops,
-          OrderCartBasket,
-        ],
-        discount: 0,
+    export default {
+        name: "OrderCart",
+        components: {PayedOrder, AdditionalServicesList, OrdersList, Loader},
+        data() {
+            return {
+                isLoading: true,
+                countDate: new Date(2021, 2, 31).getTime(),
+                placeholder: process.env.NODE_ENV === 'production' && process.env.VUE_APP_MODE !== 'test',
+                yesIcon,
+                noIcon,
+                page: 1,
+                productsDone: false,
+                pages: [
+                    OrderCartDates,
+                    OrderCartWorkshops,
+                    OrderCartBasket,
+                ],
+                discount: 0,
 
-        baseURL,
-        isModalOpen: true,
-        windowWidth: 0,
-        breakpoints
-      };
-    },
-    computed: {
-      ...mapGetters(["userCart", "user"]),
-      pageTitle() {
-        return [
-          this.$t('message.orderCart.orderCartDates.title'),
-          this.$t('message.orderCart.orderCartWorkshops.title'),
-          this.$t('message.orderCart.orderCartBasket.title')
-        ]
-      },
-      totalPrice() {
-        return this.userCart.reduce((acc, product) => acc + product.price, 0)
-      },
-    },
-    methods: {
-      ...mapActions(["fetchProducts"]),
-      ...mapMutations(["setUserBasket", "deleteAllProducts"]),
-      handleResize() {
-        this.windowWidth = window.innerWidth;
-      },
-      toVerify() {
-        this.$router.push({name: 'Verify'});
-        this.isModalOpen = false;
-      },
-      nextClick() {
-        if (this.page !== 2) {
-          this.page += 1;
-        } else if (this.page == 2) {
-          const userCart = this.userCart;
-          const postData = userCart.map(item => +item.id)
-          if (postData.length) {
-            axios
-              .post('/api/user/basket/', {
-                items: postData
-              })
-              .then(() => {
-                axios
-                  .get('/api/user/basket/')
-                  .then(res => {
-                    this.setUserBasket(res.data.items);
+                baseURL,
+                isModalOpen: true,
+                windowWidth: 0,
+                breakpoints
+            };
+        },
+        computed: {
+            ...mapGetters(["userCart", "user"]),
+            pageTitle() {
+                return [
+                    this.$t('message.orderCart.orderCartDates.title'),
+                    this.$t('message.orderCart.orderCartWorkshops.title'),
+                    this.$t('message.orderCart.orderCartBasket.title')
+                ]
+            },
+            totalPrice() {
+                return this.userCart.reduce((acc, product) => acc + product.price, 0)
+            },
+        },
+        methods: {
+            ...mapActions(["fetchProducts"]),
+            ...mapMutations(["setUserBasket", "deleteAllProducts"]),
+            handleResize() {
+                this.windowWidth = window.innerWidth;
+            },
+            toVerify() {
+                this.$router.push({name: 'Verify'});
+                this.isModalOpen = false;
+            },
+            nextClick() {
+                if (this.page !== 2) {
                     this.page += 1;
-                  })
-              })
-          }
-        }
-      },
-      prevClick() {
-        this.page -= 1;
+                } else if (this.page == 2) {
+                    const userCart = this.userCart;
+                    const postData = userCart.map(item => +item.id)
+                    if (postData.length) {
+                        axios
+                            .post('/api/user/basket/', {
+                                items: postData
+                            })
+                            .then(() => {
+                                axios
+                                    .get('/api/user/basket/')
+                                    .then(res => {
+                                        this.setUserBasket(res.data.items);
+                                        this.page += 1;
+                                    })
+                            })
+                    }
+                }
+            },
+            prevClick() {
+                this.page -= 1;
 
-      }
-    },
-    mounted() {
-      document.body.append(this.$refs.ordModal)
-    },
-    created() {
-      window.addEventListener('resize', this.handleResize);
-      this.handleResize();
-      this.fetchProducts()
-        .then(res => {
-          if (res === 'ok' || res === 'done') {
-            this.isLoading = false
-            if (res === 'done') {
-              this.productsDone = true;
             }
-          }
-        })
-    }
-  };
+        },
+        mounted() {
+            document.body.append(this.$refs.ordModal)
+        },
+        created() {
+            window.addEventListener('resize', this.handleResize);
+            this.handleResize();
+            this.fetchProducts()
+                .then(res => {
+                    if (res === 'ok' || res === 'done') {
+                        this.isLoading = false
+                        if (res === 'done') {
+                            this.productsDone = true;
+                        }
+                    }
+                })
+        }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -311,27 +316,65 @@
   }
 
   .button_next, .button_prev {
+    position: relative;
     margin-left: 10px;
     padding: 15px;
     text-transform: none;
-    background-position: center;
-    background-size: 6px;
-    background-repeat: no-repeat;
-    background-image: url(~@/assets/img/ui/arrow.svg);
-    @media screen and (max-width: $lg-width){
+    @media screen and (max-width: $lg-width) {
       border-radius: 100%;
     }
-    @media screen and (min-width: $lg-width){
+    @media screen and (min-width: $lg-width) {
       margin-left: 20px;
-      padding: 8px 15px;
+      padding: 8px 20px;
       min-width: 100px;
-      background-image: none;
+    }
+
+    &::before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      content: '';
+      background-position: center;
+      background-size: 6px;
+      background-repeat: no-repeat;
+      background-image: url(~@/assets/img/ui/arrow.svg);
+      @media screen and (min-width: $lg-width) {
+        background-size: 7px;
+      }
     }
   }
-  .button_prev{
-    transform: rotate(180deg);
-    @media screen and (min-width: $lg-width){
-      transform: none;
+
+  .button_next {
+    transition: opacity .25s;
+    &.disabled{
+      opacity: .5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    &::before {
+
+      @media screen and (min-width: $lg-width) {
+        left: unset;
+        top: -1px;
+        bottom: 0;
+        right: 0;
+        width: 20px;
+      }
+    }
+  }
+
+  .button_prev {
+    &::before {
+      transform: rotate(180deg);
+      @media screen and (min-width: $lg-width) {
+        left: 0;
+        top: -1px;
+        bottom: 0;
+        right: unset;
+        width: 20px;
+      }
     }
   }
 </style>

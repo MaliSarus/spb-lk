@@ -123,6 +123,21 @@ const en = {
         link: 'Return to personal room',
       }
     },
+    changeFio:{
+      title: 'Request for correction of full name / Email:',
+      text: 'To change your full name, please send a scan of your identity document. If you want to tell us additional information (for example, to change your email address), write them in the comments below. <br> <br> <b> Accepted formats: JPG, PNG, PDF, DOCX, DOC. </b>',
+      upload: 'Send request',
+      file: {
+        choose: 'Choose file',
+        change: 'Change file',
+        load: 'LOAD'
+      },
+      success: {
+        title: 'Data sent successfully!',
+        text: 'Verification takes up to two working days. <br> <br> After passing the verification, the data in your personal account will be automatically updated.',
+        link: 'Return to personal room',
+      }
+    },
     changePass: {
       title: 'Change password',
       labels: {
@@ -230,6 +245,19 @@ const en = {
     errorPage: {
       text: 'Mistake. The address is incorrectly typed, or such a page on the site no longer exists.',
       link: 'Return to the homepage'
+    },
+    pagesTitle:{
+      error: 'Page not found',
+      logIn: 'Log In',
+      payment: 'Successful payment',
+      forgetPass: 'Forget pass',
+      signUp: 'Sign Up',
+      personalCab: 'Personal room',
+      verify: 'Personal room - Confirming status',
+      orderCart: 'Personal room - Place an order',
+      changeFio:'Personal room - Change name',
+      changePass: 'Personal room - Change password',
+      userData: 'Personal room - Personal information',
     }
   }
 }

@@ -24,24 +24,25 @@
 </template>
 
 <script>
-  import UserDataForm from "../components/PersonalCab/UserData/UserDataForm/UserDataForm";
-  import {mapGetters} from 'vuex'
-  export default {
-    name: "UserData",
-    components:{
-      UserDataForm
-    },
-    computed:{
-      ...mapGetters(["user"])
+    import UserDataForm from "../components/PersonalCab/UserData/UserDataForm/UserDataForm";
+    import {mapGetters} from 'vuex'
+
+    export default {
+        name: "UserData",
+        components: {
+            UserDataForm
+        },
+        computed: {
+            ...mapGetters(["user"])
+        },
     }
-  }
 </script>
 
-<style lang="scss" >
-.user-data{
-  &__form{
-    display: flex;
-    justify-content: center;
+<style lang="scss">
+  .user-data {
+    &__form {
+      display: flex;
+      justify-content: center;
+    }
   }
-}
 </style>

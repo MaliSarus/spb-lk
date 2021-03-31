@@ -77,8 +77,6 @@ const router = new VueRouter({
 
 // eslint-disable-next-line no-unused-vars
 router.beforeEach((to, from, next) => {
-  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-  if(nearestWithTitle) document.title = nearestWithTitle.meta.title;
   const requiredAuth = to.matched.some(route => route.meta.auth);
   if (requiredAuth) {
     store.dispatch('fetchUser')

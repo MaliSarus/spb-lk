@@ -26,6 +26,7 @@
 <script>
     import UserDataForm from "../components/PersonalCab/UserData/UserDataForm/UserDataForm";
     import {mapGetters} from 'vuex'
+    import setTitle from "../helpers/title";
 
     export default {
         name: "UserData",
@@ -35,6 +36,10 @@
         computed: {
             ...mapGetters(["user"])
         },
+      created() {
+        setTitle(this.$i18n.t('message.pagesTitle.userData'))
+
+      }
     }
 </script>
 

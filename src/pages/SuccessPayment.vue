@@ -24,6 +24,7 @@
   import axios from 'axios'
   import successIcon from '@/assets/img/ui/success-signup.svg'
   import {mapGetters} from 'vuex'
+  import setTitle from "../helpers/title";
 
   export default {
     name: "SuccessPayment",
@@ -43,6 +44,7 @@
       }
     },
     created() {
+      setTitle(this.$i18n.t('message.pagesTitle.payment'))
       const url = new URL(window.location.href);
       const obj = {}
       for (const p of url.searchParams) {

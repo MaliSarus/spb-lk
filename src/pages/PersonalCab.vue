@@ -17,28 +17,58 @@
           </div>
         </div>
       </div>
-      <transition name="fade" mode="out-in">
-        <router-view/>
+      <loader v-if="productsLoading || workshopsLoading"/>
+      <transition v-else-if="!productsLoading && !workshopsLoading" name="fade" mode="out-in">
+        <router-view :productsDone="productsDone" :workshopsDone="workshopsDone"/>
       </transition>
     </div>
   </section>
 </template>
 
 <script>
-    import {mapActions, mapGetters} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
+  import setTitle from "../helpers/title";
+  import Loader from "../components/UI/Loader";
 
-    export default {
-        name: "PersonalCab",
-        methods: {
-            ...mapActions(['fetchUser'])
-        },
-        computed: {
-            ...mapGetters(['user'])
-        },
-        mounted() {
-            console.log(this.$route)
-        }
-    };
+  export default {
+    name: "PersonalCab",
+    components: {Loader},
+    data(){
+      return{
+        productsLoading: true,
+        workshopsLoading: true,
+        productsDone: false,
+      }
+    },
+    methods: {
+      ...mapActions(['fetchUser', "fetchProducts", "fetchWorkshops"])
+    },
+    computed: {
+      ...mapGetters(['user',"workshops"]),
+      workshopsDone(){
+        return this.workshops.length === 0
+      }
+    },
+    mounted() {
+      console.log(this.$route)
+    },
+    created() {
+      setTitle(this.$i18n.t('message.pagesTitle.personalCab'))
+      this.fetchProducts()
+        .then(res => {
+          if (res === 'ok' || res === 'done') {
+            this.productsLoading = false
+            if (res === 'done') {
+              this.productsDone = true;
+            }
+          }
+        })
+      this.fetchWorkshops()
+      .then(()=>{
+        this.workshopsLoading = false
+      })
+    }
+  };
 </script>
 
 <style lang="scss" scoped>

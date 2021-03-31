@@ -15,6 +15,7 @@
 
 <script>
 import SignUpForm from '../components/SignUpForm/Form.vue';
+import setTitle from "../helpers/title";
 
 export default {
   name: "SignUp",
@@ -29,7 +30,10 @@ export default {
       return Math.trunc((100 / 4) * this.formPage) + "%";
     },
   },
-    
+  created() {
+    setTitle(this.$i18n.t('message.pagesTitle.signUp'))
+  }
+
 };
 </script>
 

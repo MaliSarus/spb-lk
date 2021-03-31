@@ -39,6 +39,7 @@
 
   import ChangePassForm from "../components/PersonalCab/ChangePass/ChangePassForm";
   import successIcon from "@/assets/img/ui/success-signup.svg";
+  import setTitle from "../helpers/title";
 
   export default {
     name: "ChangePass",
@@ -50,6 +51,9 @@
         userId: this.$route.params.id
       }
     },
+    created() {
+      setTitle(this.$i18n.t('message.pagesTitle.changePass'))
+    }
   }
 </script>
 

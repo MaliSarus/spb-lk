@@ -18,6 +18,7 @@
 <script>
   import ForgetPassForm from "@/components/ForgetPassForm/Form.vue";
   import Button from "@/components/UI/Button";
+  import setTitle from "../helpers/title";
 
   export default {
     name: "ForgetPath",
@@ -31,6 +32,9 @@
       enterInAuthPage(){
         this.$router.push(`/`)
       }
+    },
+    created() {
+      setTitle(this.$i18n.t('message.pagesTitle.forgetPass'))
     }
   };
 </script>

@@ -17,5 +17,16 @@ $z-medium: 100;
 $z-high: 500;
 $z-highest: 1000;
 
+button, a{
+  outline: none;
+}
+
+.done-text{
+  padding: 20px;
+  color: #375B28;
+  border: 1px solid #375B28;
+  border-radius: 5px;
+}
+
 
 

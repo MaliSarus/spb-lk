@@ -14,7 +14,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <Controls/>
+          <Controls :done="$attrs.workshopsDone && $attrs.productsDone"/>
         </div>
       </div>
     </div>

@@ -1,5 +1,8 @@
 const en = {
   message: {
+    departments:{
+      other:'other'
+    },
     header: {
       noname: 'Personal room',
       menu: {
@@ -149,7 +152,7 @@ const en = {
       }
     },
     orderCart: {
-      done: 'You have already purchased all available items',
+      done: 'You have already purchased full congress access. Thanks!',
       placeholder: {
         text: 'Purchase functionality coming soon',
         link: 'Go back'
@@ -200,9 +203,9 @@ const en = {
           ]
         },
       },
-
       orderCartWorkshops: {
         title: 'Additional services',
+        done: 'You have already purchased all optional services',
         link: {
           more: 'More details',
           site: 'Partner\'s site'

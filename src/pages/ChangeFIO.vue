@@ -81,6 +81,7 @@
   import axios from "axios";
   import docIcon from '@/assets/img/ui/doc.svg'
   import successIcon from '@/assets/img/ui/success-signup.svg'
+  import setTitle from "../helpers/title";
 
   export default {
     name: "ChangeFIO",
@@ -142,6 +143,9 @@
         this.url = ''
       }
     },
+    created() {
+      setTitle(this.$i18n.t('message.pagesTitle.changeFio'))
+    }
   }
 </script>
 

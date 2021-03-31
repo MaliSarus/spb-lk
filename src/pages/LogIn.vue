@@ -9,6 +9,7 @@
 <script>
   import LogInForm from "@/components/LogInForm/Form";
   import {mapActions} from 'vuex'
+  import setTitle from "../helpers/title";
 
   export default {
     name: 'LogIn',
@@ -30,6 +31,7 @@
     },
     created() {
       this.initFetch();
+      setTitle(this.$i18n.t('message.pagesTitle.logIn'))
     }
   }
 </script>

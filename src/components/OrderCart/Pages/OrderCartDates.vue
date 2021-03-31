@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="order-cart__dates">
-      <p v-if="$attrs.done" style="text-align: center; font-size: 24px;">{{$t('message.orderCart.done')}}</p>
+      <p v-if="$attrs.productsDone" class="done-text" style="text-align: center; font-size: 24px;">{{$t('message.orderCart.done')}}</p>
       <orders-list v-else/>
     </div>
-    <div class="container">
+    <div class="container" v-show="!$attrs.productsDone">
       <div class="row">
         <div class="col-12">
           <countdown :end-time="new Date(2021, 3, 15).getTime()"

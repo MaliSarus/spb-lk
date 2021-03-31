@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
 import {setWithExpiry} from "../helpers/localStorage";
+import i18n from "../locales";
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     userCart: [],
     userBasket: [],
     products: [],
+    workshops:[],
   },
   mutations: {
     setCountries(state, payload) {
@@ -57,6 +59,9 @@ export default new Vuex.Store({
     },
     setUserBasket(state, payload) {
       state.userBasket = payload
+    },
+    setWorkshops(state,payload){
+      state.workshops = payload
     },
     clearUser(state){
       state.user = {};
@@ -128,7 +133,7 @@ export default new Vuex.Store({
         .then(res => {
           if (res.data.status === 'ok') {
             const departments = res.data.items;
-            departments.push('другое')
+            departments.push(i18n.t('message.departments.other'))
             commit('setDepartments', departments)
           }
 
@@ -183,10 +188,22 @@ export default new Vuex.Store({
       return axios
         .get('/api/catalog/items/')
         .then(res => {
+          console.log(res)
           if (res.data.status === 'ok') {
             commit('setProducts', res.data.sections)
           }
           return res.data.status;
+        })
+    },
+    fetchWorkshops({commit}){
+      return axios
+        .get('/api/catalog/workshops/')
+        .then(res => {
+          console.log(res)
+          if (res.data.status === "ok" || res.data.status === 'done') {
+            const workshops = res.data.items ? res.data.items : []
+            commit('setWorkshops', workshops)
+          }
         })
     },
     logout({commit}){
@@ -222,6 +239,9 @@ export default new Vuex.Store({
     },
     products(state) {
       return state.products
+    },
+    workshops(state){
+      return state.workshops
     },
     userBasket(state) {
       return state.userBasket

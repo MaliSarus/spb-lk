@@ -18,10 +18,11 @@
         v-model="date"
         value-type="format"
         inline
-        :class="{
-          open: isDatepickerOpen
-        }"
+        :class="[{
+          open: isDatepickerOpen,
+        },           datepickerPos]"
         @pick="pickDate"
+        ref="datepicker"
     />
   </div>
 </template>
@@ -38,7 +39,8 @@
       return {
         date: this.inputDate,
         isDatepickerOpen: false,
-        datepickerIcon
+        datepickerIcon,
+        datepickerPos: 'bottom'
       }
     },
     props: ['inputId', 'inputType', 'label', 'inputDate'],
@@ -52,14 +54,35 @@
     watch: {
       date(val) {
         this.$emit('inputDateChange', val);
+      },
+      isDatepickerOpen(val) {
+        if (val) {
+          this.datepickerPos = 'bottom'
+          const datepicker =this.$refs.datepicker.$el;
+          const footer = document.querySelector('footer');
+          const footerTop = footer.getBoundingClientRect().top
+
+          this.$nextTick(() => {
+            const datepickerBottom = datepicker.getBoundingClientRect().top + datepicker.offsetHeight;
+            const diff = datepickerBottom - footerTop;
+            if (diff > 0){
+              this.datepickerPos = 'top'
+            }
+            else this.datepickerPos = 'bottom'
+          })
+
+        }
       }
     },
     computed: {
       labelActive() {
         return this.date !== '';
-      }
+      },
     },
     methods: {
+      openCalendar() {
+        console.log('open')
+      },
       datepickerOpen() {
         this.isDatepickerOpen = true;
       },
@@ -103,6 +126,13 @@
 
     &__datepicker {
       width: 100%;
+      &.top{
+        bottom: unset;
+        left: 0;
+        top: -4px;
+        transform: translateY(-100%);
+      }
+
     }
   }
 

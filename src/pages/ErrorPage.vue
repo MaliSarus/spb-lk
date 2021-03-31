@@ -7,8 +7,13 @@
 </template>
 
 <script>
+  import setTitle from "../helpers/title";
+
   export default {
-    name: "ErrorPage"
+    name: "ErrorPage",
+    created() {
+      setTitle(this.$i18n.t('message.pagesTitle.error'))
+    }
   }
 </script>
 

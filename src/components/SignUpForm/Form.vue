@@ -80,7 +80,7 @@
               @pick="validateSelect($event,'department')"
           />
           <Input
-              v-if="form.department === 'другое'"
+              v-if="form.department === $t('message.departments.other')"
               :label="$t('message.signUp.inputs.otherDepartment')"
               input-id="signup-department-other"
               input-type="text"
@@ -155,7 +155,7 @@
           </Checkbox>
           <Checkbox v-model="$v.form.policy.$model" :class="{invalid:validForm.policy}" input-id="signup-policy"
                     @check="validateCheckBox($event, 'policy')">
-            {{$t('message.signUp.inputs.policy.text')}} <a href="#">{{$t('message.signUp.inputs.policy.link')}}</a>
+            {{$t('message.signUp.inputs.policy.text')}} <a href="/policy">{{$t('message.signUp.inputs.policy.link')}}</a>
           </Checkbox>
           <div class="error-message" v-if="errorMessage">
             <p>{{errorMessage}}</p>
@@ -382,7 +382,7 @@
               validateHandler.country.$invalid;
           }
           case 2: {
-            const otherDepartment = this.form.department === "другое" ? this.form.otherDepartment === '' : false;
+            const otherDepartment = this.form.department === this.$t('message.departments.other') ? this.form.otherDepartment === '' : false;
             return validateHandler.form.company.$invalid ||
               validateHandler.form.position.$invalid ||
               validateHandler.form.department.$invalid ||
@@ -430,7 +430,7 @@
               validForm.company = this.$v.form.company.$invalid;
               validForm.position = this.$v.form.position.$invalid;
               validForm.department = this.$v.form.department.$invalid;
-              validForm.otherDepartment = this.form.department === 'другое' ? this.form.otherDepartment === '' : false
+              validForm.otherDepartment = this.form.department === this.$t('message.departments.other') ? this.form.otherDepartment === '' : false
               break;
             }
             case 3: {

@@ -77,6 +77,7 @@
   import axios from 'axios'
   import docIcon from '@/assets/img/ui/doc.svg'
   import successIcon from '@/assets/img/ui/success-signup.svg'
+  import setTitle from "../helpers/title";
 
   export default {
     name: "Verify",
@@ -138,6 +139,9 @@
         this.url = ''
       }
     },
+    created() {
+      setTitle(this.$i18n.t('message.pagesTitle.verify'))
+    }
   }
 </script>
 
@@ -315,16 +319,16 @@
 
     &__button {
       width: 100%;
-      max-width: 300px;
+      /*max-width: 300px;*/
       margin-top: 20px;
       @media screen and (min-width: $lg-width) {
         margin-top: 30px;
       }
 
       button {
-        padding: 8px;
-        width: 100%;
-        max-width: 300px;
+        /*padding: 8px;*/
+        /*width: 100%;*/
+        /*max-width: 300px;*/
       }
     }
   }

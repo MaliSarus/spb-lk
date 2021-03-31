@@ -1,6 +1,6 @@
 <template>
-  <div class="control__list d-flex flex-wrap">
-    <ControlItem :icon-src="images.userIcon"  :to="{name: 'UserData'}">
+  <div class="control__list d-flex flex-wrap justify-content-center">
+    <ControlItem :icon-src="images.userIcon" :to="{name: 'UserData'}">
       <template v-slot:control-title>
         {{$t('message.mainPage.controls.userData.title')}}
       </template>
@@ -9,7 +9,7 @@
       </template>
     </ControlItem>
 
-    <ControlItem :icon-src="images.orderIcon" :to="{name: 'OrderCart'}">
+    <ControlItem v-show="!done" :icon-src="images.orderIcon" :to="{name: 'OrderCart'}">
       <template v-slot:control-title>
         {{$t('message.mainPage.controls.orderCart.title')}}
       </template>
@@ -22,22 +22,23 @@
 </template>
 
 <script>
-    import ControlItem from "./ControlItem";
-    import userIcon from "@/assets/img/ui/user-icon.svg"
-    import orderIcon from "@/assets/img/ui/order-icon.svg"
+  import ControlItem from "./ControlItem";
+  import userIcon from "@/assets/img/ui/user-icon.svg"
+  import orderIcon from "@/assets/img/ui/order-icon.svg"
 
-    export default {
-        name: "Controls",
-        components: {ControlItem},
-        data() {
-            return{
-                images:{
-                    userIcon,
-                    orderIcon,
-                }
-            }
+  export default {
+    name: "Controls",
+    props: ['done'],
+    components: {ControlItem},
+    data() {
+      return {
+        images: {
+          userIcon,
+          orderIcon,
         }
+      }
     }
+  }
 </script>
 
 <style lang="scss" scoped>

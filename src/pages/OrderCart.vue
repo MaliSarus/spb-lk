@@ -17,8 +17,7 @@
         <div class="container">
           <div class="row">
             <div class="col-12">
-              <Loader v-if="isLoading"/>
-              <div v-else-if="placeholder" class="order-cart__placeholder">
+              <div v-if="placeholder" class="order-cart__placeholder">
                 <p>
                   {{$t('message.orderCart.placeholder.text')}}
                 </p>
@@ -30,13 +29,14 @@
           </div>
         </div>
         <keep-alive>
-          <component v-if="!placeholder && !isLoading" :is="pages[page-1]" :done="productsDone"
+          <component v-if="!placeholder" :is="pages[page-1]" :workshopsDone="$attrs.workshopsDone"
+                     :productsDone="$attrs.productsDone"
                      :discount.sync="discount"/>
         </keep-alive>
       </form>
     </div>
 
-    <div v-if="!placeholder && !isLoading" class="order__price">
+    <div v-if="!placeholder" class="order__price">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -75,112 +75,114 @@
 </template>
 
 <script>
-    import Loader from "../components/UI/Loader";
-    import OrdersList from "../components/OrderCart/OrdersList";
-    import {mapActions, mapGetters, mapMutations} from "vuex";
-    import AdditionalServicesList from "../components/OrderCart/AdditionalServices/AdditionalServicesList";
-    import yesIcon from "@/assets/img/ui/yes.svg"
-    import noIcon from "@/assets/img/ui/no.svg"
-    import axios from 'axios'
-    import PayedOrder from "../components/PersonalCab/MainPage/PayedOrder/PayedOrdersList";
-    import OrderCartDates from "../components/OrderCart/Pages/OrderCartDates";
-    import OrderCartBasket from "../components/OrderCart/Pages/OrderCartBasket";
-    import OrderCartWorkshops from "../components/OrderCart/Pages/OrderCartWorkshops";
-    import {baseURL} from "../helpers/defaultValues";
-    import {breakpoints} from "../helpers/defaultValues";
+  import Loader from "../components/UI/Loader";
+  import OrdersList from "../components/OrderCart/OrdersList";
+  import {mapActions, mapGetters, mapMutations} from "vuex";
+  import AdditionalServicesList from "../components/OrderCart/AdditionalServices/AdditionalServicesList";
+  import yesIcon from "@/assets/img/ui/yes.svg"
+  import noIcon from "@/assets/img/ui/no.svg"
+  import axios from 'axios'
+  import PayedOrder from "../components/PersonalCab/MainPage/PayedOrder/PayedOrdersList";
+  import OrderCartDates from "../components/OrderCart/Pages/OrderCartDates";
+  import OrderCartBasket from "../components/OrderCart/Pages/OrderCartBasket";
+  import OrderCartWorkshops from "../components/OrderCart/Pages/OrderCartWorkshops";
+  import {baseURL} from "../helpers/defaultValues";
+  import {breakpoints} from "../helpers/defaultValues";
+  import setTitle from "../helpers/title";
 
-    export default {
-        name: "OrderCart",
-        components: {PayedOrder, AdditionalServicesList, OrdersList, Loader},
-        data() {
-            return {
-                isLoading: true,
-                countDate: new Date(2021, 2, 31).getTime(),
-                placeholder: process.env.NODE_ENV === 'production' && process.env.VUE_APP_MODE !== 'test',
-                yesIcon,
-                noIcon,
-                page: 1,
-                productsDone: false,
-                pages: [
-                    OrderCartDates,
-                    OrderCartWorkshops,
-                    OrderCartBasket,
-                ],
-                discount: 0,
+  export default {
+    name: "OrderCart",
+    components: {PayedOrder, AdditionalServicesList, OrdersList, Loader},
+    data() {
+      return {
+        countDate: new Date(2021, 2, 31).getTime(),
+        placeholder: process.env.NODE_ENV === 'production' && process.env.VUE_APP_MODE !== 'test',
+        yesIcon,
+        noIcon,
+        page: 1,
+        productsDone: false,
+        pages: [
+          OrderCartDates,
+          OrderCartWorkshops,
+          OrderCartBasket,
+        ],
+        discount: 0,
 
-                baseURL,
-                isModalOpen: true,
-                windowWidth: 0,
-                breakpoints
-            };
-        },
-        computed: {
-            ...mapGetters(["userCart", "user"]),
-            pageTitle() {
-                return [
-                    this.$t('message.orderCart.orderCartDates.title'),
-                    this.$t('message.orderCart.orderCartWorkshops.title'),
-                    this.$t('message.orderCart.orderCartBasket.title')
-                ]
-            },
-            totalPrice() {
-                return this.userCart.reduce((acc, product) => acc + product.price, 0)
-            },
-        },
-        methods: {
-            ...mapActions(["fetchProducts"]),
-            ...mapMutations(["setUserBasket", "deleteAllProducts"]),
-            handleResize() {
-                this.windowWidth = window.innerWidth;
-            },
-            toVerify() {
-                this.$router.push({name: 'Verify'});
-                this.isModalOpen = false;
-            },
-            nextClick() {
-                if (this.page !== 2) {
+        baseURL,
+        isModalOpen: true,
+        windowWidth: 0,
+        breakpoints
+      };
+    },
+    computed: {
+      ...mapGetters(["userCart", "user"]),
+      pageTitle() {
+        return [
+          this.$t('message.orderCart.orderCartDates.title'),
+          this.$t('message.orderCart.orderCartWorkshops.title'),
+          this.$t('message.orderCart.orderCartBasket.title')
+        ]
+      },
+      totalPrice() {
+        return this.userCart.reduce((acc, product) => acc + product.price, 0)
+      },
+    },
+    methods: {
+      ...mapActions(["fetchProducts"]),
+      ...mapMutations(["setUserBasket", "deleteAllProducts"]),
+      handleResize() {
+        this.windowWidth = window.innerWidth;
+      },
+      toVerify() {
+        this.$router.push({name: 'Verify'});
+        this.isModalOpen = false;
+      },
+      nextClick() {
+        if (this.page !== 2) {
+          this.page += 1;
+        } else if (this.page == 2) {
+          const userCart = this.userCart;
+          const postData = userCart.map(item => +item.id)
+          if (postData.length) {
+            axios
+              .post('/api/user/basket/', {
+                items: postData
+              })
+              .then(() => {
+                axios
+                  .get('/api/user/basket/')
+                  .then(res => {
+                    this.setUserBasket(res.data.items);
                     this.page += 1;
-                } else if (this.page == 2) {
-                    const userCart = this.userCart;
-                    const postData = userCart.map(item => +item.id)
-                    if (postData.length) {
-                        axios
-                            .post('/api/user/basket/', {
-                                items: postData
-                            })
-                            .then(() => {
-                                axios
-                                    .get('/api/user/basket/')
-                                    .then(res => {
-                                        this.setUserBasket(res.data.items);
-                                        this.page += 1;
-                                    })
-                            })
-                    }
-                }
-            },
-            prevClick() {
-                this.page -= 1;
-
-            }
-        },
-        mounted() {
-            document.body.append(this.$refs.ordModal)
-        },
-        created() {
-            window.addEventListener('resize', this.handleResize);
-            this.handleResize();
-            this.fetchProducts()
-                .then(res => {
-                    if (res === 'ok' || res === 'done') {
-                        this.isLoading = false
-                        if (res === 'done') {
-                            this.productsDone = true;
-                        }
-                    }
-                })
+                  })
+              })
+          }
         }
-    };
+      },
+      prevClick() {
+        this.page -= 1;
+
+      }
+    },
+    mounted() {
+      document.body.append(this.$refs.ordModal);
+
+    },
+    created() {
+      setTitle(this.$i18n.t('message.pagesTitle.orderCart'))
+      window.addEventListener('resize', this.handleResize);
+      this.handleResize();
+      // this.fetchProducts()
+      //     .then(res => {
+      //         if (res === 'ok' || res === 'done') {
+      //             this.isLoading = false
+      //             if (res === 'done') {
+      //                 this.productsDone = true;
+      //             }
+      //         }
+      //     })
+    }
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -325,7 +327,7 @@
     }
     @media screen and (min-width: $lg-width) {
       margin-left: 20px;
-      padding: 8px 20px;
+      padding: 8px 40px;
       min-width: 100px;
     }
 
@@ -348,28 +350,36 @@
 
   .button_next {
     transition: opacity .25s;
-    &.disabled{
+    @media screen and (min-width: $lg-width) {
+      padding-left: 30px;
+    }
+    &.disabled {
       opacity: .5;
       cursor: not-allowed;
       pointer-events: none;
     }
+
     &::before {
 
       @media screen and (min-width: $lg-width) {
         left: unset;
         top: -1px;
         bottom: 0;
-        right: 0;
+        right: 20px;
         width: 20px;
       }
     }
   }
 
   .button_prev {
+    @media screen and (min-width: $lg-width) {
+      padding-right: 30px;
+    }
+
     &::before {
       transform: rotate(180deg);
       @media screen and (min-width: $lg-width) {
-        left: 0;
+        left: 20px;
         top: -1px;
         bottom: 0;
         right: unset;

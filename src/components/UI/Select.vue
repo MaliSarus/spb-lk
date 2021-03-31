@@ -77,10 +77,9 @@
         this.isOpen = !this.isOpen
       },
       inputClick($event) {
+        console.log('click')
         if (!$event.target.classList.contains('form__input-trigger')) {
-          console.log($event.target)
           if (!this.isOpen) {
-
             this.isOpen = true;
             this.$nextTick(() => {
               this.$refs.selectInput.focus();
@@ -93,34 +92,42 @@
         this.selectedOption = option;
         this.isOpen = false;
         this.$emit('pick', option)
-        // this.searchString = ''
       },
       inputFocus() {
-        // this.searchString = ''
+        console.log('focus')
+        // const header = document.querySelector('header');
+        const footer = document.querySelector('footer');
+        // const headerHeight = header.getBoundingClientRect().top + header.offsetHeight;
+        const footerTop = footer.getBoundingClientRect().top
         this.isOpen = true;
-        if (this.selectMenuHeight === 0) {
-          this.$nextTick(() => {
-            const inputEl = this.$refs.select;
-            const inputElBottom = inputEl.getBoundingClientRect().top + inputEl.offsetHeight;
-            const windowHeight = window.innerHeight
-            this.selectMenuPos = inputElBottom < windowHeight ? 'bottom' : 'top'
-            this.selectMenuHeight = inputElBottom
-          });
-        } else {
-          const windowHeight = window.innerHeight;
-          this.selectMenuPos = this.selectMenuHeight < windowHeight ? 'bottom' : 'top'
-        }
+        this.selectMenuPos = 'bottom';
+        const inputEl = this.$refs.select;
+        const selectUl = inputEl.querySelector('ul');
+        selectUl.removeAttribute('style');
+        this.$nextTick(() => {
+          const inputElBottom = inputEl.getBoundingClientRect().top + inputEl.offsetHeight;
+          const diff = inputElBottom - footerTop;
+          if (diff < 0) {
+            this.selectMenuPos = 'bottom';
+          } else {
+            this.selectMenuPos = 'top'
+            selectUl.style.maxHeight = '200px'
+          }
+        });
+
       },
       closeSelect() {
         this.isOpen = false;
         this.searchString = ''
       }
-    },
+    }
+    ,
     computed: {
       labelActive() {
         return !!this.selectedOption;
 
-      },
+      }
+      ,
       searchingOptions() {
         if (this.searchString !== '') {
           return this.options.filter(option => {
@@ -131,13 +138,15 @@
         } else {
           return this.options
         }
-      },
-    },
+      }
+      ,
+    }
+    ,
     watch: {
       selectedOption(val) {
         this.$emit('selectOption', val);
-      },
-    },
+      }
+    }
   }
 </script>
 

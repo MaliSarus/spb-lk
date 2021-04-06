@@ -43,7 +43,7 @@
             <div class="order__price-content">
               {{this.discount === 0 ? $t('message.orderCart.totalPrice.text') :
               $t('message.orderCart.totalPrice.discountText')}}:
-              <b style="margin-left: 5px;">{{discount === 0 ? totalPrice : discount}} &#8381;</b>
+              <b style="margin-left: 5px; font-weight: 500">{{discount === 0 ? totalPrice : discount}} &#8381;</b>
               <button v-if="page > 1" class="button button_transparent button_prev" @click="prevClick">
                 {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.back') : ''}}
               </button>
@@ -96,7 +96,7 @@
     data() {
       return {
         countDate: new Date(2021, 2, 31).getTime(),
-        placeholder: process.env.NODE_ENV === 'production' && process.env.VUE_APP_MODE !== 'test',
+        placeholder: false,
         yesIcon,
         noIcon,
         page: 1,
@@ -172,15 +172,6 @@
       setTitle(this.$i18n.t('message.pagesTitle.orderCart'))
       window.addEventListener('resize', this.handleResize);
       this.handleResize();
-      // this.fetchProducts()
-      //     .then(res => {
-      //         if (res === 'ok' || res === 'done') {
-      //             this.isLoading = false
-      //             if (res === 'done') {
-      //                 this.productsDone = true;
-      //             }
-      //         }
-      //     })
     }
   };
 </script>
@@ -314,6 +305,11 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      font-size: 18px;
+      @media screen and (min-width: $lg-width) {
+        font-size: 24px;
+        line-height: 28px;
+      }
     }
   }
 
@@ -353,6 +349,7 @@
     @media screen and (min-width: $lg-width) {
       padding-left: 30px;
     }
+
     &.disabled {
       opacity: .5;
       cursor: not-allowed;

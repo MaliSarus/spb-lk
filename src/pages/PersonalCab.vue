@@ -13,7 +13,7 @@
       <div class="container" v-if="$route.name !== 'MainPage'">
         <div class="row">
           <div class="col-12 position-relative">
-            <button class="button button_yellow button__back" @click="$router.go(-1)"/>
+            <button class="button button_yellow button__back" @click="$router.push(`/user/${user.id}`)"/>
           </div>
         </div>
       </div>
@@ -29,6 +29,7 @@
   import {mapActions, mapGetters} from 'vuex'
   import setTitle from "../helpers/title";
   import Loader from "../components/UI/Loader";
+  import checkActivity from '../helpers/checkAuthority'
 
   export default {
     name: "PersonalCab",
@@ -38,6 +39,7 @@
         productsLoading: true,
         workshopsLoading: true,
         productsDone: false,
+        checkActivity: {},
       }
     },
     methods: {
@@ -49,11 +51,17 @@
         return this.workshops.length === 0
       }
     },
-    mounted() {
-      console.log(this.$route)
-    },
+    // mounted() {
+    //   if (this.user.tildaUser){
+    //     this.$router.push({
+    //       name: 'UserData'
+    //     })
+    //   }
+    // },
     created() {
       setTitle(this.$i18n.t('message.pagesTitle.personalCab'))
+      this.checkActivity = new checkActivity('/api/user/activity/', (1000 * 2 * 60));
+      this.checkActivity.startUpdating();
       this.fetchProducts()
         .then(res => {
           if (res === 'ok' || res === 'done') {
@@ -67,7 +75,11 @@
       .then(()=>{
         this.workshopsLoading = false
       })
-    }
+    },
+    destroyed() {
+      this.checkActivity.stopUpdating();
+      delete this.checkActivity;
+    },
   };
 </script>
 

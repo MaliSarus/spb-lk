@@ -1,5 +1,5 @@
 <template>
-  <div class="form__input form__input-datepicker" v-on-clickaway="closeDatepicker">
+  <div class="form__input form__input-datepicker" :class="{focus: isDatepickerOpen}" v-on-clickaway="closeDatepicker">
     <button type="button" class="form__input-trigger" :style="{backgroundImage: `url('${datepickerIcon}')`}"
             @click="isDatepickerOpen = !isDatepickerOpen"></button>
     <input
@@ -105,6 +105,9 @@
       input {
         padding-right: 35px;
       }
+      &.focus{
+        z-index: 10;
+      }
     }
 
     &__input-trigger {
@@ -125,6 +128,7 @@
     }
 
     &__datepicker {
+      z-index:10;
       width: 100%;
       &.top{
         bottom: unset;

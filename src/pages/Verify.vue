@@ -40,7 +40,7 @@
               <p v-if="error">{{error}}</p>
               <div class="verify__controls">
                 <Button
-                    class="form__button form__button_prev"
+                    class="form__button form__button_prev square"
                     type="button"
                     @click="$router.push('/user/'+userId +/user-data/)"
 
@@ -78,6 +78,7 @@
   import docIcon from '@/assets/img/ui/doc.svg'
   import successIcon from '@/assets/img/ui/success-signup.svg'
   import setTitle from "../helpers/title";
+  import squaredButton from "../helpers/square-button";
 
   export default {
     name: "Verify",
@@ -141,6 +142,15 @@
     },
     created() {
       setTitle(this.$i18n.t('message.pagesTitle.verify'))
+    },
+    mounted() {
+
+      const squareButtons = document.querySelectorAll('.square')
+      squaredButton(squareButtons)
+    },
+    updated() {
+      const squareButtons = document.querySelectorAll('.square')
+      squaredButton(squareButtons)
     }
   }
 </script>

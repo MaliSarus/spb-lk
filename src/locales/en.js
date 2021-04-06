@@ -190,7 +190,7 @@ const en = {
           body: [
             {title: 'Access to scientist conversation', offline: true, online: false},
             {title: 'Online access to streams', offline: true, online: true},
-            {title: 'Free access to videos', offline: true, online: true},
+            {title: 'Free access on 6 months to videos', offline: true, online: true},
             {
               title: 'Participant information package: printed version of the program, collection of materials',
               offline: true,
@@ -241,7 +241,7 @@ const en = {
       },
       error: {
         title: 'Error',
-        subtitle: 'An error has occurred',
+        subtitle: 'An error in payment has occurred',
         link: 'Go to personal room',
       }
     },
@@ -253,6 +253,7 @@ const en = {
       error: 'Page not found',
       logIn: 'Log In',
       payment: 'Successful payment',
+      errorPayment: 'Error in payment',
       forgetPass: 'Forget pass',
       signUp: 'Sign Up',
       personalCab: 'Personal room',

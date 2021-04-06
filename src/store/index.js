@@ -54,6 +54,9 @@ export default new Vuex.Store({
     deleteAllSingleProducts(state) {
       state.userCart = state.userCart.filter(product => product.type !== 'single')
     },
+    deleteAllDates(state){
+      state.userCart = state.userCart.filter(product => !(product.type === 'single' || product.type === 'all'))
+    },
     deleteAllProducts(state) {
       state.userCart = [];
     },
@@ -82,13 +85,8 @@ export default new Vuex.Store({
         .post('/api/auth/', payload)
         .then(res => {
 
-            const data = res.data;
-            const user = {
-              ordinator: data.ordinator,
-              verify: data.verify,
-              ...data.user
-            }
-            if (data.status === 'ok') {
+            const user = res.data.user;
+            if (res.data.status === 'ok') {
               commit('setUser', user);
               setWithExpiry('user', user, 3600 * 1000)
             }
@@ -102,12 +100,7 @@ export default new Vuex.Store({
         .then(res => {
           console.log(res)
           if (res.data.auth) {
-            const data = res.data;
-            const user = {
-              ...data.user,
-              ordinator: data.ordinator,
-              verify: data.verify,
-            }
+            const user = res.data.user;
             commit('setUser', user)
             return user
           } else {

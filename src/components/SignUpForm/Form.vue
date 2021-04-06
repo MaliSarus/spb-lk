@@ -104,7 +104,7 @@
 
           <div class="form__group">
             <Button
-                class="form__button_prev"
+                class="form__button_prev square"
                 text=""
                 @buttonClick="prevPage"
                 type="button"
@@ -162,7 +162,7 @@
           </div>
           <div class="form__group">
             <Button
-                class="form__button form__button_prev"
+                class="form__button form__button_prev square"
                 text=""
                 @buttonClick="prevPage"
                 type="button"
@@ -201,6 +201,7 @@
   import {mapGetters} from "vuex";
   import successImage from "@/assets/img/ui/success-signup.svg"
   import {mailPattern, namePattern, phonePattern} from "../../helpers/defaultValues";
+  import squaredButton from "../../helpers/square-button";
 
 
   export default {
@@ -502,8 +503,15 @@
           }
         }
       },
-
     },
+    mounted() {
+      const squareButtons = document.querySelectorAll('.square')
+      squaredButton(squareButtons)
+    },
+    updated() {
+      const squareButtons = document.querySelectorAll('.square')
+      squaredButton(squareButtons)
+    }
   };
 </script>
 

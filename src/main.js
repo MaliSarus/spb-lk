@@ -90,9 +90,10 @@ if (document.querySelector('.header.static')) {
   initAccordion(accordion.querySelectorAll('.accordion__title'))
 }
 
-
+export const eventBus = new Vue()
 //Vue JS
 if (document.querySelector('#app-one') ) {
+
   new Vue({
     router,
     store,

@@ -55,6 +55,7 @@
 
 <script>
   import {mapMutations, mapGetters} from "vuex";
+  import {eventBus} from "@/main";
 
   export default {
     name: "Order",
@@ -99,6 +100,11 @@
           this.addProduct(selectDate)
         }
       }
+    },
+    created() {
+      eventBus.$on('clearDates',()=>{
+        this.checkedDate = ''
+      })
     },
     updated() {
       if (this.isAllCheck || this.disabled) {

@@ -156,6 +156,7 @@
       cursor: pointer;
 
       &.open {
+        z-index: 10;
         .form__input-trigger {
           transform: translateY(-50%) rotate(180deg);
         }

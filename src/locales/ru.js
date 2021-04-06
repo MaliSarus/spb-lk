@@ -1,7 +1,7 @@
 const ru = {
   message: {
     departments:{
-      other:'other'
+      other:'другое'
     },
     header: {
       noname: 'Личный кабинет',
@@ -190,7 +190,7 @@ const ru = {
           body: [
             {title: 'Очный доступ на научные заседания Конгресса', offline: true, online: false},
             {title: 'Online доступ на трансляцию Конгресса', offline: true, online: true},
-            {title: 'Бесплатный доступ к видеозаписям Конгресса', offline: true, online: true},
+            {title: 'Бесплатный доступ на 6 месяцев к видеозаписям Конгресса', offline: true, online: true},
             {
               title: 'Информационный пакет участника: печатная версия программы, сборник материалов',
               offline: true,
@@ -241,7 +241,7 @@ const ru = {
       },
       error: {
         title: 'Ошибка',
-        subtitle: 'Произошла ошибка',
+        subtitle: 'Произошла ошибка при оплате',
         link: 'Перейти в личный кабинет',
       }
     },
@@ -253,6 +253,7 @@ const ru = {
       error: 'Страница не найдена',
       logIn: 'Авторизация',
       payment: 'Успешная оплата',
+      errorPayment: 'Ошибка при оплате',
       forgetPass: 'Забыли пароль',
       signUp: 'Регистрация',
       personalCab: 'Личный кабинет',

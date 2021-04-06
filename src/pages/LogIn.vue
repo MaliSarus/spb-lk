@@ -8,7 +8,7 @@
 
 <script>
   import LogInForm from "@/components/LogInForm/Form";
-  import {mapActions} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
   import setTitle from "../helpers/title";
 
   export default {
@@ -17,14 +17,16 @@
       LogInForm,
 
     },
+    computed:{
+      ...mapGetters(["user"])
+    },
     methods: {
       ...mapActions(['fetchCountries', 'fetchDepartments', 'fetchRanks', 'fetchDegrees', 'fetchCities', "fetchUser"]),
       initFetch() {
         this.fetchUser()
           .then((res) => {
-            console.log(res)
             if (res) {
-              this.$router.push(`/user/${res.id}`)
+              this.user.tildaUser ? this.$router.push(`/user/${res.id}/user-data`) : this.$router.push(`/user/${res.id}`)
             }
           })
       },
@@ -32,7 +34,7 @@
     created() {
       this.initFetch();
       setTitle(this.$i18n.t('message.pagesTitle.logIn'))
-    }
+    },
   }
 </script>
 <style lang="scss" scoped>

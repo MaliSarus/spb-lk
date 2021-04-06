@@ -1,5 +1,5 @@
 <template>
-  <button v-bind="$attrs" @click="$emit('buttonClick')">{{ text }}</button>
+  <button v-bind="$attrs" @click="$emit('buttonClick')" :disabled="this.$attrs.disabled">{{ text }}</button>
 </template>
 
 <script>

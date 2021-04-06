@@ -46,7 +46,7 @@
           </div>
           <div class="header__lang">
             <button @click.prevent="changeLang()">
-              <img :src="$i18n.locale === 'ru' ? images.rusLangIcon : images.engLangIcon" width="35" height="35" alt="">
+              <img :src="$i18n.locale === 'ru' ? images.engLangIcon : images.rusLangIcon" width="35" height="35" alt="">
             </button>
           </div>
         </div>
@@ -107,13 +107,12 @@
             </div>
           </div>
         </div>
-        <div class="mobile-menu__lang">
-          <button @click.prevent="changeLang()">
-            <img :src="$i18n.locale === 'ru' ? images.rusLangIcon : images.engLangIcon" width="35" height="35" alt="">
-          </button>
-        </div>
       </div>
-
+      <div class="mobile-menu__lang">
+        <button @click.prevent="changeLang()">
+          <img :src="$i18n.locale === 'ru' ? images.engLangIcon : images.rusLangIcon" width="35" height="35" alt="">
+        </button>
+      </div>
     </div>
   </div>
 </template>

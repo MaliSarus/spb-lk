@@ -1,8 +1,16 @@
 <template>
   <div>
     <div class="order-cart__dates">
-      <p v-if="$attrs.productsDone" class="done-text" style="text-align: center; font-size: 24px;">{{$t('message.orderCart.done')}}</p>
+      <p v-if="$attrs.productsDone" class="done-text" style="text-align: center; font-size: 24px;">
+        {{$t('message.orderCart.done')}}</p>
       <orders-list v-else/>
+    </div>
+    <div class="container" v-show="dates">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+          <button class="button button_yellow clear-button" type="button" @click="clearSelect">Очистить выбор</button>
+        </div>
+      </div>
     </div>
     <div class="container" v-show="!$attrs.productsDone">
       <div class="row">
@@ -50,27 +58,40 @@
 
 <script>
 
-    import OrdersList from "@/components/OrderCart/OrdersList";
-    import yesIcon from "@/assets/img/ui/yes.svg"
-    import noIcon from "@/assets/img/ui/no.svg"
+  import OrdersList from "@/components/OrderCart/OrdersList";
+  import yesIcon from "@/assets/img/ui/yes.svg"
+  import noIcon from "@/assets/img/ui/no.svg"
+  import {mapMutations, mapGetters} from 'vuex'
+  import {eventBus} from "@/main";
 
-    export default {
-        name: "OrderCartDates",
-        data() {
-            return {
-                yesIcon,
-                noIcon,
-            }
-        },
-        components: {
-            OrdersList
-        },
-      computed:{
-          tableBody(){
-            return this.$t('message.orderCart.orderCartDates.table.body');
-          }
+  export default {
+    name: "OrderCartDates",
+    data() {
+      return {
+        yesIcon,
+        noIcon,
+      }
+    },
+    components: {
+      OrdersList
+    },
+    methods: {
+      ...mapMutations(["deleteAllDates"]),
+      clearSelect() {
+        this.deleteAllDates();
+        eventBus.$emit('clearDates');
+      }
+    },
+    computed: {
+      ...mapGetters(["userCart"]),
+      dates(){
+        return !!this.userCart.filter(product => product.type === 'single' || product.type === 'all').length
+      },
+      tableBody() {
+        return this.$t('message.orderCart.orderCartDates.table.body');
       }
     }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -148,10 +169,24 @@
       text-align: center;
       display: block;
       color: #CC1E1E;
+
       margin-bottom: 20px;
       @media screen and (min-width: $lg-width) {
         margin-bottom: 40px;
       }
+
+    }
+  }
+
+  .clear-button {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    @media screen and (min-width: $lg-width) {
+      margin-top: -20px;
+      margin-bottom: 40px;
 
     }
   }

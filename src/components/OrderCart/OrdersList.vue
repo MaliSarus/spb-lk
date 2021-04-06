@@ -22,6 +22,7 @@
 
 <script>
   import Order from "./Order";
+
   import {mapGetters, mapMutations} from 'vuex'
 
   export default {

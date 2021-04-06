@@ -1123,6 +1123,7 @@ button {
   opacity: 0;
   visibility: hidden;
   background: rgba(0, 48, 102, 0.9);
+  padding-bottom: 65px;
 }
 
 .mobile-menu.open {
@@ -1135,11 +1136,12 @@ button {
   padding-top: 50px;
   padding-bottom: 50px;
   height: 100%;
+  overflow-y: scroll;
 }
 
 .mobile-menu__lang {
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -1214,9 +1216,9 @@ button {
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  -webkit-transform: translateY(-50%) rotate(-90deg);
-  -ms-transform: translateY(-50%) rotate(-90deg);
-  transform: translateY(-50%) rotate(-90deg);
+  -webkit-transform: translateY(-50%) rotate(90deg);
+  -ms-transform: translateY(-50%) rotate(90deg);
+  transform: translateY(-50%) rotate(90deg);
   -webkit-transition: -webkit-transform .25s;
   transition: -webkit-transform .25s;
   -o-transition: transform .25s;
@@ -1225,9 +1227,9 @@ button {
 }
 
 .mobile-menu__accordion .accordion__title.open::before {
-  -webkit-transform: translateY(-50%) rotate(90deg);
-  -ms-transform: translateY(-50%) rotate(90deg);
-  transform: translateY(-50%) rotate(90deg);
+  -webkit-transform: translateY(-50%) rotate(-90deg);
+  -ms-transform: translateY(-50%) rotate(-90deg);
+  transform: translateY(-50%) rotate(-90deg);
 }
 
 .mobile-menu__accordion .accordion__title:hover {

@@ -14,6 +14,7 @@ import ErrorPage from "@/pages/ErrorPage";
 import i18n from "@/locales";
 import store from '@/store'
 import SuccessPayment from "../pages/SuccessPayment";
+import ErrorPayment from "../pages/ErrorPayment";
 
 
 
@@ -57,6 +58,15 @@ const routes = [
     }
   },
   {
+    path: '/error',
+    name: 'ErrorPay',
+    component: ErrorPayment,
+    meta:{
+      auth: true,
+      title: i18n.t('message.pagesTitle.errorPayment')
+    }
+  },
+  {
     path: '/',
     name: 'LogIn',
     component: LogIn,
@@ -81,9 +91,10 @@ router.beforeEach((to, from, next) => {
   if (requiredAuth) {
     store.dispatch('fetchUser')
       .then((res) => {
-        console.log(res)
         if (res){
-          next()
+          if(store.state.user.tildaUser && to.name !== 'UserData' && from.name !== 'LogIn'){
+              next(`/user/${store.state.user.id}/user-data`)
+          }else next()
         }
         else{
           next('/')
@@ -95,5 +106,6 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
+
 
 export default router

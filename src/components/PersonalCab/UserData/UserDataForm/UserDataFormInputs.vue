@@ -47,8 +47,8 @@
       prop: 'formInputs',
       event: 'formInputsChange',
     },
-    methods:{
-      inputCheck(e){
+    methods: {
+      inputCheck(e) {
         console.log(e)
       }
     },
@@ -58,14 +58,11 @@
         return this.countries.map((country) => country.name);
       },
       countryId() {
-        if (+this.countries.find(
-          (country) => country.name === this.formInputs.country
-        ).id) {
+        if (this.formInputs.country) {
           return +this.countries.find(
             (country) => country.name === this.formInputs.country
           ).id
-        }
-        else{
+        } else {
           return ''
         }
       },

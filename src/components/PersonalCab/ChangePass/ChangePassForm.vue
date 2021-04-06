@@ -60,8 +60,10 @@
         const prevButton = this.$refs.prevButton.$el;
         const submitButton = this.$refs.submitButton;
         prevButton.style.maxWidth = submitButton.offsetHeight + 'px'
+        prevButton.style.minWidth = submitButton.offsetHeight + 'px'
         window.addEventListener('resize', function () {
           prevButton.style.maxWidth = submitButton.offsetHeight + 'px'
+          prevButton.style.minWidth = submitButton.offsetHeight + 'px'
         })
       }
     },
@@ -79,7 +81,7 @@
   .change-pass{
     &__controls {
       display: flex;
-      flex-wrap: wrap;
+      /*flex-wrap: wrap;*/
       margin-top: 15px;
       @media screen and (min-width: $lg-width){
         margin-top: 30px;

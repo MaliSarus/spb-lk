@@ -20,8 +20,8 @@
         />
       </div>
     </div>
-    <div class="form__group">
-      <Button class=" button button_yellow form__submit login__submit" type="submit" :text="$t('message.logIn.buttons.signIn')"/>
+    <div class="form__group ">
+      <Button class=" button button_yellow form__submit login__submit" :class="{disabled: errorMessage}"  type="submit" :disabled="errorMessage!==''" :text="$t('message.logIn.buttons.signIn')"/>
       <router-link :to="{name:'ForgetPass'}" class="form__remember">{{$t('message.logIn.forgetPass')}}</router-link>
     </div>
     <p v-if="errorMessage" class="auth__error">{{errorMessage}}</p>
@@ -73,7 +73,7 @@
         .then((res)=>{
           console.log(res);
           if (res.data.status !== "error"){
-            this.$router.push(`/user/${this.user.id}`)
+            res.data.user.tildaUser ? this.$router.push(`/user/${res.id}/user-data`) : this.$router.push(`/user/${this.user.id}`)
           }
           else {
             this.errorMessage = res.data.error;
@@ -108,49 +108,18 @@
 
     &__input {
       margin-bottom: 15px;
-      &.invalid{
-        border: 1px solid red;
-        animation: invalid .5s forwards;
-      }
     }
-    @keyframes invalid {
-      0%{
-        transform: translateX(0);
-      }
-      10%{
-        transform: translateX(10px);
-      }
-      30%{
-        transform: translateX(-10px);
-      }
-      40%{
-        transform: translateX(7px);
-      }
-      50%{
-        transform: translateX(-7px);
-      }
-      60%{
-        transform: translateX(5px);
-      }
-      70%{
-        transform: translateX(-5px);
-      }
-      80%{
-        transform: translateX(2px);
-      }
-      90%{
-        transform: translateX(-2px);
-      }
-      100%{
-        transform: translateX(0);
-      }
-    }
+
 
     &__submit {
       width: 100%;
       max-width: 150px;
       margin-right: 30px;
       text-transform: none;
+      transition: opacity .2s;
+      &.disabled{
+        opacity: .5;
+      }
     }
 
 

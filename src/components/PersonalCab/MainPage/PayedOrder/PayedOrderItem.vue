@@ -26,10 +26,6 @@
 
     &__text {
       flex-grow: 1;
-      margin-bottom: 10px;
-      @media screen and (min-width: $lg-width){
-        margin-bottom: 0;
-      }
 
       p {
         margin: 0;

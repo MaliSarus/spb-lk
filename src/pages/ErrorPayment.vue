@@ -1,35 +1,21 @@
 <template>
   <div class="form__wrapper">
-    <loader v-if="!orderNum"/>
-    <form  v-else action="#" class="success-form" @submit.prevent="submitSuccess">
-      <div class="success-form__title">{{$t('message.payment.success.title')}}</div>
+    <form action="#" class="success-form" @submit.prevent="submitSuccess">
+      <div class="success-form__title">{{$t('message.payment.error.title')}}</div>
       <div class="success-form__content">
-        <img :src="successIcon" alt="">
-        <div class="success-form__subtitle">{{$t('message.payment.success.subtitle')}}</div>
-        <p>{{$t('message.payment.success.text',{orderNum})}}</p>
+        <div class="success-form__subtitle">{{$t('message.payment.error.subtitle')}}</div>
       </div>
-      <button type="submit" class="button button_yellow">{{$t('message.payment.success.link')}}</button>
+      <button type="submit" class="button button_yellow">{{$t('message.payment.error.link')}}</button>
     </form>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
-  import successIcon from '@/assets/img/ui/success-signup.svg'
-  import {mapGetters} from 'vuex'
+  import {mapGetters} from "vuex";
   import setTitle from "../helpers/title";
-  import Loader from "../components/UI/Loader";
 
   export default {
-    name: "SuccessPayment",
-    components: {Loader},
-    data() {
-      return {
-        orderNum: '',
-        errorMessage: '',
-        successIcon
-      }
-    },
+    name: "ErrorPayment",
     computed:{
       ...mapGetters(["user"])
     },
@@ -39,24 +25,7 @@
       }
     },
     created() {
-      setTitle(this.$i18n.t('message.pagesTitle.payment'))
-      const url = new URL(window.location.href);
-      const obj = {}
-      for (const p of url.searchParams) {
-        obj[p[0]] = p[1]
-      }
-      axios
-        .post('/api/successful_payment/', {
-          orderId: obj.orderId,
-        })
-        .then(res => {
-          console.log(res)
-          if (res.data.status === 'ok') {
-            this.orderNum = res.data.orderNumber;
-          } else {
-            this.errorMessage = res.data.error;
-          }
-        })
+      setTitle(this.$i18n.t('message.pagesTitle.errorPayment'))
     }
   }
 </script>
@@ -126,4 +95,5 @@
     }
 
   }
+
 </style>

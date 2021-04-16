@@ -52,7 +52,7 @@
             </form>
           </div>
           <div class="user-data__form form" v-if="page === 2">
-            <form action="#">
+            <form>
               <div class="verify-success">
                 <div class="verify-success__image">
                   <img :src="successIcon" alt="">
@@ -62,9 +62,10 @@
                 </div>
                 <div class="verify-success__text text" v-html=" $t('message.changeFio.success.text')"/>
                 <div class="verify-success__button">
-                  <router-link tag="button" class="button button_yellow" :to="'/user/'+userId">
+                  <router-link v-if="!user.tildaUser" tag="button" class="button button_yellow" :to="'/user/'+userId">
                     {{$t('message.changeFio.success.link')}}
                   </router-link>
+                  <button v-else class="button button_yellow" type="button" @click="$router.push(`/user/${userId}/user-data`)">{{$t('message.userData.success.link')}}</button>
                 </div>
               </div>
             </form>
@@ -83,6 +84,7 @@
   import successIcon from '@/assets/img/ui/success-signup.svg'
   import setTitle from "../helpers/title";
   import squaredButton from "../helpers/square-button";
+  import {mapGetters} from 'vuex'
 
   export default {
     name: "ChangeFIO",
@@ -100,6 +102,7 @@
       }
     },
     computed: {
+      ...mapGetters(["user"]),
       isImage() {
         const imageExt = this.ext === 'png' || this.ext === 'jpg'
         return imageExt

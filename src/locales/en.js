@@ -24,6 +24,10 @@ const en = {
       inputs: {
         email: 'Email',
         password: 'Password'
+      },
+      noOneAuth: {
+        loading: 'Logging out',
+        noLoading: 'Log out from all devices'
       }
     },
     signUp: {
@@ -175,7 +179,7 @@ const en = {
       orderCartDates: {
         title: 'Select the format and dates of participation in the congress',
         countdown: {
-          text: 'The discount is valid if paid before April 15, 2021. Until the cost increase is',
+          text: 'The discount is valid if paid before April 30, 2021. Until the cost increase is',
           time: '{d} d. {h} h. {m} m.'
         },
         date: {
@@ -202,6 +206,7 @@ const en = {
             {title: 'Exhibition, coffee breaks, lunches', offline: true, online: false},
           ]
         },
+        clearSelect: 'Clear select'
       },
       orderCartWorkshops: {
         title: 'Additional services',

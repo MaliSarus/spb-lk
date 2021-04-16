@@ -118,101 +118,106 @@
 </template>
 
 <script>
-    import logo from '@/assets/img/ui/logo.svg'
-    import rusLangIcon from '@/assets/img/ui/ru-lang.svg'
-    import engLangIcon from '@/assets/img/ui/en-lang.svg'
-    import {mapGetters, mapActions} from 'vuex'
-    import axios from 'axios'
+  import logo from '@/assets/img/ui/logo.svg'
+  import rusLangIcon from '@/assets/img/ui/ru-lang.svg'
+  import engLangIcon from '@/assets/img/ui/en-lang.svg'
+  import {mapGetters, mapActions} from 'vuex'
+  import axios from 'axios'
+  import {setIsUserAuth} from "../helpers/defaultValues";
 
-    export default {
-        name: "Header",
-        data() {
-            return {
-                images: {
-                    logo,
-                    rusLangIcon,
-                    engLangIcon
-                },
-                mobileOpen: false,
-                headerMenu: [],
-                accountMenuOpen: false,
-            }
+  export default {
+    name: "Header",
+    data() {
+      return {
+        images: {
+          logo,
+          rusLangIcon,
+          engLangIcon
         },
+        mobileOpen: false,
+        headerMenu: [],
+        accountMenuOpen: false,
+        body: document.querySelector('body')
 
-        computed: {
-            ...mapGetters(["user"]),
-        },
-        methods: {
-            ...mapActions({
-                stateLogOut: "logout"
-            }),
-            changeLang() {
-                const currentLang = this.$cookies.get('lang');
-                this.$cookies.set('lang', currentLang === 'ru' ? 'en' : 'ru');
+      }
+    },
 
-                location.reload();
-            },
-            linkClick(path) {
-                this.$router.push(path);
-                this.mobileOpen = false;
-                this.accountMenuOpen = false;
+    computed: {
+      ...mapGetters(["user"]),
+    },
+    methods: {
+      ...mapActions({
+        stateLogOut: "logout"
+      }),
+      changeLang() {
+        const currentLang = this.$cookies.get('lang');
+        this.$cookies.set('lang', currentLang === 'ru' ? 'en' : 'ru');
+        localStorage.clear();
+        location.reload();
+      },
+      linkClick(path) {
+        this.$router.push(path);
+        this.mobileOpen = false;
+        this.accountMenuOpen = false;
+        this.body.classList.remove('overflow_hidden')
 
-            },
-            openAccountMenu() {
-                if (!this.user.id && this.$route.name !== 'LogIn') {
-                    this.$router.push({name: 'LogIn'})
-                } else if (this.user.id) {
-                    if (this.$refs.accountMenu) {
-                        this.$refs.accountMenu.style.width = (this.$refs.accountButton.offsetWidth - 2) + 'px'
-                    }
-                    this.accountMenuOpen = !this.accountMenuOpen;
-                }
-            },
-            hamburgerClick() {
-                this.mobileOpen = !this.mobileOpen
-                const body = document.querySelector('body')
-                if (this.mobileOpen) {
-                    this.$refs.mobileMenu.style.paddingTop = this.$refs.header.offsetHeight + 'px'
-                    body.classList.add('overflow_hidden')
-                } else {
-                    this.$refs.mobileMenu.removeAttribute('style')
-                    body.classList.remove('overflow_hidden')
-                }
-            },
-            afterOpen(object) {
-                const el = object.vm.$el;
-                const accContent = el.querySelector('.accordion__content');
-                const accTitle = el.querySelector('.accordion__title');
-                accTitle.classList.toggle('open')
-                accContent.style.maxHeight ?
-                    accContent.removeAttribute('style')
-                    : accContent.style.maxHeight = accContent.scrollHeight + "px";
-            },
-            logout() {
-                this.mobileOpen = false;
-                this.accountMenuOpen = false;
-                this.stateLogOut()
-                    .then(() => {
-                        if (this.$route.path !== '/') {
-                            this.$router.push('/')
-                        } else {
-                            this.$router.go(0);
-                        }
-                    })
-            }
-        },
-        created() {
-            axios
-                .get('/api/menu/')
-                .then(res => {
-                    if (res.data.status === 'ok') {
-                        this.headerMenu = res.data.items;
-                        this.$emit('loaded')
-                    }
-                    console.log(res)
-                })
+      },
+      openAccountMenu() {
+        if (!this.user.id && this.$route.name !== 'LogIn') {
+          this.$router.push({name: 'LogIn'})
+        } else if (this.user.id) {
+          if (this.$refs.accountMenu) {
+            this.$refs.accountMenu.style.width = (this.$refs.accountButton.offsetWidth - 2) + 'px'
+          }
+          this.accountMenuOpen = !this.accountMenuOpen;
         }
+      },
+      hamburgerClick() {
+        this.mobileOpen = !this.mobileOpen
+        if (this.mobileOpen) {
+          this.$refs.mobileMenu.style.paddingTop = this.$refs.header.offsetHeight + 'px'
+          this.body.classList.add('overflow_hidden')
+        } else {
+          this.$refs.mobileMenu.removeAttribute('style')
+          this.body.classList.remove('overflow_hidden')
+        }
+      },
+      afterOpen(object) {
+        const el = object.vm.$el;
+        const accContent = el.querySelector('.accordion__content');
+        const accTitle = el.querySelector('.accordion__title');
+        accTitle.classList.toggle('open')
+        accContent.style.maxHeight ?
+          accContent.removeAttribute('style')
+          : accContent.style.maxHeight = accContent.scrollHeight + "px";
+      },
+      logout() {
+        this.mobileOpen = false;
+        this.accountMenuOpen = false;
+        this.body.classList.remove('overflow_hidden')
+        setIsUserAuth(false)
+        this.stateLogOut()
+          .then(() => {
+            if (this.$route.path !== '/') {
+              this.$router.push('/')
+            } else {
+              this.$router.go(0);
+            }
+          })
+      }
+    },
+    created() {
+      axios
+        .get('/api/menu/')
+        .then(res => {
+          if (res.data.status === 'ok') {
+            this.headerMenu = res.data.items;
+            this.$emit('loaded')
+          }
+          console.log(res)
+        })
     }
+  }
 </script>
 
 <style lang="scss" scoped>

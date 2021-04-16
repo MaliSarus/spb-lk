@@ -24,7 +24,8 @@
                 Данные успешно обновлены!
               </div>
               <div class="success__button">
-                <router-link tag="button" :to="`/user/${userId}`" class="button button_yellow">Вернуться в личный кабинет</router-link>
+                <router-link v-if="!user.tildaUser" tag="button" :to="`/user/${userId}`" class="button button_yellow">{{$t('message.userData.success.link')}}</router-link>
+                <button v-else type="button" class="button button_yellow" @click="$router.push(`/user/${userId}/user-data`)">{{$t('message.userData.success.link')}}</button>
               </div>
             </div>
           </div>
@@ -40,6 +41,7 @@
   import ChangePassForm from "../components/PersonalCab/ChangePass/ChangePassForm";
   import successIcon from "@/assets/img/ui/success-signup.svg";
   import setTitle from "../helpers/title";
+  import {mapGetters} from 'vuex'
 
   export default {
     name: "ChangePass",
@@ -50,6 +52,9 @@
         successIcon,
         userId: this.$route.params.id
       }
+    },
+    computed:{
+      ...mapGetters(["user"])
     },
     created() {
       setTitle(this.$i18n.t('message.pagesTitle.changePass'))

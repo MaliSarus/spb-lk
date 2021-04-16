@@ -51,13 +51,6 @@
         return this.workshops.length === 0
       }
     },
-    // mounted() {
-    //   if (this.user.tildaUser){
-    //     this.$router.push({
-    //       name: 'UserData'
-    //     })
-    //   }
-    // },
     created() {
       setTitle(this.$i18n.t('message.pagesTitle.personalCab'))
       this.checkActivity = new checkActivity('/api/user/activity/', (1000 * 2 * 60));

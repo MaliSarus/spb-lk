@@ -19,10 +19,8 @@ function styles() {
 }
 
 
-
-
 function startwatch() {
-    watch('public/assets/sass/**/*', {usePolling: true}, styles);
+  watch('public/assets/sass/**/*', {usePolling: true}, styles);
 }
 
 exports.styles = styles

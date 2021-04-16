@@ -24,6 +24,10 @@ const ru = {
       inputs: {
         email: 'Email',
         password: 'Пароль'
+      },
+      noOneAuth: {
+        loading: 'Выходим',
+        noLoading: 'Выйти со всех устройств'
       }
     },
     signUp: {
@@ -175,7 +179,7 @@ const ru = {
       orderCartDates: {
         title: 'Выберите формат и даты участия в конгрессе',
         countdown: {
-          text: 'Скидка действует при оплате до 15 апреля 2021 г. До повышения стомости осталось',
+          text: 'Скидка действует при оплате до 30 апреля 2021 г. До повышения стомости осталось',
           time: '{d} дн.{h} час. {m} мин.'
         },
         date: {
@@ -202,6 +206,7 @@ const ru = {
             {title: 'Выставка, кофе-брейки, обеды', offline: true, online: false},
           ]
         },
+        clearSelect: 'Очистить выбор'
       },
       orderCartWorkshops: {
         title: 'Дополнительные услуги',

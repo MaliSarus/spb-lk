@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
-import {setWithExpiry} from "../helpers/localStorage";
+import {setWithoutExpiry, getWithoutExpiry} from "../helpers/localStorage";
 import i18n from "../locales";
 
 Vue.use(Vuex)
@@ -88,7 +88,6 @@ export default new Vuex.Store({
             const user = res.data.user;
             if (res.data.status === 'ok') {
               commit('setUser', user);
-              setWithExpiry('user', user, 3600 * 1000)
             }
             return res;
           }
@@ -109,18 +108,26 @@ export default new Vuex.Store({
         })
     },
     fetchCountries({commit}) {
+      const lsCountries = getWithoutExpiry('countries')
+      if (lsCountries){
+        return commit('setCountries', lsCountries);
+      }
       axios
         .get('/api/location/country/')
         .then(res => {
           if (res.data.status === 'ok') {
             commit('setCountries', res.data.country);
-
+            setWithoutExpiry('countries', res.data.country)
           }
 
 
         })
     },
     fetchDepartments({commit}) {
+      const lsDepartments = getWithoutExpiry('departments')
+      if (lsDepartments){
+        return commit('setDepartments', lsDepartments);
+      }
       axios
         .get('/api/specializations/')
         .then(res => {
@@ -128,11 +135,16 @@ export default new Vuex.Store({
             const departments = res.data.items;
             departments.push(i18n.t('message.departments.other'))
             commit('setDepartments', departments)
+            setWithoutExpiry('departments', departments)
           }
 
         })
     },
     fetchRanks({commit}) {
+      const lsRanks = getWithoutExpiry('ranks')
+      if (lsRanks){
+        return commit('setRanks', lsRanks);
+      }
       axios
         .get('/api/ranks/')
         .then(res => {
@@ -140,11 +152,16 @@ export default new Vuex.Store({
             const ranks = res.data.items;
             ranks.push('\u2014')
             commit('setRanks', ranks);
+            setWithoutExpiry('ranks', ranks)
           }
 
         })
     },
     fetchDegrees({commit}) {
+      const lsDegrees = getWithoutExpiry('degrees')
+      if (lsDegrees){
+        return commit('setDegrees', lsDegrees);
+      }
       axios
         .get('/api/degrees/')
         .then(res => {
@@ -152,16 +169,22 @@ export default new Vuex.Store({
             const degrees = res.data.items;
             degrees.push('\u2014')
             commit('setDegrees', degrees);
+            setWithoutExpiry('degrees', degrees)
           }
 
         })
     },
     fetchCities({commit}) {
+      const lsCities = getWithoutExpiry('cities')
+      if (lsCities){
+        return commit('setRussiaCities', lsCities);
+      }
       axios
         .get('/api/location/city/1/')
         .then(res => {
           if (res.data.status === 'ok') {
             commit('setRussiaCities', res.data.city);
+            setWithoutExpiry('cities', res.data.city)
           }
         })
     },

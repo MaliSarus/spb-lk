@@ -26,3 +26,18 @@ export const phoneAllowPattern = /[^0-9\s+\(\)]/g;
 // eslint-disable-next-line no-useless-escape
 export const emailAllowPattern = /[^a-z0-9\._@-]/gi;
 
+let isUserAuth = false
+export const getIsUserAuth = () => {
+  return isUserAuth;
+}
+export const setIsUserAuth = (value) =>{
+  isUserAuth = value;
+}
+
+let isTildaUser = false;
+export const getIsTildaUser = () => {
+  return isTildaUser;
+}
+export const setIsTildaUser = (value) =>{
+  isTildaUser = value;
+}

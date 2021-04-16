@@ -60,13 +60,14 @@
         </div>
       </div>
     </form>
-    <form action="#" @submit.prevent="changeData" v-if="page === 2">
+    <form @submit.prevent="page = 1" v-if="page === 2">
       <div class="user-data__success-image"><img :src="succesIcon" alt=""></div>
       <div class="user-data__success-text">{{$t('message.userData.success.text')}}</div>
       <div class="user-data__success-button">
-        <router-link tag="button" :to="'/user/' + $route.params.id" class="button button_yellow">
+        <router-link v-if="!user.tildaUser" tag="button" :to="'/user/' + $route.params.id" class="button button_yellow">
           {{$t('message.userData.success.link')}}
         </router-link>
+        <button v-else type="submit" class="button button_yellow">{{$t('message.userData.success.link')}}</button>
       </div>
     </form>
   </div>
@@ -79,6 +80,7 @@
   import UserDataFormInputs from "./UserDataFormInputs";
   import tooltipClose from "@/assets/img/ui/tooltip-close.svg"
   import succesIcon from "@/assets/img/ui/success-signup.svg"
+  import {setIsTildaUser} from "@/helpers/defaultValues";
 
   export default {
     name: "UserDataForm",
@@ -138,6 +140,8 @@
           .then(res => {
             if (res.data.status === 'ok') {
               this.page = 2;
+              this.setUser(res.data.user)
+              setIsTildaUser(res.data.user.tildaUser)
             }
           })
       }

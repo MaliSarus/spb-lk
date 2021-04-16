@@ -7,6 +7,13 @@ export function setWithExpiry(key, value, ttl) {
   localStorage.setItem(key, JSON.stringify(item))
 }
 
+export function setWithoutExpiry(key, value) {
+  const item = {
+    value: value,
+  }
+  localStorage.setItem(key, JSON.stringify(item))
+}
+
 
 export function getWithExpiry(key) {
   const itemStr = localStorage.getItem(key)
@@ -21,5 +28,16 @@ export function getWithExpiry(key) {
     localStorage.removeItem(key)
     return null
   }
+  return item.value
+}
+
+export function getWithoutExpiry(key) {
+  const itemStr = localStorage.getItem(key)
+
+  if (!itemStr) {
+    return null
+  }
+  const item = JSON.parse(itemStr)
+
   return item.value
 }

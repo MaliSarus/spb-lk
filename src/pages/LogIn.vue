@@ -2,7 +2,9 @@
   <div class="form form__login">
     <div class="form__title">{{$t('message.logIn.title')}}</div>
     <LogInForm/>
-    <router-link tag="button" :to="{name: 'SignUp'}" class="button button_blue form__button">{{$t('message.logIn.buttons.signUp')}}</router-link>
+    <router-link tag="button" :to="{name: 'SignUp'}" class="button button_blue form__button">
+      {{$t('message.logIn.buttons.signUp')}}
+    </router-link>
   </div>
 </template>
 
@@ -10,6 +12,7 @@
   import LogInForm from "@/components/LogInForm/Form";
   import {mapActions, mapGetters} from 'vuex'
   import setTitle from "../helpers/title";
+  import {setIsUserAuth, setIsTildaUser} from "../helpers/defaultValues";
 
   export default {
     name: 'LogIn',
@@ -17,7 +20,7 @@
       LogInForm,
 
     },
-    computed:{
+    computed: {
       ...mapGetters(["user"])
     },
     methods: {
@@ -26,7 +29,14 @@
         this.fetchUser()
           .then((res) => {
             if (res) {
-              this.user.tildaUser ? this.$router.push(`/user/${res.id}/user-data`) : this.$router.push(`/user/${res.id}`)
+              setIsUserAuth(true)
+              if (this.user.tildaUser) {
+                setIsTildaUser(true)
+                this.$router.push(`/user/${res.id}/user-data`)
+              } else {
+                setIsTildaUser(false)
+                this.$router.push(`/user/${res.id}`)
+              }
             }
           })
       },
@@ -47,7 +57,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    @media screen and (min-width: $sm-width){
+    @media screen and (min-width: $sm-width) {
       display: block;
       border: 1px solid #A8BBD3;
       box-shadow: 0px 0px 30px 30px rgba(0, 0, 0, 0.05);
@@ -56,7 +66,7 @@
       max-width: 400px;
 
     }
-    @media screen and (min-width: $lg-width){
+    @media screen and (min-width: $lg-width) {
       padding: 38px 50px 50px;
     }
 
@@ -65,7 +75,7 @@
       line-height: 32px;
       font-weight: bold;
       margin-bottom: 15px;
-      @media screen and (min-width: $lg-width){
+      @media screen and (min-width: $lg-width) {
         font-size: 36px;
         line-height: 42px;
       }

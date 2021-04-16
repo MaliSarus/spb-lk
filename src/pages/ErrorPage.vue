@@ -17,7 +17,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .form__error {
     padding: 20px;
     background: white;

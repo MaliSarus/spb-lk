@@ -8,14 +8,16 @@
     <div class="container" v-show="dates">
       <div class="row">
         <div class="col-12 d-flex justify-content-center">
-          <button class="button button_yellow clear-button" type="button" @click="clearSelect">Очистить выбор</button>
+          <button class="button button_yellow clear-button" type="button" @click="clearSelect">
+            {{$t('message.orderCart.orderCartDates.clearSelect')}}
+          </button>
         </div>
       </div>
     </div>
     <div class="container" v-show="!$attrs.productsDone">
       <div class="row">
         <div class="col-12">
-          <countdown :end-time="new Date(2021, 3, 15).getTime()"
+          <countdown :end-time="new Date(2021, 3, 30).getTime()"
                      class="order-cart__countdown">
             <template
               v-slot:process="{ timeObj }">
@@ -84,7 +86,7 @@
     },
     computed: {
       ...mapGetters(["userCart"]),
-      dates(){
+      dates() {
         return !!this.userCart.filter(product => product.type === 'single' || product.type === 'all').length
       },
       tableBody() {

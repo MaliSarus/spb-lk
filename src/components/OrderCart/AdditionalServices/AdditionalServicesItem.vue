@@ -9,7 +9,7 @@
     </div>
     <div class="add-service__right">
       <div class="add-service__price">{{workshop.price.basePrice}} &#8381;</div>
-      <div class="add-service__link"><a href="#">{{workshop.availability ? $t('message.orderCart.orderCartWorkshops.link.more') : $t('message.orderCart.orderCartWorkshops.link.site')}}</a></div>
+      <div class="add-service__link"><a :href="workshop.url ? workshop.url : '#'">{{workshop.availability ? $t('message.orderCart.orderCartWorkshops.link.more') : $t('message.orderCart.orderCartWorkshops.link.site')}}</a></div>
     </div>
   </li>
 </template>

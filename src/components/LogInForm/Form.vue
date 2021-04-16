@@ -3,28 +3,33 @@
     <div class="row">
       <div class="col-12">
         <Input
-                v-model="email"
-                :label="$t('message.logIn.inputs.email')"
-                input-id="login-email"
-                input-type="email"
-                :class="{invalid: this.valid.email}"
-                @input="validInput($event,'email')"
+          v-model="email"
+          :label="$t('message.logIn.inputs.email')"
+          input-id="login-email"
+          input-type="email"
+          :class="{invalid: this.valid.email}"
+          @input="validInput($event,'email')"
         />
         <Input
-                v-model="password"
-                :label="$t('message.logIn.inputs.password')"
-                input-id="login-password"
-                input-type="password"
-                :class="{invalid: this.valid.password}"
-                @input="validInput($event,'password')"
+          v-model="password"
+          :label="$t('message.logIn.inputs.password')"
+          input-id="login-password"
+          input-type="password"
+          :class="{invalid: this.valid.password}"
+          @input="validInput($event,'password')"
         />
       </div>
     </div>
     <div class="form__group ">
-      <Button class=" button button_yellow form__submit login__submit" :class="{disabled: errorMessage}"  type="submit" :disabled="errorMessage!==''" :text="$t('message.logIn.buttons.signIn')"/>
+      <Button class=" button button_yellow form__submit login__submit" :class="{disabled: errorMessage}" type="submit"
+              :disabled="errorMessage!==''" :text="$t('message.logIn.buttons.signIn')"/>
       <router-link :to="{name:'ForgetPass'}" class="form__remember">{{$t('message.logIn.forgetPass')}}</router-link>
     </div>
     <p v-if="errorMessage" class="auth__error">{{errorMessage}}</p>
+    <button v-if="noOneAuth.isNoOneAuth && buildMode === 'test'" class="button button_yellow logout-all" type="button"
+            @click="logoutAll">
+      {{ noOneAuth.isLoading ? $t('message.logIn.noOneAuth.loading') : $t('message.logIn.noOneAuth.noLoading')}}
+    </button>
   </form>
 
 </template>
@@ -33,6 +38,8 @@
   import Button from "@/components/UI/Button";
   import Input from "@/components/UI/Input";
   import {mapActions, mapGetters} from 'vuex'
+  import axios from 'axios'
+  import {setIsTildaUser} from "../../helpers/defaultValues";
 
   export default {
     name: "Form",
@@ -44,44 +51,69 @@
       return {
         email: '',
         password: '',
-        errorMessage:'',
-        valid:{
+        errorMessage: '',
+        valid: {
           email: false,
           password: false
-        }
+        },
+        noOneAuth: {
+          isNoOneAuth: false,
+          isLoading: false
+        },
+        buildMode: process.env.VUE_APP_MODE === 'no' ? 'production' : 'test'
       }
     },
     methods: {
       ...mapActions(['authUser']),
-      validInput(event, validFormField){
+      validInput(event, validFormField) {
         this.valid[validFormField] = event.target.value === ''
         this.errorMessage = '';
       },
       submitLogin() {
-        if (!this.email){
+        if (!this.email) {
           this.valid.email = true
         }
-        if (!this.password){
+        if (!this.password) {
           this.valid.password = true
         }
-        this.authUser(
-          {
+        this
+          .authUser({
             email: this.email,
             password: this.password,
-          }
-        )
-        .then((res)=>{
-          console.log(res);
-          if (res.data.status !== "error"){
-            res.data.user.tildaUser ? this.$router.push(`/user/${res.id}/user-data`) : this.$router.push(`/user/${this.user.id}`)
-          }
-          else {
-            this.errorMessage = res.data.error;
-          }
-        })
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.data.status !== "error") {
+              if (res.data.user.tildaUser) {
+                setIsTildaUser(true)
+                this.$router.push(`/user/${this.user.id}/user-data`)
+              } else {
+                this.$router.push(`/user/${this.user.id}`)
+              }
+            } else {
+              this.errorMessage = res.data.error;
+              if (res.data.isNoOneAuth) {
+                this.noOneAuth.isNoOneAuth = res.data.isNoOneAuth
+              }
+            }
+          })
+      },
+      logoutAll() {
+        this.noOneAuth.isLoading = true
+        axios
+          .post('/api/user/logout/', {
+            email: this.email
+          })
+          .then(res => {
+            if (res.data.status === 'ok') {
+              this.errorMessage = '';
+              this.noOneAuth.isNoOneAuth = false;
+              this.noOneAuth.isLoading = false;
+            }
+          })
       }
     },
-    computed:{
+    computed: {
       ...mapGetters(['user']),
     }
   }
@@ -117,8 +149,10 @@
       margin-right: 30px;
       text-transform: none;
       transition: opacity .2s;
-      &.disabled{
+
+      &.disabled {
         opacity: .5;
+        pointer-events: none;
       }
     }
 
@@ -140,19 +174,25 @@
       justify-content: space-between;
     }
   }
-  .auth__error{
+
+  .auth__error {
     margin-top: 15px;
     margin-bottom: 0;
     color: red;
   }
-  
-  .login__submit{
+
+  .login__submit {
     background-image: url(~@/assets/img/ui/account-button_login.svg);
     background-position: calc(100% - 12px) center;
     background-size: 20px;
     background-repeat: no-repeat;
     padding-left: 35px;
     padding-right: 35px;
+  }
+
+  .logout-all {
+    margin-top: 15px;
+    width: 100%;
   }
 
 </style>

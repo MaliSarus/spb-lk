@@ -16,6 +16,9 @@ import store from '@/store'
 import SuccessPayment from "@/pages/SuccessPayment";
 import ErrorPayment from "@/pages/ErrorPayment";
 import {getIsUserAuth, setIsUserAuth, getIsTildaUser, setIsTildaUser} from "../helpers/defaultValues";
+import {getChecker} from "../helpers/checkAuthority";
+// eslint-disable-next-line no-unused-vars
+import {eventBus} from "../main";
 
 Vue.use(VueRouter)
 
@@ -99,16 +102,36 @@ const router = new VueRouter({
   routes
 })
 
-const tildaUserAllowPagesTo = ['UserData','ChangePass','ChangeFIO'];
-const tildaUserAllowPagesFrom = ['LogIn', 'UserData','ChangePass','ChangeFIO']
+const tildaUserAllowPagesTo = ['UserData', 'ChangePass', 'ChangeFIO'];
+const tildaUserAllowPagesFrom = ['LogIn', 'UserData', 'ChangePass', 'ChangeFIO']
 
 // eslint-disable-next-line no-unused-vars
 router.beforeEach((to, from, next) => {
+  console.log(i18n.locale)
+  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+  if(nearestWithTitle) {
+    document.title = nearestWithTitle.meta.title;
+  }
   const requiredAuth = to.matched.some(route => route.meta.auth);
+  if (requiredAuth) {
+    const activityChecker = getChecker();
+    if (activityChecker) {
+      activityChecker
+        .checkImmediate()
+        .then(res => {
+          if (res.data.userLogout) {
+            setIsUserAuth(false)
+            store.dispatch('logout').then(() => {
+              console.log('next(/)')
+              next('/')
+            })
+          }
+        })
+    }
+  }
   if (requiredAuth && (!getIsUserAuth() || getIsTildaUser())) {
     store.dispatch('fetchUser')
       .then((res) => {
-        console.log('ROUTER FETCH USER');
         if (res) {
           setIsUserAuth(true);
           const fromAllow = tildaUserAllowPagesFrom.filter(name => name === from.name);
@@ -120,19 +143,18 @@ router.beforeEach((to, from, next) => {
               next(`/user/${userId}/user-data`)
               return;
             }
-            if(fromAllow.length === 0 && toAllow.length !== 0){
+            if (fromAllow.length === 0 && toAllow.length !== 0) {
               next();
               return;
             }
-            if(fromAllow.length !== 0 && toAllow.length === 0){
+            if (fromAllow.length !== 0 && toAllow.length === 0) {
               next(false)
               return;
             }
-            if (fromAllow.length !== 0 && toAllow.length !== 0){
+            if (fromAllow.length !== 0 && toAllow.length !== 0) {
               next();
             }
-          }
-          else {
+          } else {
             next()
           }
         } else {
@@ -142,6 +164,7 @@ router.beforeEach((to, from, next) => {
       .catch(() => {
       })
   } else {
+    console.log('next()')
     next()
   }
 })

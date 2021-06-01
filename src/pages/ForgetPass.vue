@@ -18,6 +18,7 @@
 <script>
   import ForgetPassForm from "@/components/ForgetPassForm/Form.vue";
   import Button from "@/components/UI/Button";
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
 
   export default {
@@ -33,9 +34,9 @@
         this.$router.push(`/`)
       }
     },
-    created() {
-      setTitle(this.$i18n.t('message.pagesTitle.forgetPass'))
-    }
+    // created() {
+    //   setTitle(this.$i18n.t('message.pagesTitle.forgetPass'))
+    // }
   };
 </script>
 <style lang="scss" scoped>

@@ -12,6 +12,7 @@
 
 <script>
   import {mapGetters} from "vuex";
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
 
   export default {
@@ -24,9 +25,9 @@
         this.$router.push(`/user/${this.user.id}`)
       }
     },
-    created() {
-      setTitle(this.$i18n.t('message.pagesTitle.errorPayment'))
-    }
+    // created() {
+    //   setTitle(this.$i18n.t('message.pagesTitle.errorPayment'))
+    // }
   }
 </script>
 

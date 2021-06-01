@@ -5,6 +5,13 @@
         <a href="/" class="header__logo">
           <img :src="images.logo" alt="">
         </a>
+        <div class="header__social d-xl-none">
+          <ul>
+            <li><a class="inst" href="https://instagram.com/spbbeautycongress"></a></li>
+            <li><a class="vk" href="https://vk.com/spbbeautycongress"></a></li>
+            <li><a class="fb" href="https://www.facebook.com/spbbeautycongress2021"></a></li>
+          </ul>
+        </div>
         <div class="header__menu">
           <nav>
             <ul>
@@ -13,7 +20,7 @@
                 <div class="dropdown" v-if="link.drop">
                   <ul>
                     <li v-for="(dropdownItem, index) in link.drop" :key="'header-dropdown'+ index">
-                      <a href="#">{{dropdownItem.name}}</a>
+                      <a :href="dropdownItem.link">{{dropdownItem.name}}</a>
                     </li>
                   </ul>
                 </div>
@@ -22,6 +29,13 @@
           </nav>
         </div>
         <div class="header__controls">
+          <div class="header__social">
+            <ul>
+              <li><a class="inst" href="https://instagram.com/spbbeautycongress"></a></li>
+              <li><a class="vk" href="https://vk.com/spbbeautycongress"></a></li>
+              <li><a class="fb" href="https://www.facebook.com/spbbeautycongress2021"></a></li>
+            </ul>
+          </div>
           <div class="header__account">
             <button class="header__account-button account-button_login" ref="accountButton" @click="openAccountMenu()">
               {{user.name ? user.name : $t('message.header.noname')}}
@@ -61,7 +75,7 @@
       </div>
     </header>
     <div class="mobile-menu" :class="{open:mobileOpen}" ref="mobileMenu">
-      <div class="mobile-menu__inner">
+      <div class="mobile-menu__inner mobile-menu__parent">
         <div class="container">
           <div class="row">
             <div class="col-12" style="padding: 0 40px">
@@ -69,15 +83,16 @@
                 <nav>
                   <ul>
                     <li v-for="(link, index) in headerMenu" :key="'mobile-link_' + index">
-                      <a :href="link.link">{{link.name}}</a>
+                      <a v-if="!link.drop" :href="link.link">{{link.name}}</a>
+                      <button v-else @click="submenuOpen(link.drop)">{{link.name}}</button>
                     </li>
                   </ul>
                 </nav>
               </div>
-              <v-collapse-group :onlyOneActive="true" class="accordion mobile-menu__accordion">
+              <v-collapse-group v-if="user.name" :onlyOneActive="true" class="accordion mobile-menu__accordion">
                 <v-collapse-wrapper @onStatusChange="afterOpen" class="accordion__item">
                   <div class="accordion__title button button_yellow" v-collapse-toggle>
-                    {{user.name ? user.name : $t('message.header.noname')}}
+                    {{user.name }}
                   </div>
                   <div class="my-content accordion__content" v-collapse-content>
                     <div class="accordion__inner-content">
@@ -104,10 +119,37 @@
                   </div>
                 </v-collapse-wrapper>
               </v-collapse-group>
+              <ul v-else class="mobile-menu__accordion">
+                <li>
+                  <a href="/lk/" class="button button_yellow" style="width: 100%">
+                    {{$t('message.header.noname')}}
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
+      <transition name="slide">
+        <div v-if="submenu.open" class="mobile-menu__inner mobile-menu__submenu" style="padding-top: 80px">
+          <button class="mobile-menu__back" @click="submenu.open = false"></button>
+          <div class="container">
+            <div class="row">
+              <div class="col-12" style="padding: 0 40px">
+                <div class="mobile-menu__menu">
+                  <nav>
+                    <ul>
+                      <li v-for="(link, index) in submenu.menu" :key="'mobile-submenu-link' + index">
+                        <a :href="link.link">{{link.name}}</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
       <div class="mobile-menu__lang">
         <button @click.prevent="changeLang()">
           <img :src="$i18n.locale === 'ru' ? images.engLangIcon : images.rusLangIcon" width="35" height="35" alt="">
@@ -137,6 +179,10 @@
         mobileOpen: false,
         headerMenu: [],
         accountMenuOpen: false,
+        submenu: {
+          open: false,
+          menu: [],
+        },
         body: document.querySelector('body')
 
       }
@@ -204,6 +250,10 @@
               this.$router.go(0);
             }
           })
+      },
+      submenuOpen(submenu) {
+        this.submenu.open = true
+        this.submenu.menu = submenu
       }
     },
     created() {
@@ -220,5 +270,92 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  .header__social{
+    ul{
+      padding: 0;
+      list-style: none;
+      display: flex;
+      margin: 0 20px 0 0;
+
+      li{
+        &:not(:last-child){
+          margin-right: 10px;
+        }
+        a{
+          display: block;
+          width: 25px;
+          height: 25px;
+          text-decoration: none;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          &.inst{
+            background-image: url(~@/assets/img/ui/instagram.svg);
+          }
+          &.vk{
+            background-image: url(~@/assets/img/ui/vk.svg);
+          }
+          &.fb{
+            background-image: url(~@/assets/img/ui/facebook.svg);
+          }
+        }
+      }
+    }
+  }
+  .slide-enter-active {
+    transition: transform .5s ease-in-out;
+  }
+
+  .slide-leave-active {
+    transition: transform .5s ease-in-out;
+  }
+
+  .slide-enter, .slide-leave-to
+    /* .slide-fade-leave-active до версии 2.1.8 */
+  {
+    transform: translateX(100%);
+  }
+
+  .mobile-menu {
+    &__parent {
+      .dropdown{
+        display: none;
+      }
+    }
+
+    &__back {
+      width: 40px;
+      height: 40px;
+      background-color: transparent;
+      background-image: url(~@/assets/img/ui/arrow_white.svg);
+      background-position: center;
+      background-size: 10px;
+      background-repeat: no-repeat;
+      transform: rotate(180deg);
+      border: none;
+      outline: none;
+    }
+
+    &__submenu {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: $accent-color;
+      color: white;
+    }
+
+    &.static {
+      .mobile-menu__submenu {
+        transform: translateX(100%);
+        transition: transform .5s ease-in-out;
+
+        &.active {
+          transform: translateX(0);
+        }
+      }
+    }
+  }
 </style>

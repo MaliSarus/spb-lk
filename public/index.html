@@ -5,7 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <title><%= htmlWebpackPlugin.options.title %></title>
+  <title>Личный кабинет</title>
+<!--  <%= htmlWebpackPlugin.options.title %>-->
   <link rel="stylesheet" href="<%= BASE_URL %>assets/css/bootstrap/bootstrap-grid.css">
   <link rel="stylesheet" href="<%= BASE_URL %>assets/css/style.css">
   <link rel="apple-touch-icon" sizes="76x76" href="<%= BASE_URL %>apple-touch-icon.png">
@@ -15,12 +16,33 @@
   <link rel="mask-icon" href="<%= BASE_URL %>safari-pinned-tab.svg" color="#002868">
   <meta name="msapplication-TileColor" content="#002868">
   <meta name="theme-color" content="#002868">
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () {
+        (m[i].a = m[i].a || []).push(arguments)
+      };
+      m[i].l = 1 * new Date();
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(62963431, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+  </script>
+  <!-- /Yandex.Metrika counter -->
 </head>
 <body>
 <noscript>
   <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
-    Please enable it to continue.</strong>
+    Please enable it to continue.
+  </strong>
+  <div><img src="https://mc.yandex.ru/watch/62963431" style="position:absolute; left:-9999px;" alt=""/></div>
 </noscript>
-  <div id="app-one"></div>
+<div id="app-one"></div>
 </body>
 </html>

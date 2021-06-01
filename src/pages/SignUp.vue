@@ -15,6 +15,7 @@
 
 <script>
 import SignUpForm from '../components/SignUpForm/Form.vue';
+// eslint-disable-next-line no-unused-vars
 import setTitle from "../helpers/title";
 
 export default {
@@ -30,9 +31,9 @@ export default {
       return Math.trunc((100 / 4) * this.formPage) + "%";
     },
   },
-  created() {
-    setTitle(this.$i18n.t('message.pagesTitle.signUp'))
-  }
+  // created() {
+  //   setTitle(this.$i18n.t('message.pagesTitle.signUp'))
+  // }
 
 };
 </script>

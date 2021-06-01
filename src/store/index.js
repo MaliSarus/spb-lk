@@ -37,6 +37,7 @@ export default new Vuex.Store({
       state.russiaCities = payload
     },
     setUser(state, payload) {
+        // setWithoutExpiry('lsUser', payload)
       state.user = payload;
     },
     setPayedOrders(state, payload) {
@@ -67,9 +68,11 @@ export default new Vuex.Store({
       state.workshops = payload
     },
     clearUser(state){
+      localStorage.removeItem('lsUser');
       state.user = {};
       state.userBasket = [];
       state.userForm = [];
+      localStorage.removeItem('orders');
       state.payedOrder =[];
     }
   },
@@ -94,6 +97,11 @@ export default new Vuex.Store({
         )
     },
     fetchUser({commit}) {
+      const lsUser = getWithoutExpiry('lsUser')
+      if (lsUser){
+        commit('setUser', lsUser);
+        return Promise.resolve(lsUser)
+      }
       return axios
         .get('/api/user/')
         .then(res => {
@@ -103,6 +111,7 @@ export default new Vuex.Store({
             commit('setUser', user)
             return user
           } else {
+            commit('clearUser')
             return false
           }
         })
@@ -119,8 +128,6 @@ export default new Vuex.Store({
             commit('setCountries', res.data.country);
             setWithoutExpiry('countries', res.data.country)
           }
-
-
         })
     },
     fetchDepartments({commit}) {
@@ -189,11 +196,17 @@ export default new Vuex.Store({
         })
     },
     fetchPayedOrders({commit}) {
+      const lsOrders = getWithoutExpiry('orders')
+      if (lsOrders){
+        commit('setPayedOrders', lsOrders);
+        return Promise.resolve(true)
+      }
       return axios
         .get('/api/user/orders/')
         .then(res => {
           if (res.data.status === 'ok') {
             commit('setPayedOrders', res.data.orders);
+            // setWithoutExpiry('orders', res.data.orders)
             return true
           } else {
             return false

@@ -17,6 +17,7 @@
   import axios from 'axios'
   import successIcon from '@/assets/img/ui/success-signup.svg'
   import {mapGetters} from 'vuex'
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
   import Loader from "../components/UI/Loader";
 
@@ -39,7 +40,7 @@
       }
     },
     created() {
-      setTitle(this.$i18n.t('message.pagesTitle.payment'))
+      // setTitle(this.$i18n.t('message.pagesTitle.payment'))
       const url = new URL(window.location.href);
       const obj = {}
       for (const p of url.searchParams) {

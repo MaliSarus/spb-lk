@@ -1,4 +1,7 @@
 import axios from "axios";
+import {eventBus} from "../main";
+
+let activityChecker = null;
 
 const CActivityUpdate = function (sActivityUrl, iActivityTime) {
   const _this = this;
@@ -50,18 +53,61 @@ const CActivityUpdate = function (sActivityUrl, iActivityTime) {
     if (bNeedUpdate) {
       const sExpires = false; //'Mon, 01-Jan-2018 00:00:00 GMT'
       _this.setCookie('BX_activity', iCurTime, sExpires, '/');
-      axios.get(_this.sActivityUrl);
+      return axios.get(_this.sActivityUrl);
     }
+    return Promise.resolve(null)
+  };
 
+  //Проверка
+  this.checkImmediate = function(){
+    const oDate = new Date();
+    const iCurTime = oDate.getTime();
+    const sExpires = false; //'Mon, 01-Jan-2018 00:00:00 GMT'
+    _this.setCookie('BX_activity', iCurTime, sExpires, '/');
+    return axios.get(_this.sActivityUrl);
   };
 
   // запуск обновления даты активности пользователя с заданным интервалом
   this.startUpdating = function () {
-    _this.activityInterval = setInterval(_this.updateActivity, _this.iActivityTime);
+    // setTimeout(()=>{
+    //   _this
+    //     .updateActivity()
+    //     .then(res => {
+    //       console.log(res)
+    //       if (res) {
+    //         if (res.data.userLogout) {
+    //           eventBus.$emit('userLogout')
+    //         }
+    //       }
+    //     })
+    // }, 2000)
+    _this.activityInterval = setInterval(() => {
+      _this
+        .updateActivity()
+        .then(res => {
+          console.log(res)
+          if (res) {
+            if (res.data.userLogout) {
+              eventBus.$emit('userLogout')
+            }
+          }
+        })
+    }, _this.iActivityTime);
   };
   this.stopUpdating = function () {
     clearInterval(_this.activityInterval)
   }
 };
 
-export default CActivityUpdate;
+export function createChecker() {
+  activityChecker = new CActivityUpdate('/api/user/activity/', (1000 * 2 * 60))
+}
+
+export function getChecker() {
+  return activityChecker;
+}
+
+export function destroyChecker() {
+  activityChecker.stopUpdating();
+  activityChecker = null
+}

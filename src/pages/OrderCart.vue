@@ -44,16 +44,24 @@
               {{this.discount === 0 ? $t('message.orderCart.totalPrice.text') :
               $t('message.orderCart.totalPrice.discountText')}}:
               <b style="margin-left: 5px; font-weight: 500">{{discount === 0 ? totalPrice : discount}} &#8381;</b>
-              <button v-if="page > 1" class="button button_transparent button_prev" @click="prevClick">
-                {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.back') : ''}}
-              </button>
-              <button v-if="page < 3" class="button button_yellow button_next"
-                      :class="{disabled:page === 2 && !userCart.length}" :disabled="page === 2 && !userCart.length"
-                      @click="nextClick">
-                {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.next') : ''}}
-              </button>
-              <a v-else class="button button_yellow button_next" :href="`${baseURL}/api/makeorder/`">{{windowWidth >=
-                breakpoints.lgWidth ? $t('message.orderCart.totalPrice.makeOrder') : ''}}</a>
+              <div class="order__price-controls" :class="{page_three: page === 3}">
+                <button v-if="page > 1" class="button button_transparent button_prev" :class="{page_three: page === 3}"
+                        @click="prevClick">
+                  {{windowWidth >= breakpoints.lgWidth || page === 3 ? $t('message.orderCart.totalPrice.back') : ''}}
+                </button>
+                <button v-if="page < 3" class="button button_yellow button_next"
+                        :class="{disabled:page === 2 && !userCart.length}" :disabled="page === 2 && !userCart.length"
+                        @click="nextClick">
+                  {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.next') : ''}}
+                </button>
+                <a v-else
+                   class="button button_yellow button_next button_makeorder"
+                   :href="`${baseURL}/api/makeorder/`"
+                   @click.prevent="makeorder(`${baseURL}/api/makeorder/`)">
+                  {{$t('message.orderCart.totalPrice.makeOrder')}}
+                  <!--                  {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.makeOrder') : ''}}-->
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -88,6 +96,7 @@
   import OrderCartWorkshops from "../components/OrderCart/Pages/OrderCartWorkshops";
   import {baseURL} from "../helpers/defaultValues";
   import {breakpoints} from "../helpers/defaultValues";
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
 
   export default {
@@ -137,6 +146,10 @@
         this.$router.push({name: 'Verify'});
         this.isModalOpen = false;
       },
+      makeorder(url) {
+        localStorage.removeItem('orders');
+        location.href = url
+      },
       nextClick() {
         if (this.page !== 2) {
           this.page += 1;
@@ -169,7 +182,7 @@
 
     },
     created() {
-      setTitle(this.$i18n.t('message.pagesTitle.orderCart'))
+      // setTitle(this.$i18n.t('message.pagesTitle.orderCart'))
       window.addEventListener('resize', this.handleResize);
       this.handleResize();
     }
@@ -306,9 +319,22 @@
       justify-content: flex-end;
       align-items: center;
       font-size: 18px;
+      flex-wrap: wrap;
       @media screen and (min-width: $lg-width) {
         font-size: 24px;
         line-height: 28px;
+      }
+    }
+
+    &-controls {
+      &.page_three {
+        flex-basis: 100%;
+        display: flex;
+        margin-top: 10px;
+        @media screen and (min-width: $sm-width) {
+          flex-basis: unset;
+          margin-top: 0;
+        }
       }
     }
   }
@@ -368,6 +394,20 @@
     }
   }
 
+  a.button_next {
+    border-radius: 4px;
+    flex-grow: 1;
+    @media screen and (max-width: $lg-width) {
+      padding: 8px;
+    }
+
+    &::before {
+      @media screen and (max-width: $lg-width) {
+        content: none;
+      }
+    }
+  }
+
   .button_prev {
     @media screen and (min-width: $lg-width) {
       padding-right: 30px;
@@ -381,6 +421,22 @@
         bottom: 0;
         right: unset;
         width: 20px;
+      }
+    }
+
+    &.page_three {
+      border-radius: 4px;
+      @media screen and (max-width: $sm-width) {
+        margin-left: 0;
+      }
+      @media screen and (max-width: $lg-width){
+        padding: 8px;
+      }
+
+      &::before {
+        @media screen and (max-width: $lg-width) {
+          content: none;
+        }
       }
     }
   }

@@ -21,12 +21,12 @@
       </div>
     </div>
     <div class="form__group ">
-      <Button class=" button button_yellow form__submit login__submit" :class="{disabled: errorMessage}" type="submit"
-              :disabled="errorMessage!==''" :text="$t('message.logIn.buttons.signIn')"/>
+      <Button class=" button button_yellow form__submit login__submit" :class="{disabled: errorMessage || logining}" type="submit"
+              :disabled="errorMessage!=='' || logining" :text="$t('message.logIn.buttons.signIn')"/>
       <router-link :to="{name:'ForgetPass'}" class="form__remember">{{$t('message.logIn.forgetPass')}}</router-link>
     </div>
     <p v-if="errorMessage" class="auth__error">{{errorMessage}}</p>
-    <button v-if="noOneAuth.isNoOneAuth && buildMode === 'test'" class="button button_yellow logout-all" type="button"
+    <button v-if="noOneAuth.isNoOneAuth" class="button button_yellow logout-all" type="button"
             @click="logoutAll">
       {{ noOneAuth.isLoading ? $t('message.logIn.noOneAuth.loading') : $t('message.logIn.noOneAuth.noLoading')}}
     </button>
@@ -37,7 +37,7 @@
 <script>
   import Button from "@/components/UI/Button";
   import Input from "@/components/UI/Input";
-  import {mapActions, mapGetters} from 'vuex'
+  import {mapActions, mapGetters, mapMutations} from 'vuex'
   import axios from 'axios'
   import {setIsTildaUser} from "../../helpers/defaultValues";
 
@@ -52,6 +52,7 @@
         email: '',
         password: '',
         errorMessage: '',
+        logining: false,
         valid: {
           email: false,
           password: false
@@ -60,11 +61,11 @@
           isNoOneAuth: false,
           isLoading: false
         },
-        buildMode: process.env.VUE_APP_MODE === 'no' ? 'production' : 'test'
       }
     },
     methods: {
       ...mapActions(['authUser']),
+      ...mapMutations(["clearUser"]),
       validInput(event, validFormField) {
         this.valid[validFormField] = event.target.value === ''
         this.errorMessage = '';
@@ -76,6 +77,7 @@
         if (!this.password) {
           this.valid.password = true
         }
+        this.logining = true
         this
           .authUser({
             email: this.email,
@@ -84,6 +86,7 @@
           .then((res) => {
             console.log(res);
             if (res.data.status !== "error") {
+              this.logining = true
               if (res.data.user.tildaUser) {
                 setIsTildaUser(true)
                 this.$router.push(`/user/${this.user.id}/user-data`)
@@ -95,11 +98,15 @@
               if (res.data.isNoOneAuth) {
                 this.noOneAuth.isNoOneAuth = res.data.isNoOneAuth
               }
+              else{
+                this.logining = false
+              }
             }
           })
       },
       logoutAll() {
         this.noOneAuth.isLoading = true
+        this.clearUser();
         axios
           .post('/api/user/logout/', {
             email: this.email
@@ -109,6 +116,7 @@
               this.errorMessage = '';
               this.noOneAuth.isNoOneAuth = false;
               this.noOneAuth.isLoading = false;
+              this.logining = false
             }
           })
       }

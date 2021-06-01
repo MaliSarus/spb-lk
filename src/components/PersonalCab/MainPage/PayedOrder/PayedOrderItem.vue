@@ -3,16 +3,48 @@
     <div class="order__text">
       <slot/>
     </div>
-<!--    <div class="order__button">-->
-<!--      <button class="order__btn" :class="buttonClass" :disabled="!buttonActive">{{buttonText}}</button>-->
-<!--    </div>-->
+    <div class="order__button">
+      <a v-if="linkClass !== 'next'"
+         class="order__btn"
+         :class="linkClass"
+         :href="orderInfo.url">
+        {{$t('message.mainPage.payedOrders.' + linkClass)}}
+      </a>
+      <a v-else
+         class="order__btn"
+         :class="linkClass">{{$t('message.mainPage.payedOrders.' + linkClass)}}</a>
+    </div>
   </li>
 </template>
 
 <script>
   export default {
     name: "PayedOrderItem",
-    props: ['buttonClass', 'buttonText', 'buttonActive']
+    props: ['orderInfo'],
+    computed: {
+      linkClass() {
+        const currentDate = new Date()
+        const dateStart = new Date(this.orderInfo.date_start)
+        const dateEnd = new Date(this.orderInfo.date_end)
+        let result = '';
+        if (!this.orderInfo.date_start) {
+          result = 'link'
+          return result;
+        }
+        if (currentDate > dateEnd) {
+          result = 'prev'
+          return result;
+        }
+        if (currentDate < dateStart) {
+          result = 'next'
+          return result;
+        }
+        if (currentDate >= dateStart && currentDate <= dateEnd) {
+          result = 'current'
+        }
+        return result
+      }
+    }
   }
 </script>
 
@@ -48,15 +80,11 @@
         max-width: 250px;
       }
 
-      &[disabled] {
-        background: #EDEDED;
-        border-color: #EDEDED;
-        cursor: not-allowed;
-        color: $light-text-color;
-      }
+
     }
 
     &__btn {
+      display: block;
       width: 100%;
       padding: 5px 35px 5px 10px;
       border: 1px solid;
@@ -64,27 +92,63 @@
       font-size: 14px;
       line-height: 16px;
       text-align: left;
-      background: white;
+      background-color: white;
+      text-decoration: none;
+      background-repeat: no-repeat;
+      background-position: calc(100% - 9px) center;
+      background-size: 25px auto;
+      transition: background-color .25s;
+      margin: 10px auto 0;
+      max-width: 325px;
 
+      @media screen and (min-width: $sm-width) {
+        margin: 0;
+      }
       @media screen and (min-width: $lg-width) {
         font-size: 16px;
         line-height: 19px;
       }
 
       &.prev {
-        color: $accent-color;
+        color: #013066;
+        border-color: $yellow-color;
+        background-image: url(~@/assets/img/payed-orders/prev.svg);
+
+        &:hover {
+          background-color: $yellow-color;
+        }
       }
 
-      &.today {
+      &.current {
         color: #282828;
-        background: $yellow-color;
+        background-color: $yellow-color;
         border-color: $yellow-color;
+        background-image: url(~@/assets/img/payed-orders/current.svg);
+
+        &:hover {
+          background-color: #fff;
+        }
       }
 
       &.next {
-        background: #EDEDED;
+        background-color: #EDEDED;
         border-color: #EDEDED;
         color: $light-text-color;
+        background-image: url(~@/assets/img/payed-orders/next.svg);
+        cursor: not-allowed;
+      }
+
+      &.link {
+        color: #282828;
+        background-color: $yellow-color;
+        border-color: $yellow-color;
+        background-image: url(~@/assets/img/payed-orders/link.svg);
+        background-position: calc(100% - 20px) center;
+        background-size: 5px 10px;
+
+        &:hover {
+          background-color: #fff;
+        }
       }
     }
   }

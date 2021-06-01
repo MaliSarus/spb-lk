@@ -77,6 +77,7 @@
   import axios from 'axios'
   import docIcon from '@/assets/img/ui/doc.svg'
   import successIcon from '@/assets/img/ui/success-signup.svg'
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
   import squaredButton from "../helpers/square-button";
 
@@ -140,9 +141,9 @@
         this.url = ''
       }
     },
-    created() {
-      setTitle(this.$i18n.t('message.pagesTitle.verify'))
-    },
+    // created() {
+    //   setTitle(this.$i18n.t('message.pagesTitle.verify'))
+    // },
     mounted() {
 
       const squareButtons = document.querySelectorAll('.square')

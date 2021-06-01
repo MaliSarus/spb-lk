@@ -27,9 +27,12 @@
 
 <script>
   import {mapActions, mapGetters} from 'vuex'
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
   import Loader from "../components/UI/Loader";
-  import checkActivity from '../helpers/checkAuthority'
+  import {createChecker, getChecker, destroyChecker} from '../helpers/checkAuthority'
+  import {eventBus} from "../main";
+  import {setIsUserAuth} from "../helpers/defaultValues";
 
   export default {
     name: "PersonalCab",
@@ -43,7 +46,7 @@
       }
     },
     methods: {
-      ...mapActions(['fetchUser', "fetchProducts", "fetchWorkshops"])
+      ...mapActions(['fetchUser', "fetchProducts", "fetchWorkshops", "logout"])
     },
     computed: {
       ...mapGetters(['user',"workshops"]),
@@ -52,9 +55,20 @@
       }
     },
     created() {
-      setTitle(this.$i18n.t('message.pagesTitle.personalCab'))
-      this.checkActivity = new checkActivity('/api/user/activity/', (1000 * 2 * 60));
-      this.checkActivity.startUpdating();
+      // setTitle(this.$i18n.t('message.pagesTitle.personalCab'))
+      createChecker();
+      this.checkActivity = getChecker();
+      this.checkActivity
+        .startUpdating()
+
+      eventBus.$on('userLogout', ()=>{
+        setIsUserAuth(false)
+        this.logout()
+          .then(() => {
+              this.$router.push('/')
+          })
+      })
+
       this.fetchProducts()
         .then(res => {
           if (res === 'ok' || res === 'done') {
@@ -70,8 +84,9 @@
       })
     },
     destroyed() {
-      this.checkActivity.stopUpdating();
+      destroyChecker()
       delete this.checkActivity;
+      eventBus.$off('userLogout')
     },
   };
 </script>

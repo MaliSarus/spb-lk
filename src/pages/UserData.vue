@@ -26,6 +26,7 @@
 <script>
     import UserDataForm from "../components/PersonalCab/UserData/UserDataForm/UserDataForm";
     import {mapGetters} from 'vuex'
+    // eslint-disable-next-line no-unused-vars
     import setTitle from "../helpers/title";
 
     export default {
@@ -36,10 +37,10 @@
         computed: {
             ...mapGetters(["user"])
         },
-      created() {
-        setTitle(this.$i18n.t('message.pagesTitle.userData'))
-
-      }
+      // created() {
+      //   setTitle(this.$i18n.t('message.pagesTitle.userData'))
+      //
+      // }
     }
 </script>
 

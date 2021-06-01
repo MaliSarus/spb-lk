@@ -155,7 +155,7 @@
           </Checkbox>
           <Checkbox v-model="$v.form.policy.$model" :class="{invalid:validForm.policy}" input-id="signup-policy"
                     @check="validateCheckBox($event, 'policy')">
-            {{$t('message.signUp.inputs.policy.text')}} <a href="/policy">{{$t('message.signUp.inputs.policy.link')}}</a>
+            {{$t('message.signUp.inputs.policy.text')}} <a href="/privacy/">{{$t('message.signUp.inputs.policy.link')}}</a>
           </Checkbox>
           <div class="error-message" v-if="errorMessage">
             <p>{{errorMessage}}</p>

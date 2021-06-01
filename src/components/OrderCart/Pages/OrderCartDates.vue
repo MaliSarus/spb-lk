@@ -17,7 +17,8 @@
     <div class="container" v-show="!$attrs.productsDone">
       <div class="row">
         <div class="col-12">
-          <countdown :end-time="new Date(2021, 3, 30).getTime()"
+          <countdown :end-time="new Date(2021, 4, 16).getTime()"
+                     v-show="new Date().getTime() < new Date(2021, 4, 16).getTime()"
                      class="order-cart__countdown">
             <template
               v-slot:process="{ timeObj }">

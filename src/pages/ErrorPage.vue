@@ -7,13 +7,14 @@
 </template>
 
 <script>
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
 
   export default {
     name: "ErrorPage",
-    created() {
-      setTitle(this.$i18n.t('message.pagesTitle.error'))
-    }
+    // created() {
+    //   setTitle(this.$i18n.t('message.pagesTitle.error'))
+    // }
   }
 </script>
 

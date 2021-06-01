@@ -11,21 +11,26 @@ const messages = {
 }
 Vue.use(VueI18n)
 
-let currentLang = ''
-const langInterval = setInterval(function () {
-  const cookieLang = getCookie('lang');
-  if (cookieLang){
-    currentLang = cookieLang;
-    i18n.locale = currentLang;
-    clearInterval(langInterval);
-  }
-}, 100)
 
 const i18n = new VueI18n({
   locale: 'ru', // set locale
   fallbackLocale: 'ru',
   messages, // set locale messages
 })
+
+let currentLang = ''
+if (!getCookie('lang')) {
+  const langInterval = setInterval(function () {
+    const cookieLang = getCookie('lang');
+    if (cookieLang) {
+      currentLang = cookieLang;
+      i18n.locale = currentLang;
+      clearInterval(langInterval);
+    }
+  }, 100)
+}else{
+  i18n.locale = getCookie('lang')
+}
 
 
 export default i18n

@@ -4,7 +4,7 @@ const en = {
       other:'other'
     },
     header: {
-      noname: 'Personal room',
+      noname: 'My Profile',
       menu: {
         userData: 'Credentials',
         orderCart: 'Register for participation',
@@ -15,7 +15,7 @@ const en = {
       text: 'All offers and prices on the website are for informational purposes only and are not a public offer (Article 437 of the Civil Code of the Russian Federation).'
     },
     logIn: {
-      title: 'Personal room',
+      title: 'My Profile',
       forgetPass: 'Forget password?',
       buttons: {
         signUp: 'Sign Up',
@@ -62,11 +62,11 @@ const en = {
       success: {
         title: 'Registration completed successfully!',
         subtitle: 'A confirmation email has been sent to your email, please follow the link and activate your account',
-        link: 'Go to personal room'
+        link: 'Go to My Profile'
       }
     },
     personalCab: {
-      title: 'Personal room'
+      title: 'My Profile'
     },
     mainPage: {
       title: 'Payed orders',
@@ -78,7 +78,13 @@ const en = {
         orderCart: {
           title: 'Order services',
           text: 'Select dates, format of participation in the congress, as well as order additional services'
-        }
+        },
+      },
+      payedOrders:{
+        current: 'Go to stream',
+        prev: 'Record',
+        next: 'Go to stream',
+        link: 'Go to detail'
       }
     },
     userData: {
@@ -100,7 +106,7 @@ const en = {
       },
       success: {
         text: 'Data updated successfully!',
-        link: 'Return to personal room'
+        link: 'Return to My Profile'
       },
       inputs: {
         birthday: "Birthday",
@@ -127,7 +133,7 @@ const en = {
       success: {
         title: 'Data sent successfully!',
         text: 'Verification takes up to two working days. <br> <br> After passing the verification, you will receive an email to the email specified in your profile. Also, information about the verification status will appear in your personal account.',
-        link: 'Return to personal room',
+        link: 'Return to My Profile',
       }
     },
     changeFio:{
@@ -142,7 +148,7 @@ const en = {
       success: {
         title: 'Data sent successfully!',
         text: 'Verification takes up to two working days. <br> <br> After passing the verification, the data in your personal account will be automatically updated.',
-        link: 'Return to personal room',
+        link: 'Return to My Profile',
       }
     },
     changePass: {
@@ -166,7 +172,7 @@ const en = {
         discountText: 'Price with discount',
         back: 'Back',
         next: 'Next',
-        makeOrder: 'Make order'
+        makeOrder: 'Go to payment'
       },
       modal: {
         text: `<p> You have registered as a clinical resident or full-time postgraduate student of the department: plastic surgery / maxillofacial surgery / cosmetology / dermatology. </p>
@@ -179,7 +185,7 @@ const en = {
       orderCartDates: {
         title: 'Select the format and dates of participation in the congress',
         countdown: {
-          text: 'The discount is valid if paid before April 30, 2021. Until the cost increase is',
+          text: 'The discount is valid if paid before May 15, 2021. Until the cost increase is',
           time: '{d} d. {h} h. {m} m.'
         },
         date: {
@@ -242,12 +248,12 @@ const en = {
         title: 'Successful payment',
         subtitle: 'The payment was successful!',
         text: 'Thank you, order #{orderNum} has been successfully paid!',
-        link: 'Go to personal room',
+        link: 'Go to My Profile',
       },
       error: {
         title: 'Error',
         subtitle: 'An error in payment has occurred',
-        link: 'Go to personal room',
+        link: 'Go to My Profile',
       }
     },
     errorPage: {
@@ -261,12 +267,12 @@ const en = {
       errorPayment: 'Error in payment',
       forgetPass: 'Forget pass',
       signUp: 'Sign Up',
-      personalCab: 'Personal room',
-      verify: 'Personal room - Confirming status',
-      orderCart: 'Personal room - Place an order',
-      changeFio:'Personal room - Change name',
-      changePass: 'Personal room - Change password',
-      userData: 'Personal room - Personal information',
+      personalCab: 'My Profile',
+      verify: 'My Profile - Confirming status',
+      orderCart: 'My Profile - Place an order',
+      changeFio:'My Profile - Change name',
+      changePass: 'My Profile - Change password',
+      userData: 'My Profile - Personal information',
     }
   }
 }

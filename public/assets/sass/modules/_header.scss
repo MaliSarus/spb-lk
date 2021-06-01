@@ -73,7 +73,7 @@
         list-style: none;
         position: relative;
 
-        a {
+        a, button {
           display: block;
           padding: 30px 15px;
           font-weight: 400;
@@ -81,6 +81,8 @@
           line-height: 21px;
           color: white;
           text-decoration: none;
+          background-color: transparent;
+          border: none;
           @media screen and (min-width: 1400px) {
             font-size: 18px;
             padding: 30px 20px;
@@ -292,7 +294,7 @@
     li{
       list-style: none;
     }
-    a{
+    a, button{
       color: white;
       display: block;
       text-align: center;
@@ -300,6 +302,23 @@
       font-size: 18px;
       line-height: 21px;
       text-decoration: none;
+      border: none;
+      background-color: transparent;
+      width: 100%;
+    }
+    button{
+      &::after {
+        display: inline-block;
+        content: '';
+        width: 8px;
+        height: 12px;
+        margin-left: 10px;
+        margin-right: -10px;
+        background-image: url("../img/ui/arrow_white.svg");
+        background-position: right center;
+        background-size: 8px 12px;
+        background-repeat: no-repeat;
+      }
     }
   }
 

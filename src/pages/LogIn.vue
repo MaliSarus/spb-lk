@@ -11,6 +11,7 @@
 <script>
   import LogInForm from "@/components/LogInForm/Form";
   import {mapActions, mapGetters} from 'vuex'
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
   import {setIsUserAuth, setIsTildaUser} from "../helpers/defaultValues";
 
@@ -43,7 +44,7 @@
     },
     created() {
       this.initFetch();
-      setTitle(this.$i18n.t('message.pagesTitle.logIn'))
+      // setTitle(this.$i18n.t('message.pagesTitle.logIn'))
     },
   }
 </script>

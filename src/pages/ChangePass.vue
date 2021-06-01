@@ -40,6 +40,7 @@
 
   import ChangePassForm from "../components/PersonalCab/ChangePass/ChangePassForm";
   import successIcon from "@/assets/img/ui/success-signup.svg";
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
   import {mapGetters} from 'vuex'
 
@@ -56,9 +57,9 @@
     computed:{
       ...mapGetters(["user"])
     },
-    created() {
-      setTitle(this.$i18n.t('message.pagesTitle.changePass'))
-    }
+    // created() {
+    //   setTitle(this.$i18n.t('message.pagesTitle.changePass'))
+    // }
   }
 </script>
 

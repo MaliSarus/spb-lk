@@ -78,7 +78,7 @@
         this.discountError = false;
         this.$emit('update:discount',0);
         axios
-          .post('/api/coupon.php')
+          .post('/api/coupon/')
         .then(console.log)
       }
     },

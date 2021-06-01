@@ -2,10 +2,8 @@
   <div class="payed-order__list">
     <ul>
       <PayedOrderItem v-for="order in payedOrders"
-                      button-class="prev"
-                      :button-text="order.text"
+                      :order-info="order"
                       :key="order.id"
-                      :button-active="order.activated"
       >
         <p>{{order.section_name ? order.name + ' - ' : order.name}} <b>{{order.section_name}}</b></p>
       </PayedOrderItem>

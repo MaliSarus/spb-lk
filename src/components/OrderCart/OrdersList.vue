@@ -71,18 +71,21 @@
         if (isEveryIsOnline || isEveryIsOffline){
              isEqualLength = singleDates.length === this.singleDates.length
         }
-         return isEqualLength || (this.userCart.filter(product => product.type === 'all').length !== 0)
-
-
+        if (this.allDates.length) {
+          return isEqualLength || (this.userCart.filter(product => product.type === 'all').length !== 0)
+        }
+        else {
+          return false
+        }
       },
       everySingleDatesCheckedToAllId() {
         let checkId = ''
         if (this.isEverySingleDatesChecked) {
           const offlineChecked = this.userCart.filter(product => product.style === 'offline').length === this.singleDates.length
           const onlineChecked = this.userCart.filter(product => product.style === 'online').length === this.singleDates.length;
-          if (offlineChecked) {
+          if (offlineChecked && this.allDates.length) {
             checkId = this.allDates[0].items.filter(item => item.type === 'all')[0].id
-          } else if (onlineChecked) {
+          } else if (onlineChecked && this.allDates.length) {
             checkId = this.allDates[0].items.filter(item => item.type === 'online')[0].id
           }
         }

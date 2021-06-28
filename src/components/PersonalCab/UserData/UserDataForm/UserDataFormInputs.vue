@@ -22,6 +22,9 @@
     <Select v-model="formInputs.department" input-id="user-department"
             :options="departments"/>
 
+    <label v-if="formInputs.department === $t('message.departments.other')" for="user-other-department">{{$t('message.signUp.inputs.otherDepartment')}}</label>
+    <Input v-if="formInputs.department === $t('message.departments.other')" v-model="otherDepartment"/>
+
     <label for="user-rank">{{$t('message.userData.inputs.rank')}}</label>
     <Select v-model="formInputs.rank" input-id="user-rank" :options="ranks"/>
 
@@ -39,6 +42,16 @@
 
   export default {
     name: "UserDataFormInputs",
+    data(){
+      return{
+        otherDepartment: ''
+      }
+    },
+    watch:{
+      otherDepartment(val){
+        this.$emit('otherDepartmentChange', val)
+      }
+    },
     components: {
       Select, Input, DateInput
     },
@@ -49,7 +62,7 @@
     },
     methods: {
       inputCheck(e) {
-        console.log(e)
+        if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(e)
       }
     },
     computed: {

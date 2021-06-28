@@ -5,7 +5,7 @@
         <a href="/" class="header__logo">
           <img :src="images.logo" alt="">
         </a>
-        <div class="header__social d-xl-none">
+        <div class="header__social d-xxl-none">
           <ul>
             <li><a class="inst" href="https://instagram.com/spbbeautycongress"></a></li>
             <li><a class="vk" href="https://vk.com/spbbeautycongress"></a></li>
@@ -64,7 +64,7 @@
             </button>
           </div>
         </div>
-        <div class="header__mobile-control d-xl-none">
+        <div class="header__mobile-control d-xxl-none">
           <button class="hamburger hamburger--squeeze header__hamburger" :class="{'is-active': mobileOpen}"
                   type="button" @click="hamburgerClick()">
               <span class="hamburger-box">
@@ -264,7 +264,7 @@
             this.headerMenu = res.data.items;
             this.$emit('loaded')
           }
-          console.log(res)
+          if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
         })
     }
   }

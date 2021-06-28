@@ -103,6 +103,7 @@
     box-shadow: 0px 0px 25px 0px rgb(0 0 0 / 10%);
     overflow: auto;
 
+
     table {
       min-width: 700px;
       width: 100%;

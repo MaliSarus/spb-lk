@@ -77,7 +77,7 @@
         this.isOpen = !this.isOpen
       },
       inputClick($event) {
-        console.log('click')
+        if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log('click')
         if (!$event.target.classList.contains('form__input-trigger')) {
           if (!this.isOpen) {
             this.isOpen = true;
@@ -94,7 +94,7 @@
         this.$emit('pick', option)
       },
       inputFocus() {
-        console.log('focus')
+        if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log('focus')
         // const header = document.querySelector('header');
         const footer = document.querySelector('footer');
         // const headerHeight = header.getBoundingClientRect().top + header.offsetHeight;

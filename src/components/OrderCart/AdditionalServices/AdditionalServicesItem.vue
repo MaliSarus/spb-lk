@@ -28,7 +28,7 @@
     methods: {
       ...mapMutations(["addProduct", "deleteProduct"]),
       check(){
-        console.log(this.checked)
+        if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(this.checked)
         if (this.checked){
           this.addProduct({
             id: this.workshop.id,

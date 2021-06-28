@@ -15,6 +15,7 @@ import i18n from "@/locales";
 import store from '@/store'
 import SuccessPayment from "@/pages/SuccessPayment";
 import ErrorPayment from "@/pages/ErrorPayment";
+import Test from "@/pages/Test";
 import {getIsUserAuth, setIsUserAuth, getIsTildaUser, setIsTildaUser} from "../helpers/defaultValues";
 import {getChecker} from "../helpers/checkAuthority";
 // eslint-disable-next-line no-unused-vars
@@ -84,6 +85,14 @@ const routes = [
     }
   },
   {
+    path: '/test',
+    name: 'Test',
+    component: process.env === 'production' ? Test : ErrorPage,
+    meta: {
+      title: i18n.t('message.pagesTitle.errorPayment')
+    }
+  },
+  {
     path: '/',
     name: 'LogIn',
     component: LogIn,
@@ -107,7 +116,7 @@ const tildaUserAllowPagesFrom = ['LogIn', 'UserData', 'ChangePass', 'ChangeFIO']
 
 // eslint-disable-next-line no-unused-vars
 router.beforeEach((to, from, next) => {
-  console.log(i18n.locale)
+  if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(i18n.locale)
   const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
   if(nearestWithTitle) {
     document.title = nearestWithTitle.meta.title;
@@ -122,7 +131,7 @@ router.beforeEach((to, from, next) => {
           if (res.data.userLogout) {
             setIsUserAuth(false)
             store.dispatch('logout').then(() => {
-              console.log('next(/)')
+              if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log('next(/)')
               next('/')
             })
           }
@@ -164,7 +173,7 @@ router.beforeEach((to, from, next) => {
       .catch(() => {
       })
   } else {
-    console.log('next()')
+    if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log('next()')
     next()
   }
 })

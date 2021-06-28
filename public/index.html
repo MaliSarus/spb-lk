@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <title>Личный кабинет</title>
-<!--  <%= htmlWebpackPlugin.options.title %>-->
+  <!--  <%= htmlWebpackPlugin.options.title %>-->
   <link rel="stylesheet" href="<%= BASE_URL %>assets/css/bootstrap/bootstrap-grid.css">
   <link rel="stylesheet" href="<%= BASE_URL %>assets/css/style.css">
   <link rel="apple-touch-icon" sizes="76x76" href="<%= BASE_URL %>apple-touch-icon.png">
@@ -35,6 +35,34 @@
     });
   </script>
   <!-- /Yandex.Metrika counter -->
+<!--  <script src="https://yastatic.net/browser-updater/v1/script.js" charset="utf-8"></script>-->
+  <script>
+    function getCookie(name) {
+      var matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+    var lang = getCookie('lang')
+  //   var yaBrowserUpdater = new ya.browserUpdater.init({
+  //   "lang": lang,
+  //   "browsers": {
+  //     "yabrowser": "16.12",
+  //     "chrome": "62",
+  //     "ie": "11",
+  //     "opera": "40",
+  //     "safari": "12",
+  //     "fx": "60",
+  //     "iron": "Infinity",
+  //     "flock": "Infinity",
+  //     "palemoon": "Infinity",
+  //     "camino": "Infinity",
+  //     "maxthon": "Infinity",
+  //     "seamonkey": "Infinity"
+  //   },
+  //   "theme": "black"
+  // });
+  </script>
 </head>
 <body>
 <noscript>

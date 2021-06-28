@@ -20,7 +20,7 @@
             <span class="date__price-price price">
               <span v-if="onlineDate.price.discount" class="price_prev">{{onlineDate.price.basePrice}}</span>
               <span class="price_current">
-                {{ onlineDate.price.discount ? onlineDate.price.discountPrice : onlineDate.price.basePrice}}&nbsp;&#8381;
+                {{ onlineDate.price.discount ? onlineDate.price.discountPrice : onlineDate.price.basePrice}}&nbsp;
               </span>
             </span>
           </label>
@@ -43,7 +43,7 @@
             <span class="date__price-price price">
               <span v-if="offlineDate.price.discount" class="price_prev">{{offlineDate.price.basePrice}}</span>
               <span class="price_current">
-                {{ offlineDate.price.discount ? offlineDate.price.discountPrice : offlineDate.price.basePrice}}&nbsp;&#8381;
+                {{ offlineDate.price.discount ? offlineDate.price.discountPrice : offlineDate.price.basePrice}}&nbsp;
               </span>
             </span>
           </label>
@@ -101,8 +101,8 @@
         }
       }
     },
-    created() {
-      eventBus.$on('clearDates',()=>{
+    mounted() {
+      eventBus.$on('clearDates', () => {
         this.checkedDate = ''
       })
     },
@@ -112,7 +112,7 @@
       }
       if (this.allCheckId) {
         this.checkedDate = this.allCheckId
-        if(!this.userCart.find(product => +product.id === this.allCheckId)) {
+        if (!this.userCart.find(product => +product.id === this.allCheckId)) {
           this.deleteAllSingleProducts();
           const product = this.date.items.find(item => item.id == this.allCheckId);
           const selectDate = {
@@ -224,6 +224,14 @@
                 height: 2px;
                 background: rgba(221, 0, 0, 0.8);
                 transform: translateY(-50%);
+              }
+            }
+
+            &_current {
+              &::after {
+                display: inline;
+                content: "\20BD";
+                margin-left: 5px;
               }
             }
           }

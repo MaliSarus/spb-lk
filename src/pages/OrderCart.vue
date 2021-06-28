@@ -98,6 +98,28 @@
   import {breakpoints} from "../helpers/defaultValues";
   // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
+  function placeOrderPrice() {
+    const isWindowLargeThanLg = window.innerWidth >= 992;
+    const orderPrice = document.querySelector('.order__price')
+    const contentBlock = document.querySelector('.personal-cab__content-block')
+    const contentBlockBottom = contentBlock.getBoundingClientRect().top + contentBlock.clientHeight + pageYOffset
+    if (isWindowLargeThanLg){
+      if (contentBlockBottom < this.scrollY + this.innerHeight){
+        orderPrice.classList.add('static')
+      }
+      else {
+        orderPrice.classList.remove('static')
+      }
+    }
+    else{
+      if (contentBlockBottom - 60 < this.scrollY + this.innerHeight){
+        orderPrice.classList.add('static')
+      }
+      else {
+        orderPrice.classList.remove('static')
+      }
+    }
+  }
 
   export default {
     name: "OrderCart",
@@ -143,8 +165,8 @@
         this.windowWidth = window.innerWidth;
       },
       toVerify() {
-        this.$router.push({name: 'Verify'});
         this.isModalOpen = false;
+        this.$router.push({name: 'Verify'});
       },
       makeorder(url) {
         localStorage.removeItem('orders');
@@ -178,13 +200,35 @@
       }
     },
     mounted() {
-      document.body.append(this.$refs.ordModal);
-
+      const isWindowLargeThanLg = window.innerWidth >= 992;
+      const orderPrice = document.querySelector('.order__price')
+      const contentBlock = document.querySelector('.personal-cab__content-block')
+      const contentBlockBottom = contentBlock.getBoundingClientRect().top + contentBlock.clientHeight + pageYOffset
+      if (isWindowLargeThanLg){
+        if (contentBlockBottom < pageYOffset + window.innerHeight){
+          orderPrice.classList.add('static')
+        }
+        else {
+          orderPrice.classList.remove('static')
+        }
+      }
+      else{
+        if (contentBlockBottom - 60 < pageYOffset + window.innerHeight){
+          orderPrice.classList.add('static')
+        }
+        else {
+          orderPrice.classList.remove('static')
+        }
+      }
+      window.addEventListener('scroll', placeOrderPrice)
     },
     created() {
       // setTitle(this.$i18n.t('message.pagesTitle.orderCart'))
       window.addEventListener('resize', this.handleResize);
       this.handleResize();
+    },
+    destroyed() {
+      window.removeEventListener('scroll', placeOrderPrice)
     }
   };
 </script>
@@ -295,6 +339,10 @@
       border: none;
       box-shadow: none;
       /*max-width: none;*/
+      margin-bottom: 104px;
+      @media screen and (min-width: $lg-width){
+        margin-bottom: 0;
+      }
       form {
         max-width: none;
       }
@@ -302,16 +350,23 @@
   }
 
   .order__price {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 15px 0;
     background-color: #F4F9FF;
-    margin-top: 40px;
     @media screen and (min-width: $lg-width) {
       padding: 15px 105px;
       margin-top: 0;
+    }
+    &.static{
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 20px;
+      @media screen and (min-width: $lg-width) {
+        position: absolute;
+        bottom: 0;
+      }
     }
 
     &-content {

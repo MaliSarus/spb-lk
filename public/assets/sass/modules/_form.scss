@@ -67,3 +67,13 @@
   }
 
 }
+
+.mx-datepicker-popup{
+  display: none!important;
+}
+
+.mx-datepicker-inline{
+  .mx-calendar{
+    width: 100%;
+  }
+}

@@ -455,18 +455,9 @@ button {
 }
 
 .mx-datepicker {
-  position: absolute;
-  bottom: 0;
-  display: none;
+  position: relative;
+  display: inline-block;
   width: 210px;
-  -webkit-transform: translateY(calc(100% + 4px));
-  -ms-transform: translateY(calc(100% + 4px));
-  transform: translateY(calc(100% + 4px));
-  z-index: 10;
-  border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
 }
 
 .mx-datepicker svg {
@@ -475,10 +466,6 @@ button {
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
-}
-
-.mx-datepicker.open {
-  display: block;
 }
 
 .mx-datepicker-range {
@@ -510,13 +497,17 @@ button {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 100%;
-  padding: 15px 30px 15px 13px;
+  height: 34px;
+  padding: 6px 30px;
+  padding-left: 10px;
   font-size: 14px;
   line-height: 1.4;
   color: #555;
-  border: none;
-  background: transparent;
-  outline: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
 .mx-input:hover,
@@ -566,6 +557,7 @@ button {
   font: 14px/1.5 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', sans-serif;
   color: #73879c;
   background-color: #fff;
+  border: 1px solid #e8e8e8;
 }
 
 .mx-datepicker-popup {
@@ -625,7 +617,7 @@ button {
 .mx-calendar {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  width: 100%;
+  width: 248px;
   padding: 6px 12px;
 }
 
@@ -1385,6 +1377,14 @@ button {
   background-image: url("../img/ui/checkbox_checked.svg");
 }
 
+.mx-datepicker-popup {
+  display: none !important;
+}
+
+.mx-datepicker-inline .mx-calendar {
+  width: 100%;
+}
+
 .personal-cab {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
@@ -1511,6 +1511,12 @@ button {
   .header {
     height: auto;
   }
+}
+
+@media screen and (min-width: 1400px) {
+  .d-xxl-none {
+    display: none !important;
+  }
 
   .header__wrapper {
     position: relative;
@@ -1537,9 +1543,13 @@ button {
     display: -ms-flexbox;
     display: flex;
   }
+
+  .header__account-button {
+    font-size: 16px;
+  }
 }
 
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 1700px) {
   .header__wrapper {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
@@ -1550,10 +1560,6 @@ button {
   .header__menu ul li button {
     font-size: 18px;
     padding: 30px 20px;
-  }
-
-  .header__account-button {
-    font-size: 16px;
   }
 }
 

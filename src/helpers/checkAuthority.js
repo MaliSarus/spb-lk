@@ -44,7 +44,7 @@ const CActivityUpdate = function (sActivityUrl, iActivityTime) {
 
   // выполнение "холостого" хита для обновления даты активности пользователя
   this.updateActivity = function () {
-    console.log('activity');
+    if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log('activity');
     let iLastActivity = _this.getCookie('BX_activity');
     iLastActivity = iLastActivity ? parseInt(iLastActivity) : 0;
     const oDate = new Date();
@@ -85,7 +85,7 @@ const CActivityUpdate = function (sActivityUrl, iActivityTime) {
       _this
         .updateActivity()
         .then(res => {
-          console.log(res)
+          if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
           if (res) {
             if (res.data.userLogout) {
               eventBus.$emit('userLogout')

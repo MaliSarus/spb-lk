@@ -59,7 +59,9 @@
         },
         noOneAuth: {
           isNoOneAuth: false,
-          isLoading: false
+          isLoading: false,
+          email: '',
+          password: '',
         },
       }
     },
@@ -84,7 +86,7 @@
             password: this.password,
           })
           .then((res) => {
-            console.log(res);
+            if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res);
             if (res.data.status !== "error") {
               this.logining = true
               if (res.data.user.tildaUser) {
@@ -96,7 +98,9 @@
             } else {
               this.errorMessage = res.data.error;
               if (res.data.isNoOneAuth) {
-                this.noOneAuth.isNoOneAuth = res.data.isNoOneAuth
+                this.noOneAuth.isNoOneAuth = res.data.isNoOneAuth;
+                this.noOneAuth.email = this.email;
+                this.noOneAuth.password = this.password;
               }
               else{
                 this.logining = false
@@ -109,13 +113,16 @@
         this.clearUser();
         axios
           .post('/api/user/logout/', {
-            email: this.email
+            email: this.noOneAuth.email,
+            password: this.noOneAuth.password,
           })
           .then(res => {
             if (res.data.status === 'ok') {
               this.errorMessage = '';
               this.noOneAuth.isNoOneAuth = false;
               this.noOneAuth.isLoading = false;
+              this.noOneAuth.email = '';
+              this.noOneAuth.password = '';
               this.logining = false
             }
           })

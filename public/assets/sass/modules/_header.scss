@@ -26,13 +26,13 @@
     padding: 0 20px;
     align-items: center;
 
-    @media screen and (min-width: $xl-width) {
+    @media screen and (min-width: 1400px) {
       position: relative;
       justify-content: flex-start;
       padding: 0 350px 0 200px;
 
     }
-    @media screen and (min-width: 1400px) {
+    @media screen and (min-width: 1700px) {
       justify-content: center;
     }
   }
@@ -42,7 +42,7 @@
     padding: 11px 7px 9px;
     border-radius: 5px;
     background: $accent-color;
-    @media screen and (min-width: $xl-width) {
+    @media screen and (min-width: 1400px) {
       width: 149px;
       height: auto;
       position: absolute;
@@ -58,7 +58,7 @@
 
   &__menu {
     display: none;
-    @media screen and (min-width: $xl-width) {
+    @media screen and (min-width: 1400px) {
       display: block;
     }
 
@@ -83,7 +83,7 @@
           text-decoration: none;
           background-color: transparent;
           border: none;
-          @media screen and (min-width: 1400px) {
+          @media screen and (min-width: 1700px) {
             font-size: 18px;
             padding: 30px 20px;
           }
@@ -153,7 +153,7 @@
     align-items: center;
     transform: translateY(-50%);
     display: none;
-    @media screen and (min-width: $xl-width) {
+    @media screen and (min-width: 1400px) {
       display: flex;
     }
   }

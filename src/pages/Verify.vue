@@ -18,7 +18,7 @@
                 <p v-html="$t('message.verify.text')"/>
               </div>
               <file-selector v-if="!url"
-                             accept-extensions=".jpg,.png,.pdf,.doc,.docx"
+                             accept-extensions=".jpg,.jpeg,.png,.pdf,.doc,.docx,.heic"
                              :multiple="false"
                              :max-file-size="5 * 1024 * 1024"
                              @changed="handleFilesChanged"
@@ -40,12 +40,13 @@
               <p v-if="error">{{error}}</p>
               <div class="verify__controls">
                 <Button
-                    class="form__button form__button_prev square"
-                    type="button"
-                    @click="$router.push('/user/'+userId +/user-data/)"
+                  class="form__button form__button_prev square"
+                  type="button"
+                  @click="$router.push('/user/'+userId +/user-data/)"
 
                 />
-                <button type="submit" class="button button_yellow user-data__submit">{{$t('message.verify.upload')}}</button>
+                <button type="submit" class="button button_yellow user-data__submit">{{$t('message.verify.upload')}}
+                </button>
               </div>
             </form>
           </div>
@@ -78,6 +79,8 @@
   import docIcon from '@/assets/img/ui/doc.svg'
   import successIcon from '@/assets/img/ui/success-signup.svg'
   // eslint-disable-next-line no-unused-vars
+  import heic2any from 'heic2any'
+  // eslint-disable-next-line no-unused-vars
   import setTitle from "../helpers/title";
   import squaredButton from "../helpers/square-button";
 
@@ -93,22 +96,41 @@
         page: 1,
         successIcon,
         userId: this.$route.params.id,
-    }
+      }
     },
     computed: {
       isImage() {
-        const imageExt = this.ext === 'png' || this.ext === 'jpg'
+        const imageExt = this.ext === 'png' ||
+          this.ext === 'jpg' ||
+          this.ext === 'jpeg' ||
+          this.ext === 'heic'
         return imageExt
       }
     },
     methods: {
       handleFilesChanged(files) {
         this.files = files[0];
+        if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(this.files)
         this.ext = files[0].name.split('.').pop();
+        if (this.ext === 'heic') {
+          if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(this.files)
+          heic2any({
+            blob: this.files,
+            toType: "image/jpeg",
+            quality: 0.9, // cuts the quality and size by half
+          })
+            .then(result => {
+
+              this.url = URL.createObjectURL(result);
+              const blob = result
+              this.files = new File([blob], 'heicimg.jpeg');
+            })
+          return
+        }
         this.url = URL.createObjectURL(this.files);
-        console.log(files[0])
       },
       validation(result) {
+        if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(result)
         const resultStr = '' + result
         if (resultStr !== 'true') {
           this.error = 'Ошибка файла (расширение или размер)'
@@ -128,8 +150,8 @@
                 }
               }
             )
-            .then(res=>{
-              if (res.data.status === 'ok'){
+            .then(res => {
+              if (res.data.status === 'ok') {
                 this.page += 1;
               }
             })
@@ -157,7 +179,7 @@
 </script>
 
 <style lang="scss">
-  form{
+  form {
     width: 100%;
     max-width: 540px;
   }
@@ -199,14 +221,16 @@
     position: relative;
     max-width: 240px;
     margin: 0 auto;
-    img{
+
+    img {
       transition: filter .2s;
     }
 
     &:hover {
-      img{
+      img {
         filter: opacity(.5);
       }
+
       .change-file {
         opacity: 1;
       }
@@ -277,10 +301,12 @@
     &__controls {
       display: flex;
       margin-top: 40px;
-      .user-data__submit{
+
+      .user-data__submit {
         flex-grow: 1;
       }
-      .form__button_prev{
+
+      .form__button_prev {
         flex-grow: 1;
         max-width: 45px;
       }

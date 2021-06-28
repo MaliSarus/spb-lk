@@ -46,10 +46,11 @@
     computed: {
       ...mapGetters(['payedOrders'])
     },
-    created() {
+    mounted() {
       this.fetchPayedOrders()
         .then(()=> {
           this.isLoading = false
+
         })
     }
   }

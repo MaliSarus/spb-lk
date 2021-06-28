@@ -159,6 +159,10 @@ const ru = {
       },
       buttons: {
         save: 'Сохранить'
+      },
+      errors:{
+        newPass: 'Длина пароля должна быть больше 6 символов',
+        confirmPass: 'Пароли должны совпадать'
       }
     },
     orderCart: {

@@ -3,8 +3,8 @@
     <div class="order__text">
       <slot/>
     </div>
-    <div class="order__button">
-      <a v-if="linkClass !== 'next'"
+    <div class="order__button" :class="{'no-link': !hasLink}">
+      <a v-if="linkClass !== 'next' && linkClass !== 'prev'"
          class="order__btn"
          :class="linkClass"
          :href="orderInfo.url">
@@ -18,31 +18,43 @@
 </template>
 
 <script>
+  import moment from 'moment-timezone'
   export default {
     name: "PayedOrderItem",
     props: ['orderInfo'],
     computed: {
       linkClass() {
-        const currentDate = new Date()
-        const dateStart = new Date(this.orderInfo.date_start)
-        const dateEnd = new Date(this.orderInfo.date_end)
-        let result = '';
-        if (!this.orderInfo.date_start) {
-          result = 'link'
-          return result;
+        // let currentDate = new Date()
+        let currentDate = moment().tz('Europe/Moscow').format()
+        const hasDate = ({}).hasOwnProperty.call(this.orderInfo, 'date_start')
+        const dateStart = hasDate ? moment(this.orderInfo.date_start.replace(/ /g, "T")).format() : null
+        const dateEnd = hasDate ? moment(this.orderInfo.date_end.replace(/ /g, "T")).format(): null
+        let result = 'link';
+
+        if (dateStart && dateEnd) {
+          if (moment(currentDate).isAfter(dateEnd)) {
+            result = 'prev'
+            return result;
+          }
+          if (moment(currentDate).isBefore(dateStart)) {
+            result = 'next'
+            return result;
+          }
+          if (moment(currentDate).isBetween(dateStart, dateEnd)) {
+            result = 'current'
+          }
         }
-        if (currentDate > dateEnd) {
-          result = 'prev'
-          return result;
-        }
-        if (currentDate < dateStart) {
-          result = 'next'
-          return result;
-        }
-        if (currentDate >= dateStart && currentDate <= dateEnd) {
-          result = 'current'
-        }
+
         return result
+      },
+      hasLink() {
+        let result = false
+        const hasDate = ({}).hasOwnProperty.call(this.orderInfo, 'date_start')
+        if (!hasDate && this.orderInfo.url !== '') {
+          result = true
+        } else result = this.orderInfo.date_start !== '' && this.orderInfo.url !== '';
+        return result
+
       }
     }
   }
@@ -80,6 +92,12 @@
         max-width: 250px;
       }
 
+      &.no-link {
+        a {
+          display: none;
+        }
+      }
+
 
     }
 
@@ -110,13 +128,16 @@
       }
 
       &.prev {
-        color: #013066;
-        border-color: $yellow-color;
+        background-color: #EDEDED;
+        border-color: #EDEDED;
+        color: $light-text-color;
+        //color: #013066;
+        //border-color: $yellow-color;
         background-image: url(~@/assets/img/payed-orders/prev.svg);
 
-        &:hover {
-          background-color: $yellow-color;
-        }
+        //&:hover {
+        // background-color: $yellow-color;
+        //}
       }
 
       &.current {

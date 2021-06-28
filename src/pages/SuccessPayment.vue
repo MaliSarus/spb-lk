@@ -51,7 +51,7 @@
           orderId: obj.orderId,
         })
         .then(res => {
-          console.log(res)
+          if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
           if (res.data.status === 'ok') {
             this.orderNum = res.data.orderNumber;
           } else {

@@ -82,16 +82,16 @@ button{
   }
 }
 
-
 .overflow_hidden {
   overflow: hidden;
 }
-
-
-
-
 
 .position-relative {
   position: relative;
 }
 
+.d-xxl-none{
+  @media screen and (min-width: 1400px){
+    display: none !important;
+  }
+}

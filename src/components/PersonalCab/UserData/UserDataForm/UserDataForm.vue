@@ -42,7 +42,7 @@
         <button class="button button_yellow" @click="toVerify">{{$t('message.userData.verify.link')}}</button>
       </div>
 
-      <UserDataFormInputs v-model="userForm"/>
+      <UserDataFormInputs v-model="userForm" @otherDepartmentChange="otherDepartment = $event"/>
 
       <div class="user-data__controls">
         <div class="row">
@@ -92,6 +92,7 @@
         tooltipClose,
         succesIcon,
         verifyCheck: this.ordinatorCheck,
+        otherDepartment: '',
       }
     },
     props:['ordinatorCheck'],
@@ -129,7 +130,7 @@
           city: this.countryToId(this.userForm.country) === 1 ? this.userForm.city : '',
           company: this.userForm.company,
           position: this.userForm.position,
-          department: this.userForm.department,
+          department: this.otherDepartment !== '' ? this.otherDepartment : this.userForm.department,
           rank: this.userForm.rank,
           degree: this.userForm.degree,
           ordinator: this.verifyCheck,

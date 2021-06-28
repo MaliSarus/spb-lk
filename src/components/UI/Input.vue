@@ -38,7 +38,6 @@
       inputEmit(e) {
         switch (this.inputType) {
           case 'tel':
-            // eslint-disable-next-line no-useless-escape
             e.target.value = e.target.value.replace(phoneAllowPattern, '');
             break;
           case 'email':

@@ -202,11 +202,13 @@
   import successImage from "@/assets/img/ui/success-signup.svg"
   import {mailPattern, namePattern, phonePattern} from "../../helpers/defaultValues";
   import squaredButton from "../../helpers/square-button";
+  import DateInputFixed from "../UI/DateInputFixed";
 
 
   export default {
     name: "SignUpForm",
-    components: {Checkbox, DateInput, Button, Input, Select},
+    // eslint-disable-next-line vue/no-unused-components
+    components: {DateInputFixed, Checkbox, DateInput, Button, Input, Select},
     props: ["page"],
     watch: {
       formPage(val) {
@@ -372,7 +374,7 @@
       },
       pageValidate() {
         const validateHandler = this.$v;
-        console.log(validateHandler.form.city ? validateHandler.form.city.$invalid : false)
+        if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(validateHandler.form.city ? validateHandler.form.city.$invalid : false)
         switch (this.formPage) {
           case 1: {
             const city = validateHandler.form.city ? validateHandler.form.city.$invalid : false;
@@ -493,7 +495,7 @@
           };
           if (!this.$v.$invalid) {
             axios.put("/api/signup/", formData).then((res) => {
-              console.log(res)
+              if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
               if (res.data.status === 'ok') {
                 this.formPage = 4
               } else {

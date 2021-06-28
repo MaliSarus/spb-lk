@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
-import {setWithoutExpiry, getWithoutExpiry} from "../helpers/localStorage";
+import {setWithoutExpiry, getWithoutExpiry, getWithExpiry, setWithExpiry} from "../helpers/localStorage";
 import i18n from "../locales";
 
 Vue.use(Vuex)
@@ -105,7 +105,7 @@ export default new Vuex.Store({
       return axios
         .get('/api/user/')
         .then(res => {
-          console.log(res)
+          if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
           if (res.data.auth) {
             const user = res.data.user;
             commit('setUser', user)
@@ -117,7 +117,7 @@ export default new Vuex.Store({
         })
     },
     fetchCountries({commit}) {
-      const lsCountries = getWithoutExpiry('countries')
+      const lsCountries = getWithExpiry('countries')
       if (lsCountries){
         return commit('setCountries', lsCountries);
       }
@@ -126,7 +126,7 @@ export default new Vuex.Store({
         .then(res => {
           if (res.data.status === 'ok') {
             commit('setCountries', res.data.country);
-            setWithoutExpiry('countries', res.data.country)
+            setWithExpiry('countries', res.data.country,10000)
           }
         })
     },
@@ -182,7 +182,7 @@ export default new Vuex.Store({
         })
     },
     fetchCities({commit}) {
-      const lsCities = getWithoutExpiry('cities')
+      const lsCities = getWithExpiry('cities')
       if (lsCities){
         return commit('setRussiaCities', lsCities);
       }
@@ -191,7 +191,7 @@ export default new Vuex.Store({
         .then(res => {
           if (res.data.status === 'ok') {
             commit('setRussiaCities', res.data.city);
-            setWithoutExpiry('cities', res.data.city)
+            setWithExpiry('cities', res.data.city, 10000)
           }
         })
     },
@@ -206,6 +206,7 @@ export default new Vuex.Store({
         .then(res => {
           if (res.data.status === 'ok') {
             commit('setPayedOrders', res.data.orders);
+          console.log(res)
             // setWithoutExpiry('orders', res.data.orders)
             return true
           } else {
@@ -217,7 +218,7 @@ export default new Vuex.Store({
       return axios
         .get('/api/catalog/items/')
         .then(res => {
-          console.log(res)
+          if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
           if (res.data.status === 'ok') {
             commit('setProducts', res.data.sections)
           }
@@ -228,7 +229,7 @@ export default new Vuex.Store({
       return axios
         .get('/api/catalog/workshops/')
         .then(res => {
-          console.log(res)
+          if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
           if (res.data.status === "ok" || res.data.status === 'done') {
             const workshops = res.data.items ? res.data.items : []
             commit('setWorkshops', workshops)

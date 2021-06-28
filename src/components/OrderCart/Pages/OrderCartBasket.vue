@@ -4,8 +4,9 @@
       <div class="col-12">
         <BasketList :orders="userBasket"/>
         <div class="row">
-          <div class="col-12 col-sm-8 col-lg-6 offset-sm-2 offset-lg-3">
-            <div class="coupon" :class="{
+          <div class="col-12 col-sm-8 col-lg-6 offset-sm-2 offset-lg-3 coupon-wrapper">
+            <p v-if="!user.coupon" class="coupon-info">Промокод предоставляет скидку на участие в конгрессе, на дополнительные услуги скидка <b>НЕ</b> предоставляется.</p>
+            <div v-if="!user.coupon" class="coupon" :class="{
               invalid: isDiscountWasError,
               valid: isDiscountWasSuccess,
             }">
@@ -48,7 +49,9 @@
       makeorder() {
         axios
           .post('/api/makeorder/')
-          .then(console.log)
+          .then((res)=>{
+            if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
+          })
       },
       checkDiscount(){
         if (this.coupon) {
@@ -57,7 +60,7 @@
               coupon: this.coupon
             })
             .then(res => {
-              console.log(res)
+              if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
               const saleAmount = res.data.saleAmount;
               if (saleAmount !== 0) {
                 this.$emit('update:discount', res.data.discountPrice);
@@ -79,16 +82,24 @@
         this.$emit('update:discount',0);
         axios
           .post('/api/coupon/')
-        .then(console.log)
+        .then((res) => {
+          if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_MODE === 'test') console.log(res)
+        })
       }
     },
     computed: {
-      ...mapGetters(["userBasket"]),
+      ...mapGetters(["userBasket", "user"]),
       isDiscountWasSuccess(){
         return !this.discountError && this.discountSuccess
       },
       isDiscountWasError(){
         return this.discountError && !this.discountSuccess
+      }
+    },
+    mounted() {
+      if (this.user.coupon){
+        this.coupon = this.user.coupon;
+        this.checkDiscount()
       }
     }
   }
@@ -96,7 +107,6 @@
 
 <style lang="scss" scoped>
   .coupon{
-    margin-top: 40px;
     background: #F4F9FF;
     border: 1px solid #F3F3F3;
     box-sizing: border-box;
@@ -104,6 +114,16 @@
     padding: 5px;
     display: flex;
     flex-wrap: wrap;
+    &-wrapper{
+      margin-top: 40px;
+    }
+    &-info{
+      text-align: center;
+      color: $main-text-color;
+      margin-top: 0;
+      font-size: 14px;
+
+    }
     &.valid{
       border-color: #375B28;
       input{

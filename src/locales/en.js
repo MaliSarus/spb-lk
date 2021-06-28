@@ -159,6 +159,10 @@ const en = {
       },
       buttons: {
         save: 'Save'
+      },
+      errors:{
+        newPass: 'Minimal length of password is 6 symbols',
+        confirmPass: 'Passwords must be same'
       }
     },
     orderCart: {

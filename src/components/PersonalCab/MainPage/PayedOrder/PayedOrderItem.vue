@@ -4,7 +4,7 @@
       <slot/>
     </div>
     <div class="order__button" :class="{'no-link': !hasLink}">
-      <a v-if="linkClass !== 'next' && linkClass !== 'prev'"
+      <a v-if="linkClass !== 'next'"
          class="order__btn"
          :class="linkClass"
          :href="orderInfo.url">
@@ -128,16 +128,14 @@
       }
 
       &.prev {
-        background-color: #EDEDED;
-        border-color: #EDEDED;
-        color: $light-text-color;
-        //color: #013066;
-        //border-color: $yellow-color;
+        background-color: $yellow-color;
+        color: #013066;
+        border-color: $yellow-color;
         background-image: url(~@/assets/img/payed-orders/prev.svg);
 
-        //&:hover {
-        // background-color: $yellow-color;
-        //}
+        &:hover {
+         background-color: transparent;
+        }
       }
 
       &.current {

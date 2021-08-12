@@ -35,24 +35,6 @@
               </span>
             </template>
           </countdown>
-          <div class="advantages-table">
-            <table>
-              <thead>
-              <tr>
-                <th></th>
-                <th>{{$t('message.orderCart.orderCartDates.table.head[0]')}}</th>
-                <th>{{$t('message.orderCart.orderCartDates.table.head[1]')}}</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="(data,index) in tableBody" :key="'tr_'+index">
-                <td>{{data.title}}</td>
-                <td :class="{yes: data.offline, no: !data.offline }"></td>
-                <td :class="{yes: data.offline, no: !data.online}"></td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
       </div>
     </div>
@@ -102,7 +84,6 @@
     border-radius: 10px;
     box-shadow: 0px 0px 25px 0px rgb(0 0 0 / 10%);
     overflow: auto;
-
 
     table {
       min-width: 700px;

@@ -193,8 +193,8 @@ const en = {
           time: '{d} d. {h} h. {m} m.'
         },
         date: {
-          offline: 'Offline',
-          online: 'Online',
+          offline: 'Congress Videorecord',
+          online: 'Congress Videorecord',
         },
         table: {
           head: [

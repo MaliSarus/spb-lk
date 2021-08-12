@@ -109,11 +109,11 @@
         flex-basis: 100%;
         padding: 15px;
         @media screen and (min-width: $lg-width) {
+          min-width: 450px;
           flex-basis: calc(100% / 3);
         }
         @media screen and (min-width: 1440px) {
           flex-basis: calc(100% / 5);
-          min-width: 200px;
         }
       }
     }

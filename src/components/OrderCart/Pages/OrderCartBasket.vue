@@ -5,7 +5,6 @@
         <BasketList :orders="userBasket"/>
         <div class="row">
           <div class="col-12 col-sm-8 col-lg-6 offset-sm-2 offset-lg-3 coupon-wrapper">
-            <p v-if="!user.coupon" class="coupon-info">Промокод предоставляет скидку на участие в конгрессе, на дополнительные услуги скидка <b>НЕ</b> предоставляется.</p>
             <div v-if="!user.coupon" class="coupon" :class="{
               invalid: isDiscountWasError,
               valid: isDiscountWasSuccess,

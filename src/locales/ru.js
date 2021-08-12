@@ -193,8 +193,8 @@ const ru = {
           time: '{d} дн.{h} час. {m} мин.'
         },
         date: {
-          offline: 'Офлайн',
-          online: 'Онлайн',
+          offline: 'Видеозапись конгресса',
+          online: 'Видеозапись конгресса',
         },
         table: {
           head: [

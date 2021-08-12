@@ -44,13 +44,13 @@
               {{this.discount === 0 ? $t('message.orderCart.totalPrice.text') :
               $t('message.orderCart.totalPrice.discountText')}}:
               <b style="margin-left: 5px; font-weight: 500">{{discount === 0 ? totalPrice : discount}} &#8381;</b>
-              <div class="order__price-controls" :class="{page_three: page === 3}">
-                <button v-if="page > 1" class="button button_transparent button_prev" :class="{page_three: page === 3}"
+              <div class="order__price-controls" :class="{page_three: page === 2}">
+                <button v-if="page > 1" class="button button_transparent button_prev" :class="{page_three: page === 2}"
                         @click="prevClick">
-                  {{windowWidth >= breakpoints.lgWidth || page === 3 ? $t('message.orderCart.totalPrice.back') : ''}}
+                  {{windowWidth >= breakpoints.lgWidth || page === 2 ? $t('message.orderCart.totalPrice.back') : ''}}
                 </button>
-                <button v-if="page < 3" class="button button_yellow button_next"
-                        :class="{disabled:page === 2 && !userCart.length}" :disabled="page === 2 && !userCart.length"
+                <button v-if="page < 2" class="button button_yellow button_next"
+                        :class="{disabled:page === 1 && !userCart.length}" :disabled="page === 1 && !userCart.length"
                         @click="nextClick">
                   {{windowWidth >= breakpoints.lgWidth ? $t('message.orderCart.totalPrice.next') : ''}}
                 </button>
@@ -93,11 +93,8 @@
   import PayedOrder from "../components/PersonalCab/MainPage/PayedOrder/PayedOrdersList";
   import OrderCartDates from "../components/OrderCart/Pages/OrderCartDates";
   import OrderCartBasket from "../components/OrderCart/Pages/OrderCartBasket";
-  import OrderCartWorkshops from "../components/OrderCart/Pages/OrderCartWorkshops";
   import {baseURL} from "../helpers/defaultValues";
   import {breakpoints} from "../helpers/defaultValues";
-  // eslint-disable-next-line no-unused-vars
-  import setTitle from "../helpers/title";
   function placeOrderPrice() {
     const isWindowLargeThanLg = window.innerWidth >= 992;
     const orderPrice = document.querySelector('.order__price')
@@ -134,7 +131,6 @@
         productsDone: false,
         pages: [
           OrderCartDates,
-          OrderCartWorkshops,
           OrderCartBasket,
         ],
         discount: 0,
@@ -150,7 +146,6 @@
       pageTitle() {
         return [
           this.$t('message.orderCart.orderCartDates.title'),
-          this.$t('message.orderCart.orderCartWorkshops.title'),
           this.$t('message.orderCart.orderCartBasket.title')
         ]
       },
@@ -173,9 +168,9 @@
         location.href = url
       },
       nextClick() {
-        if (this.page !== 2) {
+        if (this.page !== 1) {
           this.page += 1;
-        } else if (this.page == 2) {
+        } else if (this.page == 1) {
           const userCart = this.userCart;
           const postData = userCart.map(item => +item.id)
           if (postData.length) {
@@ -223,12 +218,13 @@
       window.addEventListener('scroll', placeOrderPrice)
     },
     created() {
-      // setTitle(this.$i18n.t('message.pagesTitle.orderCart'))
       window.addEventListener('resize', this.handleResize);
       this.handleResize();
     },
     destroyed() {
       window.removeEventListener('scroll', placeOrderPrice)
+      window.removeEventListener('resize', this.handleResize);
+      this.deleteAllProducts();
     }
   };
 </script>
@@ -236,7 +232,7 @@
 <style lang="scss" scoped>
   .ord-modal {
     position: fixed;
-    left: 0;
+    left: 0;  
     top: 0;
     width: 100%;
     height: 100%;
